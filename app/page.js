@@ -12,7 +12,7 @@ import PostCard from './components/PostCard.jsx';
    
      return (
        <main>
-         <h1>Carlos Marten</h1>
+         <h1>Latest posts</h1>
          <ul>
            {posts.map((post) => (
              <li key={post.id}>
