@@ -1,6 +1,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+ 
 }
 
 @media (prefers-color-scheme: dark) {
@@ -40,4 +41,13 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+ol {
+  padding-left: 20px; /* Adjust the value as needed */
+}
+
+h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
