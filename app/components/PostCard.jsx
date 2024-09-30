@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import styles from './postcard.module.css'
 
 const PostCard = ({post})  => {
 
@@ -20,34 +21,12 @@ const PostCard = ({post})  => {
 
   const author = post._embedded['author'][0].name;
 
-  const cardStyle = {
-    maxWidth: '400px',
-    margin: '20px auto',
-    padding: '20px',
-    borderRadius: '8px',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    backgroundColor: 'white',
-    fontFamily: 'Arial, sans-serif',
-  };
-
-  const titleStyle = {
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-    marginBottom: '10px',
-    color: '#333',
-  };
-
-  const summaryStyle = {
-    fontSize: '1rem',
-    lineHeight: '1.5',
-    color: '#666',
-  };
 
   return (
-    <div style={cardStyle}>
+    <div className={styles.card}>
       <Link href={`/posts/${post.slug}`}>
-        <h2 style={titleStyle}>{post.title.rendered}</h2>
-        <p style={summaryStyle}>{author}</p>
+        <h2 className={styles.card_title} >{post.title.rendered}</h2>
+        <p className={styles.card_summary} >{author}</p>
       </Link>
     </div>
   );

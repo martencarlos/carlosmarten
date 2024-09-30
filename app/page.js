@@ -1,5 +1,6 @@
 
 import PostCard from './components/PostCard.jsx';
+import styles from './page.module.css';
    
    async function getPosts() {
       const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
@@ -13,10 +14,11 @@ import PostCard from './components/PostCard.jsx';
    
      return (
        <main>
-         <h1>Latest posts</h1>
-         <ul>
+        <div className={styles.one_column}>
+         <h1 className={styles.h1}>Latest posts</h1>
+         <ul className={styles.ul}>
            {posts.map((post) => (
-             <li key={post.id}>
+             <li className={styles.li} key={post.id}>
                
                <PostCard 
                 post={post}
@@ -24,6 +26,7 @@ import PostCard from './components/PostCard.jsx';
              </li>
            ))}
          </ul>
+         </div>
        </main>
      );
     } catch (error) {
