@@ -6,6 +6,7 @@ const nextConfig = {
       NEXT_PUBLIC_WP_URL: process.env.NEXT_PUBLIC_WP_URL,
     },
   images: {
+    domains: ['localhost', 'www.carlosmarten.com'],
     remotePatterns: [
       {
         protocol: 'https',  // Specify the protocol (http or https)
