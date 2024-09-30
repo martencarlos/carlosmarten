@@ -1,78 +1,149 @@
 
+.navbar_container{
 
-.navbar {
-  background-color: transparent; /* Transparent dark background */
-  color: var(--navbar-text-color, #000000); /* Default light text */
-  display: flex;
-  justify-content: center; /* Center the navbar */
-  padding: 1rem;
-  margin-bottom: 2rem; /* Add bottom margin */
-  margin-top: 2rem;
-
-  transition: background-color 0.3s ease; /* Smooth background transition */
-  font-size: 1.4rem; /* Default font size for body text */
 }
 
-/* List Styles */
+.navbar {
+  background-color: transparent;
+  color: var(--navbar-text-color, #000000);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+  transition: background-color 0.3s ease;
+  font-size: 1.4rem;
+
+  max-width: 800px;
+  margin: auto;
+}
+
+.logo {
+  text-decoration: none;
+  color: inherit;
+  font-weight: bold;
+}
+
 .navList {
-  list-style: none; /* Remove default list styles */
+  list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
-  gap: 2rem; /* Space between nav items */
+  gap: 2rem;
 }
 
-/* Item Styles */
 .navItem {
-  position: relative; /* For pseudo-elements or dropdowns if needed */
+  position: relative;
 }
 
-/* Link Styles */
 .navLink {
-  text-decoration: none; /* Remove underline */
-  color: inherit; /* Inherit color from parent */
-  padding: 0.5rem 1rem; /* Padding for clickable area */
-  border-radius: 4px; /* Rounded corners */
-  transition: background-color 0.3s, color 0.3s; /* Smooth transitions for hover effects */
+  text-decoration: none;
+  color: inherit;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-/* Hover Effect */
 .navLink:hover {
-  background-color: rgba(236, 236, 236, 0.9); /* Darker background on hover */
+  background-color: rgba(236, 236, 236, 0.9);
 }
 
-/* Responsive Styles */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.hamburgerLine {
+  width: 2rem;
+  height: 0.25rem;
+  background-color: var(--navbar-text-color, #000000);
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+}
+
+.hamburger.open .hamburgerLine:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.hamburger.open .hamburgerLine:nth-child(2) {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.hamburger.open .hamburgerLine:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
 @media (max-width: 768px) {
   .navbar {
-    font-size: 1.4rem; /* Slightly smaller font size for mobile */
+    font-size: 1.4rem;
+  }
+
+  .hamburger {
+    display: flex;
   }
 
   .navList {
-    flex-direction: column; /* Stack items vertically on mobile */
-    align-items: center; /* Center items */
-    padding: 1rem 0; /* Add padding for mobile */
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 300px;
+    padding-top: 3.5rem;
+    transition: transform 0.3s ease-in-out;
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: translateX(100%);
   }
-  
+
+  .navList.open {
+    transform: translateX(0);
+  }
+
+  .navItem {
+    margin: 0.5rem 0;
+  }
+
   .navLink {
-    padding: 0.75rem 1.5rem; /* Increase padding for easier touch targets */
-    width: 100%; /* Full-width links */
-    text-align: center; /* Center text in links */
+    padding: 0.75rem 1.5rem;
+    width: 100%;
+    text-align: center;
   }
 }
 
-/* Dark Mode Friendly */
 @media (prefers-color-scheme: dark) {
   .navbar {
-    background-color: rgba(26, 26, 26, 0.8); /* Transparent dark background for dark mode */
-    color: #ffffff; /* Light text for dark mode */
+    background-color: rgba(26, 26, 26, 0.8);
+    color: #ffffff;
   }
 
   .navLink {
-    color: #ecf0f1; /* Light color for links */
+    color: #ecf0f1;
   }
 
   .navLink:hover {
-    background-color: rgba(52, 73, 94, 0.9); /* Consistent hover background in dark mode */
-    color: #ffffff; /* Maintain light text on hover */
+    background-color: rgba(52, 73, 94, 0.9);
+    color: #ffffff;
+  }
+
+  .hamburgerLine {
+    background-color: #ffffff;
+  }
+
+  @media (max-width: 768px) {
+    .navList {
+      background-color: rgba(26, 26, 26, 0.9);
+    }
   }
 }
