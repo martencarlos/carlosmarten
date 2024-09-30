@@ -2,7 +2,8 @@
 import PostCard from './components/PostCard.jsx';
    
    async function getPosts() {
-     const res = await fetch('https://www.carlosmarten.com/wp-json/wp/v2/posts?_embed', { next: { revalidate: 60 } });
+      const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
+     const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/posts?_embed`, { next: { revalidate: 60 } });
      return res.json();
    }
    
