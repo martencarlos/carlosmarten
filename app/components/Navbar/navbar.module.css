@@ -1,6 +1,6 @@
 
 .navbar_container{
-
+  
 }
 
 .navbar {
@@ -16,7 +16,8 @@
   font-size: 1.4rem;
 
   max-width: 800px;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .logo {

@@ -3,6 +3,8 @@
 import styles from './page.module.css';
 import Image from 'next/image';
 
+var blogPost = {};
+
 async function getPost(slug) {
   try {
     const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
@@ -18,8 +20,25 @@ async function getPost(slug) {
     if (posts.length === 0) {
       throw new Error('Post not found');
     }
+
+    blogPost.title = posts[0].title.rendered
+    blogPost.content = posts[0].content.rendered
+    blogPost.author = posts[0]._embedded['author'][0].name;
+    blogPost.featuredImage = posts[0]._embedded['wp:featuredmedia']?.[0]?.source_url
+
+    blogPost.create_date = new Date(posts[0].date)
+    blogPost.last_modified = new Date(posts[0].modified)
+    blogPost.pinned = posts[0].sticky
+    blogPost.categories = posts[0]._embedded['wp:term']
+    .flat()
+    .filter(term => term.taxonomy === 'category')
+    .map(category => category.name);
+    blogPost.tags = posts[0]._embedded['wp:term']
+    .flat()
+    .filter(term => term.taxonomy === 'post_tag')
+    .map(tag => tag.name);
     
-    return posts[0];
+    return blogPost;
   } catch (error) {
     console.error('Error fetching post:', error);
     throw error;
@@ -29,26 +48,25 @@ async function getPost(slug) {
 export default async function BlogPost({ params }) {
   try {
     const post = await getPost(params.slug);
-    const featuredImage = post._embedded['wp:featuredmedia']?.[0]?.source_url;
 
     return (
       <div className={styles.container}>
         <article className={styles.article}>
-          {featuredImage && (
+          {post.featuredImage && (
             <div className={styles.featuredImageContainer}>
               <Image
                 src={featuredImage}
-                alt={post.title.rendered}
+                alt={post.title}
                 layout="fill"
                 objectFit="cover"
                 className={styles.featuredImage}
               />
             </div>
           )}
-          <h1 className={styles.title}>{post.title.rendered}</h1>
+          <h1 className={styles.title}>{post.title}</h1>
           <div 
             className={styles.content}
-            dangerouslySetInnerHTML={{ __html: post.content.rendered }} 
+            dangerouslySetInnerHTML={{ __html: post.content}} 
           />
         </article>
       </div>

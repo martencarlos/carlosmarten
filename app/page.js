@@ -1,5 +1,5 @@
 
-import PostCard from './components/PostCard.jsx';
+import PostCard from './components/Postcard/PostCard.jsx';
 import styles from './page.module.css';
    
    async function getPosts() {

@@ -1,0 +1,71 @@
+/* General card style */
+.card {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  transition: box-shadow 0.3s, transform 0.3s;
+  font-family: Arial, sans-serif;
+}
+
+/* Title style within the card */
+.card_title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Meta information style */
+.card_meta {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+.card_author {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.card_date {
+  font-style: italic;
+  margin: 0;
+}
+
+/* Taxonomies style */
+.card_taxonomies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.card_tag {
+  font-size: 0.8rem;
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 3px 8px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+/* Hover effect for the card */
+.card:hover {
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+}
+
+/* Add a subtle hover effect for the link */
+.card a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.card:hover .card_title {
+  color: #0066cc;
+}

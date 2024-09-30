@@ -48,7 +48,7 @@ a {
   }
 }
 
-ol {
+ol, ul {
   padding-left: 20px; /* Adjust the value as needed */
 }
 
