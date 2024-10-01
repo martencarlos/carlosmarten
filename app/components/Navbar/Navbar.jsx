@@ -28,10 +28,18 @@ const Navbar = () => {
   };
 
   const toggleTheme = () => {
+    handleLinkClick()
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   if (!mounted) return null;
+
+   // Function to close the navbar when a link is clicked
+  const handleLinkClick = () => {
+    if (isMobile) {
+      setIsOpen(false); // Close the navbar on mobile
+    }
+  };
 
   return (
     <div className={styles.navbar_container}>
@@ -48,13 +56,13 @@ const Navbar = () => {
         )}
         <ul className={`${styles.navList} ${isOpen ? styles.open : ''}`}>
           <li className={styles.navItem}>
-            <Link href="/projects" className={styles.navLink}>Projects</Link>
+            <Link href="/projects" className={styles.navLink} onClick={handleLinkClick}>Projects</Link>
           </li>
           <li className={styles.navItem}>
-            <Link href="/blog" className={styles.navLink}>Blog</Link>
+            <Link href="/blog" className={styles.navLink} onClick={handleLinkClick}>Blog</Link>
           </li>
           <li className={styles.navItem}>
-            <Link href="/about" className={styles.navLink}>About</Link>
+            <Link href="/about" className={styles.navLink} onClick={handleLinkClick}>About</Link>
           </li>
           <li className={styles.navItem}>
             <button onClick={toggleTheme} className={styles.themeToggle}>
