@@ -4,20 +4,20 @@
   justify-content: center;
   padding: 50px;
   height: calc(100vh - 132px);
-}
-
-.heroSection {
-  
+  position: relative;
   
 }
 
 .heroSection.dark {
-  background-color: #1a1a1a; /* Dark mode background */
-  color: #ffffff; /* Dark mode text color */
+  
+  
+
 }
+
 
 .imageContainer {
   margin-right: 50px;
+  z-index: 1;
 }
 
 .roundedImage {
@@ -26,25 +26,26 @@
 
 .textContainer {
   max-width: 500px;
+  z-index: 1;
 }
 
 .title {
   font-size: 36px;
   margin: 0 0 10px 0;
-  transition: color 0.3s; /* Smooth transition for text color */
+  transition: color 0.3s;
 }
 
-.title.dark {
-  color: #eb0404; /* Dark mode title color (red) */
+.heroSection.dark .title {
+  color: #fcfcfc;
 }
 
 .subtitle {
   font-size: 18px;
-  transition: color 0.2s; /* Smooth transition for subtitle color */
+  transition: color 0.2s;
 }
 
-.subtitle.dark {
-  color: #bbb; /* Dark mode subtitle color */
+.heroSection.dark .subtitle {
+  color: #bbb;
 }
 
 /* Responsive Styles */
@@ -66,5 +67,9 @@
 
   .subtitle {
     font-size: 16px;
+  }
+
+  .blob {
+    transform: scale(2);
   }
 }

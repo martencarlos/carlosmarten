@@ -1,15 +1,17 @@
-"use client"; // Ensure it's a client component
+"use client";
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useTheme } from 'next-themes'; // Import useTheme
+import { useTheme } from 'next-themes';
 import styles from './hero.module.css';
 
 const Hero = () => {
-  const { theme } = useTheme(); // Access theme
+  const { theme } = useTheme();
 
   return (
-    <section className={`${styles.heroSection} ${theme === 'dark' ? 'dark' : ''}`}>
+    <section className={`${styles.heroSection} ${theme === 'dark' ? styles.dark : ''}`}>
+      
+
       {/* Left Image */}
       <motion.div
         className={styles.imageContainer}
@@ -18,7 +20,7 @@ const Hero = () => {
         transition={{ duration: 0.8 }}
       >
         <Image
-          src="/images/me.png" // Update with your image path
+          src="/images/me.png"
           alt="Hero Image"
           width={200}
           height={200}
@@ -33,8 +35,8 @@ const Hero = () => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8 }}
       >
-        <h1 className={`${styles.title} ${theme === 'dark' ? 'dark' : ''}`}>Welcome to my Website</h1>
-        <p className={`${styles.subtitle} ${theme === 'dark' ? 'dark' : ''}`}>
+        <h1 className={styles.title}>Welcome to my Website</h1>
+        <p className={styles.subtitle}>
           I am excited to have you here. Explore my services and offerings.
         </p>
       </motion.div>
