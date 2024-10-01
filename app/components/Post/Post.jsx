@@ -1,6 +1,6 @@
 // app/posts/[slug]/page.js
 "use client"
-import { progress } from 'framer-motion';
+
 import styles from './post.module.css';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';

@@ -30,10 +30,7 @@ async function getPost(slug) {
     blogPost.create_date = new Date(posts[0].date)
     blogPost.last_modified = new Date(posts[0].modified)
     blogPost.pinned = posts[0].sticky
-    blogPost.categories = posts[0]._embedded['wp:term']
-    .flat()
-    .filter(term => term.taxonomy === 'category')
-    .map(category => category.name);
+    blogPost.categories = posts[0]._embedded?.['wp:term']?.[0]?.map(category => category.name) || []
     blogPost.tags = posts[0]._embedded['wp:term']
     .flat()
     .filter(term => term.taxonomy === 'post_tag')
@@ -50,6 +47,7 @@ export default async function BlogPost({ params }) {
  
   try {
     const post = await getPost(params.slug);
+    
 
     return (
       <div className={styles.container}>
