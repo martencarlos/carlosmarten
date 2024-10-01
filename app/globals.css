@@ -5,6 +5,11 @@
   --foreground: #171717;
 }
 
+::selection {
+  background-color: rgba(123, 243, 183, 0.527); /* Light green with transparency */
+  
+}
+
 [class="dark"] {
   --background: #1d1d1d;
   --foreground: #ededed;
