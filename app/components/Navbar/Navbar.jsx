@@ -9,8 +9,8 @@ import { Sun, Moon } from 'lucide-react';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false); // To handle client-side mounting
 
   useEffect(() => {
     const checkMobile = () => {
@@ -19,7 +19,9 @@ const Navbar = () => {
     
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    setMounted(true);
+    
+    setMounted(true); // Ensure component is mounted
+    
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
@@ -28,13 +30,14 @@ const Navbar = () => {
   };
 
   const toggleTheme = () => {
-    handleLinkClick()
-    setTheme(theme === 'dark' ? 'light' : 'dark');
+    handleLinkClick();
+    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
   };
 
+  // If not mounted, do not render anything to avoid mismatch
   if (!mounted) return null;
 
-   // Function to close the navbar when a link is clicked
+  // Function to close the navbar when a link is clicked
   const handleLinkClick = () => {
     if (isMobile) {
       setIsOpen(false); // Close the navbar on mobile

@@ -1,4 +1,4 @@
-import { ThemeProvider } from './ThemeProvider'
+import { ThemeProvider } from 'next-themes';
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
@@ -26,7 +26,7 @@ export const metadata = {
     apple: '/apple-touch-icon.png',
   },
   manifest: '/site.webmanifest',
-  appleWebApp: {
+  WebApp: {
     capable: true,
     statusBarStyle: 'default',
     title: 'Carlos Marten',
@@ -38,15 +38,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-      <html lang="en">
-      <ThemeProvider>
+      <html lang="en" suppressHydrationWarning>
+      
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        
+        <ThemeProvider attribute="class">
           <Navbar />
           {children}
-        
+          </ThemeProvider>
         </body>
-        </ThemeProvider>
+       
       </html>
   );
 }

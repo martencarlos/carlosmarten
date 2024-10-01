@@ -1,31 +1,16 @@
 
-import PostCard from '../components/Postcard/PostCard.jsx';
+
 import styles from './page.module.css';
-   
-   async function getPosts() {
-      const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
-     const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/posts?_embed`, { next: { revalidate: 60 } });
-     return res.json();
-   }
+import PostList from '../components/PostList/PostList'
+
    
    export default async function Blog() {
     try {
-     const posts = await getPosts();
    
      return (
-        <div className={styles.one_column}>
-         <h1 className={styles.h1}>Latest posts</h1>
-         <ul className={styles.ul}>
-           {posts.map((post) => (
-             <li className={styles.li} key={post.id}>
-               
-               <PostCard 
-                post={post}
-                />
-             </li>
-           ))}
-         </ul>
-         </div>
+        <div>
+          <PostList />
+        </div>
      );
     } catch (error) {
       return (

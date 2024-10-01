@@ -1,12 +1,11 @@
   
 // next.config.js
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   env: {
       NEXT_PUBLIC_WP_URL: process.env.NEXT_PUBLIC_WP_URL,
     },
   images: {
-    domains: ['localhost', 'www.carlosmarten.com'],
     remotePatterns: [
        {
         protocol: 'http',
