@@ -7,7 +7,7 @@
   align-items: center;    /* Center items horizontally */
   justify-content: center; /* Center items vertically */
   min-height: calc(100vh - 132px);      /* Full height of the viewport */
-  padding: 20px;          /* Add some padding */
+  padding: 10px;          /* Add some padding */
   
 }
 
