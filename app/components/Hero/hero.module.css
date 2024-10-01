@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   padding: 50px;
-  height: calc(100vh - 132px);
+  /* height: calc(100vh - 132px); */
   position: relative;
   
 }
@@ -61,6 +61,16 @@
     margin-bottom: 20px;
   }
 
+  .textContainer{
+        max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    text-align: center;
+    z-index: 1;
+  }
+
   .title {
     font-size: 28px;
   }
@@ -69,7 +79,4 @@
     font-size: 16px;
   }
 
-  .blob {
-    transform: scale(2);
-  }
 }
