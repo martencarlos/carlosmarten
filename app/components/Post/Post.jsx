@@ -5,6 +5,13 @@ import styles from './post.module.css';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
+function calculateReadingTime(text) {
+  const wordsPerMinute = 200; // Average reading speed
+  const wordCount = text.split(/\s+/).length; // Count words by splitting on spaces
+  const readingTimeMinutes = Math.ceil(wordCount / wordsPerMinute); // Round up to the nearest minute
+  return readingTimeMinutes;
+}
+
 
 export default  function Post({ post }) {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -23,6 +30,8 @@ export default  function Post({ post }) {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  let time = calculateReadingTime(post.content)
 
   try {
     
@@ -47,6 +56,10 @@ export default  function Post({ post }) {
               <div className={styles.authorInfo}>
                 <span className={styles.metaLabel}>Author:</span>
                 <span className={styles.metaValue}>{post.author}</span>
+              </div>
+              <div className={styles.authorInfo}>
+                <span className={styles.metaLabel}>Reading time:</span>
+                <span className={styles.metaValue}>{time} minutes</span>
               </div>
               <div className={styles.dateInfo}>
                 <div>
