@@ -10,7 +10,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const { theme, setTheme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false); // To handle client-side mounting
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -20,7 +20,7 @@ const Navbar = () => {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     
-    setMounted(true); // Ensure component is mounted
+    setMounted(true);
     
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
@@ -34,13 +34,11 @@ const Navbar = () => {
     setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
   };
 
-  // If not mounted, do not render anything to avoid mismatch
   if (!mounted) return null;
 
-  // Function to close the navbar when a link is clicked
   const handleLinkClick = () => {
     if (isMobile) {
-      setIsOpen(false); // Close the navbar on mobile
+      setIsOpen(false);
     }
   };
 
@@ -48,7 +46,7 @@ const Navbar = () => {
     <div className={styles.navbar_container}>
       <nav className={styles.navbar}>
         <Link href="/" className={styles.logo}>
-          Carlos Marten
+          <span className={styles.logoText}>Carlos Marten</span>
         </Link>
         {isMobile && (
           <button className={`${styles.hamburger} ${isOpen ? styles.open : ''}`} onClick={toggleNavbar}>
