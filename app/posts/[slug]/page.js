@@ -1,7 +1,8 @@
 // app/posts/[slug]/page.js
 
+import Post from '@/app/components/Post/Post';
 import styles from './page.module.css';
-import Image from 'next/image';
+
 
 var blogPost = {};
 
@@ -46,29 +47,16 @@ async function getPost(slug) {
 }
 
 export default async function BlogPost({ params }) {
+ 
   try {
     const post = await getPost(params.slug);
 
     return (
       <div className={styles.container}>
-        <article className={styles.article}>
-          {post.featuredImage && (
-            <div className={styles.featuredImageContainer}>
-              <Image
-                src={featuredImage}
-                alt={post.title}
-                layout="fill"
-                objectFit="cover"
-                className={styles.featuredImage}
-              />
-            </div>
-          )}
-          <h1 className={styles.title}>{post.title}</h1>
-          <div 
-            className={styles.content}
-            dangerouslySetInnerHTML={{ __html: post.content}} 
-          />
-        </article>
+      <Post 
+        post= {post}
+      />
+        
       </div>
     );
   } catch (error) {
