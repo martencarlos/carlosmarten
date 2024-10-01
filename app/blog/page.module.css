@@ -6,7 +6,7 @@
   flex-direction: column; /* Align items vertically */
   align-items: center;    /* Center items horizontally */
   justify-content: center; /* Center items vertically */
-  min-height: calc(100vh - 122px);      /* Full height of the viewport */
+  min-height: calc(100vh - 132px);      /* Full height of the viewport */
   padding: 20px;          /* Add some padding */
   
 }
