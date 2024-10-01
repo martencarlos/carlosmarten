@@ -1,6 +1,8 @@
+import { ThemeProvider } from './ThemeProvider'
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
+
 
 
 const geistSans = localFont({
@@ -36,11 +38,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Navbar />
-        {children}
-      </body>
-    </html>
+      <html lang="en">
+      <ThemeProvider>
+        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        
+          <Navbar />
+          {children}
+        
+        </body>
+        </ThemeProvider>
+      </html>
   );
 }

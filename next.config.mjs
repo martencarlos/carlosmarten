@@ -8,6 +8,15 @@ const nextConfig = {
   images: {
     domains: ['localhost', 'www.carlosmarten.com'],
     remotePatterns: [
+       {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '', // Leave it empty unless you need a specific port
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.carlosmarten.com',
+      },
       {
         protocol: 'https',  // Specify the protocol (http or https)
         hostname: process.env.NEXT_PUBLIC_WP_URL,  // Domain name

@@ -1,6 +1,5 @@
-
-.navbar_container{
-  
+.navbar_container {
+  /* Your existing styles */
 }
 
 .navbar {
@@ -12,9 +11,8 @@
   padding: 1rem;
   margin-bottom: 2rem;
   margin-top: 2rem;
-  transition: background-color 0.3s ease;
+  
   font-size: 1.4rem;
-
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
@@ -32,6 +30,7 @@
   margin: 0;
   display: flex;
   gap: 2rem;
+  align-items: center;
 }
 
 .navItem {
@@ -47,6 +46,23 @@
 }
 
 .navLink:hover {
+  background-color: rgba(236, 236, 236, 0.9);
+}
+
+.themeToggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  transition: background-color 0.3s, color 0.3s;
+  border-radius: 50%;
+}
+
+.themeToggle:hover {
   background-color: rgba(236, 236, 236, 0.9);
 }
 
@@ -121,30 +137,29 @@
     width: 100%;
     text-align: center;
   }
+
+  .themeToggle {
+    margin-top: 1rem;
+  }
 }
 
-@media (prefers-color-scheme: dark) {
-  .navbar {
-    background-color: rgba(26, 26, 26, 0.8);
-    color: #ffffff;
-  }
+:global(.dark) .navbar {
+  
+  color: #ffffff;
+}
 
-  .navLink {
-    color: #ecf0f1;
-  }
+:global(.dark) .navLink:hover,
+:global(.dark) .themeToggle:hover {
+  
+  color: #000000;
+}
 
-  .navLink:hover {
-    background-color: rgba(52, 73, 94, 0.9);
-    color: #ffffff;
-  }
+:global(.dark) .hamburgerLine {
+  background-color: #ffffff;
+}
 
-  .hamburgerLine {
-    background-color: #ffffff;
-  }
-
-  @media (max-width: 768px) {
-    .navList {
-      background-color: rgba(26, 26, 26, 0.9);
-    }
+@media (max-width: 768px) {
+  :global(.dark) .navList {
+    
   }
 }

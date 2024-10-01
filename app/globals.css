@@ -1,14 +1,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
- 
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #1d1d1d;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #1d1d1d;
+  --foreground: #ededed;
 }
 
 html {
@@ -16,8 +13,7 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 
-html,
-body {
+html, body {
   max-width: 100vw;
   overflow-x: hidden;
   min-height: 100vh;
@@ -42,12 +38,6 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
-
 ol, ul {
   padding-left: 20px; /* Adjust the value as needed */
 }
@@ -56,3 +46,9 @@ h3 {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+/* Smooth transition for theme changes */
+body {
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
