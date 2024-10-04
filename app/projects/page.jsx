@@ -1,7 +1,6 @@
-import React from 'react';
 import Link from 'next/link';
-import styles from './page.module.css';
 import Image from 'next/image';
+import styles from './page.module.css';
 
 const projects = [
   {
@@ -24,28 +23,30 @@ const projects = [
   },
 ];
 
-const ProjectsPage = () => {
+const ProjectCard = ({ project }) => (
+  <Link href={project.url} passHref>
+    <div className={styles.projectCard}>
+      <Image
+        src={project.image}
+        width={200}
+        height={200}
+        alt={project.name}
+        className={styles.projectImage}
+      />
+      <h2 className={styles.projectName}>{project.name}</h2>
+    </div>
+  </Link>
+);
+
+export default function ProjectsPage() {
   return (
     <div className={styles.projectsContainer}>
       <h1 className={styles.pageTitle}>Web Projects</h1>
       <div className={styles.projectGrid}>
         {projects.map((project) => (
-          <Link href={project.url} key={project.id} passHref>
-            <div className={styles.projectCard}>
-              <Image
-                src={project.image}
-                width={200}
-                height={200}
-                alt={project.name}
-                className={styles.projectImage}
-              />
-              <h2 className={styles.projectName}>{project.name}</h2>
-            </div>
-          </Link>
+          <ProjectCard key={project.id} project={project} />
         ))}
       </div>
     </div>
   );
-};
-
-export default ProjectsPage;
+}

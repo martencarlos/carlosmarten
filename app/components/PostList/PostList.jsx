@@ -13,7 +13,7 @@ import styles from './postlist.module.css';
      const posts = await getPosts();
      return (
         <div className={styles.one_column}>
-          <h1 className={styles.h1}>Latest posts</h1>
+          {/* <h1 className={styles.h1}>Latest posts</h1> */}
           <ul className={styles.ul}>
             {posts.map((post) => (
               <li className={styles.li} key={post.id}>

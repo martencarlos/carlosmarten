@@ -7,18 +7,19 @@ import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
 function calculateReadingTime(text) {
-  const wordsPerMinute = 200; // Average reading speed
-  const wordCount = text.split(/\s+/).length; // Count words by splitting on spaces
-  const readingTimeMinutes = Math.ceil(wordCount / wordsPerMinute); // Round up to the nearest minute
+  const wordsPerMinute = 200;
+  const wordCount = text.split(/\s+/).length;
+  const readingTimeMinutes = Math.ceil(wordCount / wordsPerMinute);
   return readingTimeMinutes;
 }
 
-
-export default  function Post({ post }) {
-  const { theme } = useTheme();  // Hook to get the current theme
+export default function Post({ post }) {
+  const { theme, resolvedTheme } = useTheme();
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = (window.scrollY / totalHeight) * 100;
@@ -33,12 +34,16 @@ export default  function Post({ post }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  let time = calculateReadingTime(post.content)
+  let time = calculateReadingTime(post.content);
+
+  // Avoid rendering content until mounted to prevent hydration mismatch
+  if (!mounted) {
+    return null;
+  }
 
   try {
-    
     return (
-      <div className={`${styles.container} ${theme === 'dark' ? styles.dark : ''}`}>
+      <div className={`${styles.container} ${resolvedTheme === 'dark' ? styles.dark : ''}`}>
         <div className={styles.progressBar} style={{ width: `${scrollProgress}%` }}></div>
         <article className={styles.article}>
           {post.featuredImage && (
@@ -71,22 +76,21 @@ export default  function Post({ post }) {
               </div>
             </div>
             <div className={styles.categories}>
-                <span className={styles.metaLabel}>Categories:</span>
-                <div className={styles.pillContainer}>
-                  {post.categories.map((category, index) => (
-                    <span key={index} className={styles.pill}>{category}</span>
-                  ))}
-                </div>
+              <span className={styles.metaLabel}>Categories:</span>
+              <div className={styles.pillContainer}>
+                {post.categories.map((category, index) => (
+                  <span key={index} className={styles.pill}>{category}</span>
+                ))}
+              </div>
             </div>
-            
             {post.pinned && <p className={styles.pinnedPost}>Pinned Post</p>}
           </div>
-          <div 
+          <div
             className={styles.content}
-            dangerouslySetInnerHTML={{ __html: post.content}} 
+            dangerouslySetInnerHTML={{ __html: post.content}}
           />
         </article>
-       <button className={styles.scrollToTopButton} onClick={scrollToTop}>
+        <button className={styles.scrollToTopButton} onClick={scrollToTop}>
           ↑
         </button>
       </div>
