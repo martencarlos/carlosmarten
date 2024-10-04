@@ -1,8 +1,12 @@
+
+"use client"
 import React from 'react';
 import Link from 'next/link';
 import styles from './postcard.module.css';
+import { useTheme } from 'next-themes';
 
 const PostCard = ({ post }) => {
+  const { theme } = useTheme();  // Hook to get the current theme
   const createDate = new Date(post.date).toLocaleDateString();
   const lastModified = new Date(post.modified).toLocaleDateString();
 
@@ -15,10 +19,8 @@ const PostCard = ({ post }) => {
 
   const author = post._embedded['author'][0].name;
   
- 
-  
   return (
-    <div className={styles.card}>
+    <div className={`${styles.card} ${theme === 'dark' ? styles.dark : ''}`}>
       <Link href={`/posts/${post.slug}`}>
         <h2 className={styles.card_title}>{post.title.rendered}</h2>
         <div className={styles.card_taxonomies}>

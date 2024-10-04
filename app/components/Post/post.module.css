@@ -4,7 +4,7 @@
   padding: 20px;
   font-family: Arial, sans-serif;
   line-height: 1.6;
-  color: #333;
+  /* color: #333; */
   position: relative;
 }
 
@@ -13,16 +13,20 @@
   top: 0;
   left: 0;
   height: 4px;
-  background-color: #3498db;
+  background-color: var(--third-color);
   z-index: 1000;
   transition: width 0.3s ease;
 }
 
 .article {
-  background-color: #fff;
+  
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+}
+
+.container.dark .article{
+  box-shadow: 0 3px 5px rgba(255, 255, 255, 0.3);
 }
 
 .featuredImageContainer {
@@ -56,7 +60,11 @@
 .title {
   font-size: 2.5rem;
   margin: 30px 30px 20px;
-  color: #2c3e50;
+  color: var(--fourth-color);
+}
+
+.container.dark .title{
+  color: var(--second-color);
 }
 
 .postMeta {
@@ -68,7 +76,7 @@
     margin-left: 30px;
 
     font-size: 0.9rem;
-    color: #595959;
+    
 }
 
 .authorDateInfo {
@@ -90,11 +98,15 @@
   font-weight: bold;
   margin-right: 5px;
   margin-top: 4px;
-  color: #34495e;
+  color: var(--third-color);
 }
 
 .metaValue {
   color: #7f8c8d;
+}
+
+.container.dark .metaValue{
+  color: rgb(235, 235, 235);
 }
 
 .categories{
@@ -112,17 +124,22 @@
 }
 
 .pill {
-  background-color: #e0f2fe;
-  color: #3498db;
+  background-color: var(--second-color);
+  /* color: #3498db; */
   padding: 3px 10px;
   border-radius: 15px;
   font-size: 0.8rem;
   display: inline-block;
 }
 
+.container.dark .pill{
+  background-color: var(--fourth-color) !important;
+  color: white !important;
+}
+
 .pinnedPost {
   font-weight: bold;
-  color: #e74c3c;
+  color: var(--fourth-color);
   margin-top: 10px;
 }
 
@@ -135,7 +152,7 @@
   position: fixed;
   bottom: 50px;
   right: 50px;
-  background-color: #2e80afc7;
+  background-color: var(--third-color);
   color: white;
   border: none;
   border-radius: 50%;

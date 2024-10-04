@@ -3,6 +3,7 @@
 
 import styles from './post.module.css';
 import Image from 'next/image';
+import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
 function calculateReadingTime(text) {
@@ -14,6 +15,7 @@ function calculateReadingTime(text) {
 
 
 export default  function Post({ post }) {
+  const { theme } = useTheme();  // Hook to get the current theme
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
@@ -36,7 +38,7 @@ export default  function Post({ post }) {
   try {
     
     return (
-      <div className={styles.container}>
+      <div className={`${styles.container} ${theme === 'dark' ? styles.dark : ''}`}>
         <div className={styles.progressBar} style={{ width: `${scrollProgress}%` }}></div>
         <article className={styles.article}>
           {post.featuredImage && (
@@ -75,7 +77,7 @@ export default  function Post({ post }) {
                     <span key={index} className={styles.pill}>{category}</span>
                   ))}
                 </div>
-              </div>
+            </div>
             
             {post.pinned && <p className={styles.pinnedPost}>Pinned Post</p>}
           </div>
