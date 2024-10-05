@@ -37,7 +37,7 @@ const MobileMenu = () => {
   };
 
   return (
-    <>
+    <div>
       <button
         className={`${styles.hamburger} ${isOpen ? styles.open : ""}`}
         onClick={() => setIsOpen(!isOpen)}
@@ -82,7 +82,7 @@ const MobileMenu = () => {
           </li>
         </ul>
       )}
-    </>
+    </div>
   );
 };
 

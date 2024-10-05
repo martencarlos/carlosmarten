@@ -1,7 +1,7 @@
-import Link from 'next/link';
-import styles from './navbar.module.css';
-import ThemeToggle from './ThemeToggle/ThemeToggle';
-import MobileMenu from './MobileMenu/MobileMenu';
+import Link from "next/link";
+import styles from "./navbar.module.css";
+import ThemeToggle from "./ThemeToggle/ThemeToggle";
+import MobileMenu from "./MobileMenu/MobileMenu";
 
 const Navbar = () => {
   return (
@@ -10,7 +10,7 @@ const Navbar = () => {
         <Link href="/" className={styles.logo}>
           <span className={styles.logoText}>Carlos Marten</span>
         </Link>
-        <MobileMenu/>
+        <MobileMenu />
         <ul className={styles.navList}>
           <NavItems />
         </ul>
@@ -20,20 +20,26 @@ const Navbar = () => {
 };
 
 const NavItems = () => (
-  <>
+  <div>
     <li className={styles.navItem}>
-      <Link href="/projects" className={styles.navLink}>Projects</Link>
+      <Link href="/projects" className={styles.navLink}>
+        Projects
+      </Link>
     </li>
     <li className={styles.navItem}>
-      <Link href="/blog" className={styles.navLink}>Blog</Link>
+      <Link href="/blog" className={styles.navLink}>
+        Blog
+      </Link>
     </li>
     <li className={styles.navItem}>
-      <Link href="/about" className={styles.navLink}>About</Link>
+      <Link href="/about" className={styles.navLink}>
+        About
+      </Link>
     </li>
     <li className={styles.navItem}>
       <ThemeToggle />
     </li>
-  </>
+  </div>
 );
 
 export default Navbar;
