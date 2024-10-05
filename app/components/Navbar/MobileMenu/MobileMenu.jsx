@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from 'react';
-import styles from '../navbar.module.css';
+import { useState, useEffect } from "react";
+import styles from "../navbar.module.css";
 
 const MobileMenu = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,16 +10,16 @@ const MobileMenu = ({ children }) => {
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   if (!isMobile) return null;
 
   return (
-    <>
-      <button 
-        className={`${styles.hamburger} ${isOpen ? styles.open : ''}`} 
+    <div>
+      <button
+        className={`${styles.hamburger} ${isOpen ? styles.open : ""}`}
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className={styles.hamburgerLine}></span>
@@ -27,11 +27,9 @@ const MobileMenu = ({ children }) => {
         <span className={styles.hamburgerLine}></span>
       </button>
       {isOpen && (
-        <ul className={`${styles.navList} ${styles.open}`}>
-          {children}
-        </ul>
+        <ul className={`${styles.navList} ${styles.open}`}>{children}</ul>
       )}
-    </>
+    </div>
   );
 };
 
