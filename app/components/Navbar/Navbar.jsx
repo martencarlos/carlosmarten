@@ -10,9 +10,7 @@ const Navbar = () => {
         <Link href="/" className={styles.logo}>
           <span className={styles.logoText}>Carlos Marten</span>
         </Link>
-        <MobileMenu>
-          <NavItems />
-        </MobileMenu>
+        <MobileMenu/>
         <ul className={styles.navList}>
           <NavItems />
         </ul>

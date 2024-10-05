@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "./postcard.module.css";
 import { useTheme } from "next-themes";
@@ -14,7 +14,7 @@ const PostCard = ({ post }) => {
   }, []);
 
   const createDate = new Date(post.date).toLocaleDateString();
-  const lastModified = new Date(post.modified).toLocaleDateString();
+  // const lastModified = new Date(post.modified).toLocaleDateString();
 
   const categories =
     post._embedded?.["wp:term"]?.[0]?.map((category) => category.name) || [];
