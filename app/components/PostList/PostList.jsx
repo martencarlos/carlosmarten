@@ -1,4 +1,4 @@
-import PostCard from "../PostCard/PostCard.jsx";
+import PostCard from "../PostCard/PostCard";
 import styles from "./postlist.module.css";
 
 async function getPosts() {
