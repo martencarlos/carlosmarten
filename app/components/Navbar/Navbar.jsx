@@ -20,7 +20,7 @@ const Navbar = () => {
 };
 
 const NavItems = () => (
-  <div>
+  <>
     <li className={styles.navItem}>
       <Link href="/projects" className={styles.navLink}>
         Projects
@@ -39,7 +39,7 @@ const NavItems = () => (
     <li className={styles.navItem}>
       <ThemeToggle />
     </li>
-  </div>
+  </>
 );
 
 export default Navbar;
