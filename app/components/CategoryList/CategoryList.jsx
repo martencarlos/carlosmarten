@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import styles from "./categorylist.module.css";
 
@@ -11,7 +9,7 @@ async function getCategories() {
   return res.json();
 }
 
-export default function CategoryList({ onSelectCategory }) {
+export default function CategoryList({ onSelectCategory, selectedCategory }) {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -27,11 +25,19 @@ export default function CategoryList({ onSelectCategory }) {
       <h2>Categories</h2>
       <ul>
         <li key="all">
-          <button onClick={() => onSelectCategory(null)}>All</button>
+          <button
+            className={selectedCategory === null ? styles.active : ""}
+            onClick={() => onSelectCategory(null)}
+          >
+            All
+          </button>
         </li>
         {categories.map((category) => (
           <li key={category.id}>
-            <button onClick={() => onSelectCategory(category.id)}>
+            <button
+              className={selectedCategory === category.id ? styles.active : ""}
+              onClick={() => onSelectCategory(category.id)}
+            >
               {category.name}
             </button>
           </li>

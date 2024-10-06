@@ -15,7 +15,10 @@ export default function Blog() {
       <p className={styles.blogDescription}>
         Welcome to the blog! Here you will find the latest posts.
       </p>
-      <CategoryList onSelectCategory={setSelectedCategory} />
+      <CategoryList
+        onSelectCategory={setSelectedCategory}
+        selectedCategory={selectedCategory}
+      />
       <SearchBar onSearch={setSearchQuery} />
       <PostList selectedCategory={selectedCategory} searchQuery={searchQuery} />
     </div>
