@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import styles from "./postcard.module.css";
+import styles from "./card.module.css";
 import { useTheme } from "next-themes";
 
-const Postcard = ({ post }) => {
+export default function Card({ post }) {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -67,5 +67,4 @@ const Postcard = ({ post }) => {
       </Link>
     </div>
   );
-};
-export default Postcard;
+}
