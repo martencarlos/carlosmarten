@@ -1,5 +1,5 @@
 import styles from "./page.module.css";
-import PostCard from "../../components/PostCard/PostCard";
+import PostCard from "@/components/PostCard/PostCard";
 const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
 async function getCategories() {
   const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`);
