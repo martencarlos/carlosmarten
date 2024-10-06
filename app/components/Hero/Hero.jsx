@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { useTheme } from 'next-themes';
-import styles from './hero.module.css';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { useTheme } from "next-themes";
+import styles from "./hero.module.css";
 
 const Hero = () => {
   const { resolvedTheme } = useTheme();
@@ -20,7 +20,11 @@ const Hero = () => {
   }
 
   return (
-    <section className={`${styles.heroSection} ${resolvedTheme === 'dark' ? styles.dark : ''}`}>
+    <section
+      className={`${styles.heroSection} ${
+        resolvedTheme === "dark" ? styles.dark : ""
+      }`}
+    >
       {/* Left Image */}
       <motion.div
         className={styles.imageContainer}
@@ -31,6 +35,7 @@ const Hero = () => {
         <Image
           src="/images/me.png"
           alt="Hero Image"
+          priority
           width={200}
           height={200}
           className={styles.roundedImage}

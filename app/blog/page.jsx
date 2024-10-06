@@ -1,10 +1,15 @@
-// import styles from './page.module.css';
+import styles from "./page.module.css";
 import PostList from "../components/PostList/PostList";
 
 export default async function Blog() {
   try {
     return (
-      <div>
+      <div className={styles.blogMain}>
+        <h1 className={styles.blogTitle}>Latest Posts</h1>
+        <br />
+        <p className={styles.blogDescription}>
+          Welcome to the blog! Here you will find the latest posts.
+        </p>
         <PostList />
       </div>
     );

@@ -4,7 +4,7 @@
   flex-direction: column; /* Align items vertically */
   align-items: center;    /* Center items horizontally */
   justify-content: center; /* Center items vertically */
-  /* min-height: 100vh;       */
+  min-height: calc(100vh - 192px);
   padding: 2rem;
   
 }

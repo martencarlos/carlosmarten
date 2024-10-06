@@ -1,0 +1,36 @@
+.footer {
+  width: 100%;
+  padding: 1rem 0;
+  /* background-color: var(--background); */
+  color: var(--text);
+  /* border-top: 1px solid var(--border); */
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.link {
+  margin-left: 1rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+
+
+/* Dark mode styles are handled by CSS variables */
+:global(.dark) .footer {
+  /* --background: #1a1a1a; */
+  /* --text: #ffffff; */
+  /* --border: #333333; */
+}

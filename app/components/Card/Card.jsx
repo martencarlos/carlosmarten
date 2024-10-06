@@ -39,32 +39,32 @@ export default function Card({ post }) {
     >
       <Link href={`/posts/${post.slug}`}>
         <h2 className={styles.card_title}>{post.title.rendered}</h2>
-        <div className={styles.card_taxonomies}>
-          <div className={styles.card_categories}>
-            {categories.map((category) => (
-              <Link key={category} href={`/categories/${category}`}>
-                <span key={category} className={styles.card_tag}>
-                  {category}
-                </span>
-              </Link>
-            ))}
-          </div>
-          {/* Uncomment if you want to display tags
+      </Link>
+      <div className={styles.card_taxonomies}>
+        <div className={styles.card_categories}>
+          {categories.map((category) => (
+            <Link key={category} href={`/categories/${category}`}>
+              <span key={category} className={styles.card_tag}>
+                {category}
+              </span>
+            </Link>
+          ))}
+        </div>
+        {/* Uncomment if you want to display tags
           <div className={styles.card_tags}>
             {tags.map(tag => (
               <span key={tag} className={styles.card_tag}>{tag}</span>
             ))}
           </div>
           */}
-        </div>
-        <div className={styles.card_meta}>
-          {/*<p className={styles.card_author}>By {author}</p>*/}
-          <p className={styles.card_date}>Created: {createDate}</p>
-          {/* Uncomment if you want to display last modified date
+      </div>
+      <div className={styles.card_meta}>
+        {/*<p className={styles.card_author}>By {author}</p>*/}
+        <p className={styles.card_date}>Created: {createDate}</p>
+        {/* Uncomment if you want to display last modified date
           <p className={styles.card_date}>Last modified: {lastModified}</p>
           */}
-        </div>
-      </Link>
+      </div>
     </div>
   );
 }
