@@ -1,3 +1,5 @@
+"use client";
+import { useState, useEffect } from "react";
 import Card from "../Card/Card";
 import styles from "./postlist.module.css";
 
@@ -9,27 +11,43 @@ async function getPosts() {
   return res.json();
 }
 
-export default async function Blog() {
-  try {
-    const posts = await getPosts();
-    return (
-      <div className={styles.one_column}>
-        {/* <h1 className={styles.h1}>Latest posts</h1> */}
-        <ul className={styles.ul}>
-          {posts.map((post) => (
-            <li className={styles.li} key={post.id}>
-              <Card post={post} />
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  } catch (error) {
-    return (
-      <div>
-        <h1>Error</h1>
-        <p>Failed to load the blog posts. Please try again later.</p>
-      </div>
-    );
+export default function PostList({ selectedCategory, searchQuery }) {
+  const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+
+  useEffect(() => {
+    async function fetchPosts() {
+      const fetchedPosts = await getPosts();
+      setPosts(fetchedPosts);
+    }
+    fetchPosts();
+  }, []);
+
+  useEffect(() => {
+    const filtered = posts.filter((post) => {
+      const matchesCategory =
+        !selectedCategory || post.categories.includes(selectedCategory);
+      const matchesSearch =
+        !searchQuery ||
+        post.title.rendered.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+    setFilteredPosts(filtered);
+  }, [posts, selectedCategory, searchQuery]);
+
+  if (posts.length === 0) {
+    return <div>Loading...</div>;
   }
+
+  return (
+    <div className={styles.one_column}>
+      <ul className={styles.ul}>
+        {filteredPosts.map((post) => (
+          <li className={styles.li} key={post.id}>
+            <Card post={post} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }

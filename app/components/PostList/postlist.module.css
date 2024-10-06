@@ -7,7 +7,7 @@
   align-items: center;    /* Center items horizontally */
   justify-content: center; /* Center items vertically */
   /* min-height: 100vh;       */
-  padding: 2rem;
+  padding: 20px;
   
 }
 
@@ -29,6 +29,13 @@
 /* Style for list items */
 .li {
   margin-bottom: 15px;    
+}
+
+@media screen and (max-width: 700px) {
+  .one_column  {
+    padding: 0px;       /* Add padding to the left and right */
+  }
+  
 }
 
 

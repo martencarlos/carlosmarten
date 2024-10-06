@@ -1,0 +1,41 @@
+.categoryList {
+  margin-bottom: 20px;
+  margin-top:30px;
+}
+
+.categoryList h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.categoryList ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style-type: none;
+  padding: 0;
+}
+
+.categoryList li {
+  margin: 0;
+}
+
+.categoryList button {
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 20px;
+  color: #333;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+}
+
+.categoryList button:hover {
+  background-color: #e0e0e0;
+}
+
+.categoryList button.active {
+  background-color: #007bff;
+  color: white;
+}

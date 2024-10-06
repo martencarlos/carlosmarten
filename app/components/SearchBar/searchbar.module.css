@@ -1,0 +1,23 @@
+.searchBar {
+  margin-top: 30px;
+}
+
+.searchBar input {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.searchBar input:focus {
+  outline: none;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  border-color: #007bff;
+}
+
+.searchBar input::placeholder {
+  color: #aaa;
+}
