@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import styles from "../navbar.module.css";
+import styles from "./mobilemenu.module.css";
 import { Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
@@ -37,7 +37,7 @@ const MobileMenu = () => {
   };
 
   return (
-    <div>
+    <>
       <button
         className={`${styles.hamburger} ${isOpen ? styles.open : ""}`}
         onClick={() => setIsOpen(!isOpen)}
@@ -82,7 +82,7 @@ const MobileMenu = () => {
           </li>
         </ul>
       )}
-    </div>
+    </>
   );
 };
 

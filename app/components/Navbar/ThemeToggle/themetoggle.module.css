@@ -1,0 +1,16 @@
+.themeToggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  transition: background-color 0.3s, color 0.3s;
+  border-radius: 50%;
+}
+
+.themeToggle:hover {
+  background-color: rgba(236, 236, 236, 0.9);
+}
