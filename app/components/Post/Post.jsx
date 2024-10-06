@@ -1,10 +1,11 @@
 // app/posts/[slug]/page.js
-"use client"
+"use client";
 
-import styles from './post.module.css';
-import Image from 'next/image';
-import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
+import styles from "./post.module.css";
+import Image from "next/image";
+import Link from "next/link";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 function calculateReadingTime(text) {
   const wordsPerMinute = 200;
@@ -21,17 +22,18 @@ export default function Post({ post }) {
   useEffect(() => {
     setMounted(true);
     const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const totalHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       const progress = (window.scrollY / totalHeight) * 100;
       setScrollProgress(progress);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   let time = calculateReadingTime(post.content);
@@ -43,8 +45,15 @@ export default function Post({ post }) {
 
   try {
     return (
-      <div className={`${styles.container} ${resolvedTheme === 'dark' ? styles.dark : ''}`}>
-        <div className={styles.progressBar} style={{ width: `${scrollProgress}%` }}></div>
+      <div
+        className={`${styles.container} ${
+          resolvedTheme === "dark" ? styles.dark : ""
+        }`}
+      >
+        <div
+          className={styles.progressBar}
+          style={{ width: `${scrollProgress}%` }}
+        ></div>
         <article className={styles.article}>
           {post.featuredImage && (
             <div className={styles.featuredImageContainer}>
@@ -71,7 +80,9 @@ export default function Post({ post }) {
               <div className={styles.dateInfo}>
                 <div>
                   <span className={styles.metaLabel}>Last Modified:</span>
-                  <span className={styles.metaValue}>{post.last_modified.toLocaleDateString('es-ES')}</span>
+                  <span className={styles.metaValue}>
+                    {post.last_modified.toLocaleDateString("es-ES")}
+                  </span>
                 </div>
               </div>
             </div>
@@ -79,7 +90,9 @@ export default function Post({ post }) {
               <span className={styles.metaLabel}>Categories:</span>
               <div className={styles.pillContainer}>
                 {post.categories.map((category, index) => (
-                  <span key={index} className={styles.pill}>{category}</span>
+                  <Link key={index} href={`/categories/${category}`}>
+                    <span className={styles.pill}>{category}</span>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -87,7 +100,7 @@ export default function Post({ post }) {
           </div>
           <div
             className={styles.content}
-            dangerouslySetInnerHTML={{ __html: post.content}}
+            dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </article>
         <button className={styles.scrollToTopButton} onClick={scrollToTop}>

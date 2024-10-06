@@ -11,8 +11,10 @@
 }
 
 ::selection {
-  background-color: var(--fourth-color)
-  
+  background-color: var(--second-color)
+}
+.dark ::selection {
+  background-color: var(--third-color)
 }
 
 [class="dark"] {

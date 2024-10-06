@@ -131,10 +131,20 @@
   font-size: 0.8rem;
   display: inline-block;
 }
+.pill:hover {
+  background-color: var(--third-color);
+  /* color: #2980b9; */
+  transition: background-color 0.3s ease;
+  color: var(--background);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
 .container.dark .pill{
-  background-color: var(--fourth-color) !important;
+  background-color: var(--fourth-color) ;
   color: white !important;
+}
+.container.dark .pill:hover{
+  background-color: var(--third-color) ;
 }
 
 .pinnedPost {
