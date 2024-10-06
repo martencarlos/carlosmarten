@@ -1,5 +1,5 @@
 import styles from "./page.module.css";
-import PostCard from "../../components/PostCard/PostCard";
+import Postcard from "../../components/Postcard/Postcard";
 const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
 async function getCategories() {
   const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`);
@@ -35,7 +35,7 @@ export default async function Categories({ params }) {
         <ul className={styles.ul}>
           {posts.map((post) => (
             <li className={styles.li} key={post.id}>
-              <PostCard post={post} />
+              <Postcard post={post} />
             </li>
           ))}
         </ul>

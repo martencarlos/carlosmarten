@@ -5,7 +5,7 @@ import Link from "next/link";
 import styles from "./postcard.module.css";
 import { useTheme } from "next-themes";
 
-const PostCard = ({ post }) => {
+const Postcard = ({ post }) => {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -68,5 +68,4 @@ const PostCard = ({ post }) => {
     </div>
   );
 };
-
-export default PostCard;
+export default Postcard;

@@ -28,18 +28,7 @@
 
 /* Style for list items */
 .li {
-  margin-bottom: 15px;    /* Space between each PostCard */
+  margin-bottom: 15px;    
 }
 
-/* Optional: Style for PostCard component */
-.PostCard {
-  border: 1px solid #ccc; /* Add a border */
-  border-radius: 8px;     /* Rounded corners */
-  padding: 15px;          /* Inner padding */
-  background-color: #fff; /* White background for cards */
-  transition: box-shadow 0.3s; /* Smooth shadow transition */
-}
 
-.PostCard:hover {
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
-}

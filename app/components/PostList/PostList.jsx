@@ -1,4 +1,4 @@
-import PostCard from "../PostCard/PostCard";
+import Postcard from "../Postcard/Postcard";
 import styles from "./postlist.module.css";
 
 async function getPosts() {
@@ -18,7 +18,7 @@ export default async function Blog() {
         <ul className={styles.ul}>
           {posts.map((post) => (
             <li className={styles.li} key={post.id}>
-              <PostCard post={post} />
+              <Postcard post={post} />
             </li>
           ))}
         </ul>
