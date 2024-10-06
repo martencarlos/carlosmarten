@@ -1,3 +1,15 @@
+
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "react/jsx-uses-react": "off", // For React 17+
+    "react/react-in-jsx-scope": "off" // For React 17+
+  }
 }

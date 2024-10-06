@@ -14,3 +14,7 @@
 .themeToggle:hover {
   background-color: rgba(236, 236, 236, 0.9);
 }
+
+.themeToggle.dark:hover {
+  color: var(--background);
+}

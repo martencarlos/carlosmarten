@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./mobilemenu.module.css";
 import { Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -37,7 +37,7 @@ const MobileMenu = () => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <button
         className={`${styles.hamburger} ${isOpen ? styles.open : ""}`}
         onClick={() => setIsOpen(!isOpen)}
@@ -82,7 +82,7 @@ const MobileMenu = () => {
           </li>
         </ul>
       )}
-    </>
+    </React.Fragment>
   );
 };
 
