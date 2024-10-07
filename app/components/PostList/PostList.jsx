@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Card from "../Card/Card";
 import styles from "./postlist.module.css";
+import LoadingComponent from "@components/LoadingComponent/LoadingComponent";
 
 async function getPosts() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
@@ -36,7 +37,7 @@ export default function PostList({ selectedCategory, searchQuery }) {
   }, [posts, selectedCategory, searchQuery]);
 
   if (posts.length === 0) {
-    return <div>Loading...</div>;
+    return <LoadingComponent/>;
   }
 
   return (

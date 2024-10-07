@@ -31,7 +31,10 @@ export default async function Categories({ params }) {
 
     return (
       <div className={styles.one_column}>
-        <h1 className={styles.h1}>Category: {category}</h1>
+        <div className={styles.blogHeader}>
+          <h1 className={styles.h1}>Category: </h1>
+          <h2 className={styles.pill}>{category}</h2>
+        </div>
         <ul className={styles.ul}>
           {posts.map((post) => (
             <li className={styles.li} key={post.id}>

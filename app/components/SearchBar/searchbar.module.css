@@ -1,5 +1,5 @@
 .searchBar {
-  margin-top: 30px;
+  margin: 40px 0;
 }
 
 .searchBar input {
@@ -15,7 +15,7 @@
 .searchBar input:focus {
   outline: none;
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-  border-color: #007bff;
+  border-color: var(--third-color);
 }
 
 .searchBar input::placeholder {

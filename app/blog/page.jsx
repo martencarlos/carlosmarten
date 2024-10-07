@@ -11,15 +11,18 @@ export default function Blog() {
 
   return (
     <div className={styles.blogMain}>
-      <h1 className={styles.blogTitle}>Latest Posts</h1>
-      <p className={styles.blogDescription}>
-        Welcome to the blog! Here you will find the latest posts.
-      </p>
+      <div className={styles.blogHeader}> 
+        <h1 className={styles.blogTitle}>Latest Posts</h1>
+        <p className={styles.blogDescription}>
+          Welcome to the blog! Here you will find the latest posts.
+        </p>
+      </div>
+      <SearchBar onSearch={setSearchQuery} />
       <CategoryList
         onSelectCategory={setSelectedCategory}
         selectedCategory={selectedCategory}
       />
-      <SearchBar onSearch={setSearchQuery} />
+      
       <PostList selectedCategory={selectedCategory} searchQuery={searchQuery} />
     </div>
   );

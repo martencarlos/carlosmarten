@@ -1,3 +1,4 @@
+"use client"
 import styles from "./page.module.css";
 import PostList from "./components/PostList/PostList";
 import Hero from "./components/Hero/Hero";

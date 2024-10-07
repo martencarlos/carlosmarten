@@ -8,10 +8,27 @@
   padding: 2rem;
   
 }
+
+.blogHeader{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0px
+}
+
+.pill {
+  background-color: var(--third-color);
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 14px;
+  color: whitesmoke
+}
+
 /* Style for the heading */
 .h1 {
   font-size: 2em;         /* Font size for the heading */
-  margin-bottom: 20px;    /* Space below the heading */
+
  
 }
 /* Style for the unordered list */
