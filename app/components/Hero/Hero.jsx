@@ -49,9 +49,16 @@ const Hero = () => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8 }}
       >
-        <h1 className={styles.title}>Welcome to my Website</h1>
+        <h1 className={styles.title}>Welcome to my Website!</h1>
+        <br />
         <p className={styles.subtitle}>
-          I am excited to have you here. Explore my services and offerings.
+          As an IT Business Consultant, I am passionate about new technologies and their impact on businesses. Here, you will find exciting blog posts on business and technology topics.</p>
+          <p className={styles.subtitle}>
+          <br />
+          Check out the projects page for the solutions I have developed across various industries, demonstrating the synergy between technology and business.</p>
+          <br />
+          <p className={styles.subtitle}>
+Stay updated with the latest insights and trends in business and technology. Join me as we explore new ideas and bring innovative concepts to life!
         </p>
       </motion.div>
     </section>

@@ -22,7 +22,7 @@
 .ul {
   list-style-type: none;  /* Remove default bullet points */
   width: 100%;            /* Full width of the parent container */
-  max-width: 600px;       /* Optional: limit the max width */
+  max-width: 750px;       /* Optional: limit the max width */
   padding: 0;             /* Remove default padding */
 }
 
