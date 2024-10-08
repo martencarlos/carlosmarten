@@ -1,10 +1,10 @@
+import { Analytics } from "@vercel/analytics/react"
 import { ThemeProvider } from "next-themes";
-
 import "./globals.css";
+import { Roboto } from 'next/font/google'
+
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "@components/Footer/Footer";
-
-import { Roboto } from 'next/font/google'
 
 // Initialize the font
 const roboto = Roboto({
@@ -42,6 +42,7 @@ export default function RootLayout({ children }) {
           {children}
           <Footer />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
