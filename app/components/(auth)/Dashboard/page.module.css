@@ -1,0 +1,29 @@
+/* AdminPage.module.css */
+
+
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 180px);
+}
+
+.dashboard h1 {
+  margin-bottom: 1rem;
+}
+
+.logout {
+  padding: 0.8rem 1.2rem;
+  background-color: #e63946;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.logout:hover {
+  background-color: #d62839;
+  transform: translateY(-2px);
+}

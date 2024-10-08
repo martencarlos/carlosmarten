@@ -1,0 +1,95 @@
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--third-color);
+  box-shadow: 0 0 0 2px rgba(var(--third-color-rgb), 0.2);
+}
+
+.textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+.button {
+  background-color: var(--third-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.button:hover {
+  background-color: var(--fourth-color);
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.status {
+  margin-top: 1rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.statusSuccess {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.statusError {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
