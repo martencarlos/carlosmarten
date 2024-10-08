@@ -32,14 +32,16 @@ export default function CategoryList({ onSelectCategory, selectedCategory }) {
         setLoading(false); // Set loading to false after fetch attempt
       }
     }
-    
     fetchCategories();
   }, []);
 
   // Conditional rendering based on loading and error states
   if (loading) {
-    return <LoadingComponent />
-     
+    return (
+      <div className={styles.categoryList}>
+        <LoadingComponent />
+      </div>
+    )
   }
 
   if (error) {

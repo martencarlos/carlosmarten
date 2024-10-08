@@ -5,7 +5,7 @@
   padding: 50px;
   /* height: calc(100vh - 132px); */
   position: relative;
-  
+  min-height: 467px;
 }
 
 .heroSection.dark {
@@ -23,14 +23,12 @@
   position: relative; /* For positioning the overlay */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Shadow for depth */
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1)); /* Gradient background */
-   
 }
 
 .roundedImage {
     border-radius: 50%;
     width: 200px; /* Image fits the container */
     height: auto; /* Maintain aspect ratio */
-    
 }
 
 .textContainer {

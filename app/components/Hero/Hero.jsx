@@ -7,7 +7,7 @@ import { useTheme } from "next-themes";
 import styles from "./hero.module.css";
 
 const Hero = () => {
-  const { resolvedTheme } = useTheme();
+  const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -15,14 +15,14 @@ const Hero = () => {
   }, []);
 
   // Don't render anything until the component has mounted
-  if (!mounted) {
-    return null;
-  }
+  // if (!mounted) {
+  //   return null;
+  // }
 
   return (
-    <section
+    <div
       className={`${styles.heroSection} ${
-        resolvedTheme === "dark" ? styles.dark : ""
+        theme === "dark" ? styles.dark : ""
       }`}
     >
       {/* Left Image */}
@@ -71,7 +71,7 @@ const Hero = () => {
           concepts to life!
         </p>
       </motion.div>
-    </section>
+    </div>
   );
 };
 

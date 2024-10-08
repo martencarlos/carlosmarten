@@ -1,6 +1,7 @@
 .categoryList {
   margin: 20px 0;
   padding: 20px;
+  min-height: 130px;
 }
 
 .categoryList h2 {
