@@ -1,7 +1,5 @@
 /* navbar.module.css */
-.navbar_container {
-  /* Your existing styles */
-}
+
 
 .navbar {
   background-color: transparent;
@@ -198,5 +196,6 @@
 :global(.dark) .logo:hover .logoText {
   background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
