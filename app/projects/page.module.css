@@ -1,6 +1,6 @@
 .projectsContainer {
   max-width: 1200px;
-  min-height: calc(100vh - 192px);
+  min-height: calc(100vh - 180px);
   margin: 0 auto;
   padding: 2rem;
 }
@@ -8,11 +8,23 @@
 .pageTitle {
   font-size: 2rem;
   text-align: center;
+  margin-bottom: 10px;
+}
+.pageSubTitle{
+  font-size: 1.5rem;
+  text-align: center;
   margin-bottom: 2rem;
+}
+
+.pageDescription{
+  /* font-size: 1.25rem; */
+  max-width: 700px;
+  margin: 20px auto;
 }
 
 .projectGrid {
   display: grid;
+  margin-top: 60px;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
 }

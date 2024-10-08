@@ -4,14 +4,14 @@
   --background: #ffffff;
   --foreground: #171717;
 
-  --first-color: #F9F7F7;
+  --first-color: #c1e1ff;
   --second-color:#DBE2EF;
   --third-color: #3F72AF;
   --fourth-color: #112D4E;
 }
 
 ::selection {
-  background-color: var(--second-color)
+  background-color: var(--first-color)
 }
 .dark ::selection {
   background-color: var(--third-color)
@@ -36,7 +36,7 @@ html, body {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-roboto);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding: 0px !important;

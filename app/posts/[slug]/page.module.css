@@ -1,0 +1,16 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 180px);
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.backbuttonContainer{
+    display: flex;
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    /* justify-content: center; */
+    
+}

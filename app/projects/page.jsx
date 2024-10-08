@@ -42,6 +42,27 @@ export default function ProjectsPage() {
   return (
     <div className={styles.projectsContainer}>
       <h1 className={styles.pageTitle}>Web Projects</h1>
+      <h2 className={styles.pageSubTitle}>
+        Check out these live projects
+      </h2>
+
+      <div className={styles.pageDescription}>
+        <p>
+          Here, I showcase some of the key projects I have worked on,
+          highlighting my experience and skills in web development.
+        </p>
+        <br />
+        <p>
+          From a dynamic holiday booking platform to an intuitive e-commerce site,
+          and a versatile blog, each project reflects my focus on creating functional,
+          user-friendly solutions.
+        </p>
+        <br />
+        <p>
+          Explore these projects to see the blend of creativity and technology that drives my work.
+        </p>
+      </div>
+
       <div className={styles.projectGrid}>
         {projects.map((project) => (
           <ProjectCard key={project.id} project={project} />

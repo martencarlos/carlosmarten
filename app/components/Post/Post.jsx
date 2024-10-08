@@ -39,9 +39,9 @@ export default function Post({ post }) {
   let time = calculateReadingTime(post.content);
 
   // Avoid rendering content until mounted to prevent hydration mismatch
-  if (!mounted) {
-    return null;
-  }
+  // if (!mounted) {
+  //   return null;
+  // }
 
   try {
     return (

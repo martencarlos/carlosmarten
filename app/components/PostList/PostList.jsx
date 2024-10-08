@@ -37,7 +37,11 @@ export default function PostList({ selectedCategory, searchQuery }) {
   }, [posts, selectedCategory, searchQuery]);
 
   if (posts.length === 0) {
-    return <LoadingComponent/>;
+    return (
+      <div className={styles.loadingContainer}>
+        <LoadingComponent/>
+      </div>
+    );
   }
 
   return (

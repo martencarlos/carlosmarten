@@ -1,0 +1,27 @@
+.backButton {
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.lightMode {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.lightMode:hover {
+  background-color: #e0e0e0;
+}
+
+.darkMode {
+  background-color: #333;
+  color: #f0f0f0;
+}
+
+.darkMode:hover {
+  background-color: #444;
+}

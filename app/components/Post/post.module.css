@@ -1,9 +1,9 @@
 .container {
   max-width: 800px;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   padding: 20px;
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
+
+  line-height: 1.5;
   /* color: #333; */
   position: relative;
 }
@@ -59,7 +59,7 @@
 
 .title {
   font-size: 2.5rem;
-  margin: 30px 30px 20px;
+  margin: 20px;
   color: var(--fourth-color);
 }
 

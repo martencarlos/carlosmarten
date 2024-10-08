@@ -2,6 +2,7 @@
 
 import Post from "@components/Post/Post";
 import styles from "./page.module.css";
+import BackButton from "@components/BackButton/BackButton";
 
 var blogPost = {};
 
@@ -54,6 +55,9 @@ export default async function BlogPost({ params }) {
 
     return (
       <div className={styles.container}>
+        <div className={styles.backbuttonContainer}>
+          <BackButton />
+        </div>
         <Post post={post} />
       </div>
     );

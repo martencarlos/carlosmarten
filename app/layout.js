@@ -1,19 +1,18 @@
 import { ThemeProvider } from "next-themes";
-import localFont from "next/font/local";
+
 import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "@components/Footer/Footer";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+import { Roboto } from 'next/font/google'
+
+// Initialize the font
+const roboto = Roboto({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+})
+
 
 export const metadata = {
   title: "Carlos Marten",
@@ -37,7 +36,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={roboto.className}>
         <ThemeProvider attribute="class">
           <Navbar />
           {children}
