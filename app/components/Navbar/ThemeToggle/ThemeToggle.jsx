@@ -18,7 +18,7 @@ const ThemeToggle = () => {
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       className={`${styles.themeToggle} ${theme === "dark" ? styles.dark : ""}`}
     >
-      {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+      {theme === "dark" ? <Sun size={20} aria-label="sun" /> : <Moon size={20} aria-label="moon"/>}
     </button>
   );
 };
