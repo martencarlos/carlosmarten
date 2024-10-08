@@ -1,9 +1,13 @@
+"use client"
 import Link from "next/link";
+import { usePathname } from "next/navigation"; // Import usePathname
 import styles from "./navbar.module.css";
 import ThemeToggle from "./ThemeToggle/ThemeToggle";
 import MobileMenu from "./MobileMenu/MobileMenu";
 
 export default function Navbar() {
+  const pathname = usePathname(); // Get the current pathname
+
   return (
     <div className={styles.navbar_container}>
       <nav className={styles.navbar}>
@@ -13,17 +17,26 @@ export default function Navbar() {
         <MobileMenu />
         <ul className={styles.navList}>
           <li className={styles.navItem}>
-            <Link href="/projects" className={styles.navLink}>
+            <Link
+              href="/projects"
+              className={`${styles.navLink} ${pathname === '/projects' ? styles.active : ''}`} // Conditional class
+            >
               Projects
             </Link>
           </li>
           <li className={styles.navItem}>
-            <Link href="/blog" className={styles.navLink}>
+            <Link
+              href="/blog"
+              className={`${styles.navLink} ${pathname === '/blog' ? styles.active : ''}`} // Conditional class
+            >
               Blog
             </Link>
           </li>
           <li className={styles.navItem}>
-            <Link href="/about" className={styles.navLink}>
+            <Link
+              href="/about"
+              className={`${styles.navLink} ${pathname === '/about' ? styles.active : ''}`} // Conditional class
+            >
               About
             </Link>
           </li>

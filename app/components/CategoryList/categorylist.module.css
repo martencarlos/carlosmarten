@@ -36,7 +36,7 @@
 }
 
 .categoryList button.active {
-  background-color: #007bff;
+  background-color: var(--third-color);
   color: white;
 }
 

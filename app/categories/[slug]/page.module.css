@@ -2,11 +2,11 @@
 .one_column {
   display: flex;
   flex-direction: column; /* Align items vertically */
-  align-items: center;    /* Center items horizontally */
-  justify-content: center; /* Center items vertically */
-  min-height: calc(100vh - 192px);
+  align-items: center;
+  padding:30px 0px;
+  /* justify-content: center; */
+  min-height: calc(100vh - 170px);
   padding: 2rem;
-  
 }
 
 .blogHeader{
@@ -29,7 +29,6 @@
 .h1 {
   font-size: 2em;         /* Font size for the heading */
 
- 
 }
 /* Style for the unordered list */
 .ul {
@@ -41,7 +40,6 @@
 
 @media (max-width: 768px) {
   .one_column {
-    padding: 1rem;
+    padding: 10px;
   }
-  
 }
