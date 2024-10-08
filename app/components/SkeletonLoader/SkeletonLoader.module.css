@@ -1,0 +1,73 @@
+/* SkeletonLoader.module.css */
+.skeletonContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  max-width: 700px;
+  height: 150px;
+  padding: 20px;
+  margin: 10px auto;
+  border-radius: 4px;
+}
+
+/* .lightMode {
+  background-color: #f0f0f0;
+  color: #333;
+} */
+.lightMode.skeletonContainer {
+  animation: pulseLight 1.5s infinite ease-in-out;
+}
+
+/* .darkMode {
+  background-color: #333;
+  color: #f0f0f0;
+} */
+.darkMode.skeletonContainer {
+  animation: pulseDark 1.5s infinite ease-in-out;
+}
+
+/* .skeletonTitle {
+  height: 20px;
+  width: 80%;
+  background-color: #e0e0e0;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.skeletonExcerpt {
+  height: 16px;
+  width: 100%;
+  background-color: #e0e0e0;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.skeletonImage {
+  height: 200px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+} */
+
+@keyframes pulseLight {
+  0% {
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #d0d0d0;
+  }
+  100% {
+    background-color: #e0e0e0;
+  }
+}
+
+@keyframes pulseDark {
+  0% {
+    background-color: #333;
+  }
+  50% {
+    background-color: #444;
+  }
+  100% {
+    background-color: #333;
+  }
+}

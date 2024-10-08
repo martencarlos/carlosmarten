@@ -13,8 +13,8 @@ export default function BackButton() {
   };
 
   return (
-    <button 
-      onClick={handleBack} 
+    <button
+      onClick={handleBack}
       className={`${styles.backButton} ${resolvedTheme === 'dark' ? styles.darkMode : styles.lightMode}`}
     >
       &larr; Back

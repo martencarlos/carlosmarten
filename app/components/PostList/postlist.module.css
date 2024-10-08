@@ -8,14 +8,12 @@
   justify-content: center; /* Center items vertically */
   /* min-height: 100vh;       */
   padding: 20px;
-  
 }
 
 /* Style for the heading */
 .h1 {
   font-size: 2em;         /* Font size for the heading */
   margin-bottom: 20px;    /* Space below the heading */
- 
 }
 
 /* Style for the unordered list */
@@ -28,18 +26,18 @@
 
 /* Style for list items */
 .li {
-  margin-bottom: 15px;    
+  margin-bottom: 15px;
 }
 
 .loadingContainer{
-  margin-top: 40px;
+  margin: 40px auto;
+  width: 100%;
 }
 
 @media screen and (max-width: 700px) {
   .one_column  {
     padding: 0px;       /* Add padding to the left and right */
   }
-  
 }
 
 

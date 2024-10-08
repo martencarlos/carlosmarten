@@ -1,8 +1,9 @@
+
 "use client";
 import { useState, useEffect } from "react";
 import Card from "../Card/Card";
+import SkeletonLoader from "../SkeletonLoader/SkeletonLoader"; // Adjust the path as needed
 import styles from "./postlist.module.css";
-import LoadingComponent from "@components/LoadingComponent/LoadingComponent";
 
 async function getPosts() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
@@ -15,11 +16,13 @@ async function getPosts() {
 export default function PostList({ selectedCategory, searchQuery }) {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const [loading, setLoading] = useState(true); // New loading state
 
   useEffect(() => {
     async function fetchPosts() {
       const fetchedPosts = await getPosts();
       setPosts(fetchedPosts);
+      setLoading(false); // Set loading to false after posts are fetched
     }
     fetchPosts();
   }, []);
@@ -36,10 +39,12 @@ export default function PostList({ selectedCategory, searchQuery }) {
     setFilteredPosts(filtered);
   }, [posts, selectedCategory, searchQuery]);
 
-  if (posts.length === 0) {
+  if (loading) {
     return (
       <div className={styles.loadingContainer}>
-        <LoadingComponent/>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <SkeletonLoader key={index} />
+        ))}
       </div>
     );
   }
