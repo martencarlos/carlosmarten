@@ -38,3 +38,10 @@
   max-width: 750px;       /* Optional: limit the max width */
   padding: 0;             /* Remove default padding */
 }
+
+@media (max-width: 768px) {
+  .one_column {
+    padding: 1rem;
+  }
+  
+}
