@@ -2,7 +2,7 @@
 
 'use client';
 
-import ContactsTable from '../ContactsTable/ContactsTable';
+import ContactsList from '../ContactsList/ContactsList';
 
 import styles from './page.module.css';
 
@@ -24,7 +24,7 @@ const Dashboard = ({setSession}) => {
   return (
     <div className={styles.dashboard}>
       <h1>Dashboard</h1>
-      <ContactsTable />
+      <ContactsList />
       <button className={styles.logout} onClick={handleLogout}>Logout</button>
     </div>
   );
