@@ -1,14 +1,16 @@
+// app/admin/page.js
+
 "use client";
 
 import { useState, useEffect } from "react";
-
+import { useRouter } from "next/navigation"; // Import useRouter for redirection
 import LoginForm from "@components/(auth)/LoginForm/LoginForm";
-import Dashboard from "@components/(auth)/Dashboard/Dashboard";
 import LoadingComponent from "@components/LoadingComponent/LoadingComponent";
 import styles from "./page.module.css";
 
+
 const Admin = () => {
-  console.log("Admin page loaded");
+  const router = useRouter(); // Initialize useRouter
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -24,22 +26,32 @@ const Admin = () => {
       }
       setLoading(false);
     };
+
     getSession();
   }, []);
 
+  useEffect(() => {
+    // Redirect to dashboard if session exists
+    if (!loading) {
+      if (session) {
+        router.push("/dashboard"); // Redirect to the dashboard page
+      }
+    }
+  }, [loading, session, router]);
+
   // Check if the component is mounted before rendering
-  if (loading)
+  if (loading) {
     return (
       <div className={styles.adminPage}>
         <LoadingComponent />
       </div>
     );
+  }
 
-  return session ? (
-    <Dashboard setSession={setSession} />
-  ) : (
+  // If there is no session, render the login form
+  return !session ? (
     <LoginForm setSession={setSession} />
-  );
+  ) : null; // The redirection will handle displaying the dashboard
 };
 
 export default Admin;

@@ -1,0 +1,15 @@
+/* AdminPage.module.css */
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.dashboard h1 {
+  margin-bottom: 1rem;
+}
+
+
