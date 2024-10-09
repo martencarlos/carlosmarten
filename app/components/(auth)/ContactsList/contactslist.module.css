@@ -1,13 +1,12 @@
 .container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+  gap: 10px;
   padding: 1rem;
 }
 
 .contactCard {
-  /* background-color: #f9f9f9; */
-  padding: 1.5rem;
+  padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(122, 122, 122, 0.4);
   display: flex;
@@ -19,8 +18,7 @@
 .contactInfo {
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem;
-  /* background-color: #f1f1f1; */
+  padding: 5px;
 }
 
 /* Styling for message section */
@@ -47,7 +45,7 @@
 
 .value {
   /* color: #333; */
-  font-size: 1rem;
+  font-size: medium;
   word-break: break-word;
 }
 
@@ -56,6 +54,12 @@
   font-size: 1rem;
   line-height: 1.4;
   word-break: break-word;
+}
+
+@media (max-width: 768px) {
+  .value{
+    font-size: 0.9rem;
+  }
 }
 
 /* Responsive design for larger screens */
@@ -69,7 +73,8 @@
     padding: 2rem;
   }
 
-  .value, .messageValue {
+  .value
+  .messageValue {
     font-size: 1.1rem;
   }
 
@@ -82,3 +87,5 @@
   text-align: center;
   color: #464646;
 }
+
+
