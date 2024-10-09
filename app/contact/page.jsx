@@ -3,6 +3,7 @@ import ContactForm from "@components/ContactForm/ContactForm";
 import styles from "./page.module.css";
 
 export default function ContactPage() {
+  console.log("Contact page loaded");
   return (
     <div className={styles.contactPage}>
       <div className={styles.container}>

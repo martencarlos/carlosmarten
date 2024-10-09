@@ -7,6 +7,7 @@ import MobileMenu from "./MobileMenu/MobileMenu";
 
 export default function Navbar() {
   const pathname = usePathname(); // Get the current pathname
+  console.log("Navbar loaded - pathname:", pathname);
 
   return (
     <div className={styles.navbar_container}>

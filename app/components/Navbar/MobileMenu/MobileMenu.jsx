@@ -10,10 +10,7 @@ const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const [mounted, setMounted] = useState(false);
   const { theme, setTheme, resolvedTheme } = useTheme();
-
-  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -22,8 +19,6 @@ const MobileMenu = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  if (!isMobile) return null;
-  if (!mounted) return null;
 
   const handleLinkClick = () => {
     if (isMobile) {
@@ -37,8 +32,9 @@ const MobileMenu = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <button
+        aria-label="Toggle menu"
         className={`${styles.hamburger} ${isOpen ? styles.open : ""}`}
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -82,7 +78,7 @@ const MobileMenu = () => {
           </li>
         </ul>
       )}
-    </React.Fragment>
+    </>
   );
 };
 

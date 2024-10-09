@@ -7,6 +7,8 @@ import styles from './page.module.css';
 
 const LoginForm = ({setSession}) => {
 
+  console.log("LoginForm loaded");
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');

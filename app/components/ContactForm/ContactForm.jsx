@@ -5,6 +5,8 @@ import styles from './contact.module.css';
 import { FaUser, FaEnvelope, FaCommentDots } from 'react-icons/fa'; // Importing icons
 
 export default function ContactForm() {
+  console.log('Contact form loaded');
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');

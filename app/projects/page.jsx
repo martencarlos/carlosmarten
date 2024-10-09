@@ -39,6 +39,7 @@ const ProjectCard = ({ project }) => (
 );
 
 export default function ProjectsPage() {
+  console.log("Projects page loaded");
   return (
     <div className={styles.projectsContainer}>
       <h1 className={styles.pageTitle}>Web Projects</h1>

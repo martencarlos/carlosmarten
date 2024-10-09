@@ -3,8 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import { FaUser, FaEnvelope, FaComment } from 'react-icons/fa';
 import styles from './contactslist.module.css';
+import LoadingComponent from '@components/LoadingComponent/LoadingComponent';
 
 const ContactsList = () => {
+
+  console.log("ContactsList loaded");
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -28,7 +31,7 @@ const ContactsList = () => {
     fetchContacts();
   }, []);
 
-  if (loading) return <p className={styles.message}>Loading...</p>;
+  if (loading) return <LoadingComponent />;
   if (error) return <p className={styles.message}>Error: {error}</p>;
 
   return (

@@ -16,12 +16,12 @@ function calculateReadingTime(text) {
 }
 
 export default function Post({ post }) {
-  const { theme, resolvedTheme } = useTheme();
+  console.log("Post loaded");
+  const {  resolvedTheme } = useTheme();
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    
     const handleScroll = () => {
       const totalHeight =
         document.documentElement.scrollHeight - window.innerHeight;
@@ -75,7 +75,6 @@ export default function Post({ post }) {
                   <FaUser style={{ marginRight: "5px" }} />
                   {post.author}
                 </span>
-           
               </div>
               <div className={styles.timeInfo}>
                 <span className={styles.metaLabel}>
@@ -85,13 +84,10 @@ export default function Post({ post }) {
               </div>
               <div className={styles.dateInfo}>
                 <div>
-                <span className={styles.metaLabel}>
-                  <FaCalendar style={{ marginRight: "5px" }} />
-                  {post.last_modified.toLocaleDateString("es-ES")}
-                </span>
-                 
-                    
-                  
+                  <span className={styles.metaLabel}>
+                    <FaCalendar style={{ marginRight: "5px" }} />
+                    {post.last_modified.toLocaleDateString("es-ES")}
+                  </span>
                 </div>
               </div>
             </div>

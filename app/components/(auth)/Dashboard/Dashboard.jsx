@@ -8,6 +8,8 @@ import styles from './page.module.css';
 
 const Dashboard = ({setSession}) => {
 
+  console.log("Dashboard loaded");
+
   //  Handle logout request by sending a DELETE request to the /api/session route
   const handleLogout = async () => {
     const response = await fetch('/api/session', {

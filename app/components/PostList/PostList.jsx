@@ -1,4 +1,3 @@
-
 "use client";
 import { useState, useEffect } from "react";
 import Card from "../Card/Card";
@@ -14,6 +13,7 @@ async function getPosts() {
 }
 
 export default function PostList({ selectedCategory, searchQuery }) {
+  console.log("PostList loaded");
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [loading, setLoading] = useState(true); // New loading state
@@ -42,7 +42,7 @@ export default function PostList({ selectedCategory, searchQuery }) {
   if (loading) {
     return (
       <div className={styles.loadingContainer}>
-        {Array.from({ length: 5 }).map((_, index) => (
+        {Array.from({ length: 3 }).map((_, index) => (
           <SkeletonLoader key={index} />
         ))}
       </div>

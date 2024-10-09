@@ -1,3 +1,4 @@
+"use client"
 import { useState, useEffect } from "react";
 import styles from "./categorylist.module.css";
 import LoadingComponent from "@components/LoadingComponent/LoadingComponent";
@@ -7,16 +8,17 @@ async function getCategories() {
   const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`, {
     next: { revalidate: 60 },
   });
-  
+
   // Handle errors in fetching
   if (!res.ok) {
-    throw new Error('Failed to fetch categories');
+    throw new Error("Failed to fetch categories");
   }
-  
+
   return res.json();
 }
 
 export default function CategoryList({ onSelectCategory, selectedCategory }) {
+  console.log("CategoryList loaded" + "- ID: " + selectedCategory);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -41,7 +43,7 @@ export default function CategoryList({ onSelectCategory, selectedCategory }) {
       <div className={styles.categoryList}>
         <LoadingComponent />
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -61,16 +63,21 @@ export default function CategoryList({ onSelectCategory, selectedCategory }) {
             All
           </button>
         </li>
-        {categories.map((category) => (
-          category.name !== "Uncategorized" && <li key={category.id}>
-            <button
-              className={selectedCategory === category.id ? styles.active : ""}
-              onClick={() => onSelectCategory(category.id)}
-            >
-              {category.name}
-            </button>
-          </li>
-        ))}
+        {categories.map(
+          (category) =>
+            category.name !== "Uncategorized" && (
+              <li key={category.id}>
+                <button
+                  className={
+                    selectedCategory === category.id ? styles.active : ""
+                  }
+                  onClick={() => onSelectCategory(category.id)}
+                >
+                  {category.name}
+                </button>
+              </li>
+            )
+        )}
       </ul>
     </div>
   );

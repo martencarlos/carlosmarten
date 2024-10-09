@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useTheme } from "next-themes";
@@ -8,12 +7,7 @@ import styles from "./hero.module.css";
 
 const Hero = () => {
   const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
+  console.log("Hero component loaded");
   // Don't render anything until the component has mounted
   // if (!mounted) {
   //   return null;
@@ -21,9 +15,7 @@ const Hero = () => {
 
   return (
     <div
-      className={`${styles.heroSection} ${
-        theme === "dark" ? styles.dark : ""
-      }`}
+      className={`${styles.heroSection} ${theme === "dark" ? styles.dark : ""}`}
     >
       {/* Left Image */}
       <motion.div

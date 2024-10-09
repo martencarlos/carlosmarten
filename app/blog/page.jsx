@@ -6,6 +6,8 @@ import CategoryList from "../components/CategoryList/CategoryList";
 import SearchBar from "../components/SearchBar/SearchBar";
 
 export default function Blog() {
+
+  console.log("Blog page loaded");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 

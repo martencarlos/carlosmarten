@@ -3,6 +3,7 @@ import { useState } from "react";
 import styles from "./searchbar.module.css";
 
 export default function SearchBar({ onSearch }) {
+  console.log("SearchBar loaded");
   const [query, setQuery] = useState("");
 
   const handleInputChange = (e) => {

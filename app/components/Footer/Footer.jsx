@@ -3,6 +3,7 @@ import Link from "next/link";
 import styles from "./footer.module.css";
 
 const Footer = () => {
+  console.log("Footer loaded");
   return (
     <footer className={styles.footer}>
       <div className={styles.content}>

@@ -1,6 +1,7 @@
 import styles from "./page.module.css";
 import Card from "../../components/Card/Card";
 const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
+
 async function getCategories() {
   const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`);
   return res.json();
@@ -24,7 +25,7 @@ async function getCategoryPosts(categoryId) {
 export default async function Categories({ params }) {
   try {
     const category = params.slug;
-
+    console.log("category page loaded" + category);
     const categoriesArray = await getCategories();
     const categoryId = getCategoryIdByName(categoriesArray, category);
     const posts = await getCategoryPosts(categoryId);

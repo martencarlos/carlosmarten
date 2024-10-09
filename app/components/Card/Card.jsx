@@ -1,17 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "./card.module.css";
 import { useTheme } from "next-themes";
 
 export default function Card({ post }) {
+  console.log("Card loaded");
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const createDate = new Date(post.date).toLocaleDateString();
   // const lastModified = new Date(post.modified).toLocaleDateString();
@@ -25,11 +20,6 @@ export default function Card({ post }) {
   //   .map((tag) => tag.name);
 
   // const author = post._embedded["author"][0].name;
-
-  // Don't render anything until the component has mounted
-  if (!mounted) {
-    return null;
-  }
 
   return (
     <div

@@ -8,6 +8,7 @@ var blogPost = {};
 
 async function getPost(slug) {
   try {
+    console.log("Fetching post (loaded):", slug);
     const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
 
     const res = await fetch(
@@ -51,6 +52,7 @@ async function getPost(slug) {
 
 export default async function BlogPost({ params }) {
   try {
+    console.log("Blog post loaded:", params.slug);
     const post = await getPost(params.slug);
 
     return (

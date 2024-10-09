@@ -5,6 +5,7 @@ import { useTheme } from 'next-themes';
 import styles from "./backbutton.module.css";
 
 export default function BackButton() {
+  console.log("BackButton loaded");
   const router = useRouter();
   const { resolvedTheme } = useTheme();
 

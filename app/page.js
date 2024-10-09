@@ -5,6 +5,7 @@ import Hero from "./components/Hero/Hero";
 
 export default function Home() {
   try {
+    console.log("Home page loaded");
     return (
       <main className={styles.main}>
         <Hero />
