@@ -4,6 +4,7 @@
 import styles from "./post.module.css";
 import Image from "next/image";
 import Link from "next/link";
+import { FaClock, FaUser, FaCalendar } from "react-icons/fa";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -70,19 +71,27 @@ export default function Post({ post }) {
           <div className={styles.postMeta}>
             <div className={styles.authorDateInfo}>
               <div className={styles.authorInfo}>
-                <span className={styles.metaLabel}>Author:</span>
-                <span className={styles.metaValue}>{post.author}</span>
+                <span className={styles.metaLabel}>
+                  <FaUser style={{ marginRight: "5px" }} />
+                  {post.author}
+                </span>
+           
               </div>
               <div className={styles.authorInfo}>
-                <span className={styles.metaLabel}>Reading time:</span>
-                <span className={styles.metaValue}>{time} minutes</span>
+                <span className={styles.metaLabel}>
+                  <FaClock style={{ marginRight: "5px" }} />
+                  {time} min read
+                </span>
               </div>
               <div className={styles.dateInfo}>
                 <div>
-                  <span className={styles.metaLabel}>Last Modified:</span>
-                  <span className={styles.metaValue}>
-                    {post.last_modified.toLocaleDateString("es-ES")}
-                  </span>
+                <span className={styles.metaLabel}>
+                  <FaCalendar style={{ marginRight: "5px" }} />
+                  {post.last_modified.toLocaleDateString("es-ES")}
+                </span>
+                 
+                    
+                  
                 </div>
               </div>
             </div>

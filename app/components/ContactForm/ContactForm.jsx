@@ -1,8 +1,8 @@
-// components/ContactForm/ContactForm.js
 'use client';
 
 import { useState } from 'react';
 import styles from './contact.module.css';
+import { FaUser, FaEnvelope, FaCommentDots } from 'react-icons/fa'; // Importing icons
 
 export default function ContactForm() {
   const [name, setName] = useState('');
@@ -48,10 +48,11 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.formGroup}>
-        <label htmlFor="name" className={styles.label}>Name:</label>
+        <FaUser className={styles.icon} />
         <input
           type="text"
           id="name"
+          placeholder="Your Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -59,10 +60,11 @@ export default function ContactForm() {
         />
       </div>
       <div className={styles.formGroup}>
-        <label htmlFor="email" className={styles.label}>Email:</label>
+        <FaEnvelope className={styles.icon} />
         <input
           type="email"
           id="email"
+          placeholder="Your Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -70,9 +72,10 @@ export default function ContactForm() {
         />
       </div>
       <div className={styles.formGroup}>
-        <label htmlFor="message" className={styles.label}>Message:</label>
+        <FaCommentDots className={styles.icon} />
         <textarea
           id="message"
+          placeholder="Your Message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           required
