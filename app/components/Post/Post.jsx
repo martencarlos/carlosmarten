@@ -77,7 +77,7 @@ export default function Post({ post }) {
                 </span>
            
               </div>
-              <div className={styles.authorInfo}>
+              <div className={styles.timeInfo}>
                 <span className={styles.metaLabel}>
                   <FaClock style={{ marginRight: "5px" }} />
                   {time} min read
@@ -96,7 +96,7 @@ export default function Post({ post }) {
               </div>
             </div>
             <div className={styles.categories}>
-              <span className={styles.metaLabel}>Categories:</span>
+              <span className={styles.metaÇategories}>Categories:</span>
               <div className={styles.pillContainer}>
                 {post.categories.map((category, index) => (
                   <Link key={index} href={`/categories/${category}`}>
