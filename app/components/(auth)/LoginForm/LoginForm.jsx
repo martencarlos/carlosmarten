@@ -1,23 +1,19 @@
 'use client';
 
-import { useState,useEffect } from 'react';
-import { useRouter } from 'next/navigation'; // Import useRouter from next/navigation
+import { useState } from 'react';
+
+
 import styles from './page.module.css';
 
-const LoginForm = () => {
+const LoginForm = ({setSession}) => {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-const [mounted, setMounted] = useState(false); // Add a mounted state
-
-    useEffect(() => {
-    setMounted(true); // Set mounted to true
-    return () => setMounted(false); // Set mounted to false on unmount
-    }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     const response = await fetch('/api/session', {
       method: 'POST',
       headers: {
@@ -27,16 +23,13 @@ const [mounted, setMounted] = useState(false); // Add a mounted state
     });
 
     if (response.ok) {
-      // Handle successful login
-      console.log('Login successful');
-      window.location.reload();
+      setSession(response.json()); // Update session state
+
     } else {
       const { error } = await response.json();
       setErrorMessage(error); // Set the error message to display
     }
   };
-
-  if (!mounted) return null;
 
   return (
     <div className={styles.container}>
