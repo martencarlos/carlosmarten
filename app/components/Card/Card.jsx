@@ -50,7 +50,7 @@ export default function Card({ post }) {
       </div>
       <div className={styles.card_meta}>
         {/*<p className={styles.card_author}>By {author}</p>*/}
-        <p className={styles.card_date}>Created: {createDate}</p>
+        <p className={styles.card_date} suppressHydrationWarning >Created: {createDate}</p>
         {/* Uncomment if you want to display last modified date
           <p className={styles.card_date}>Last modified: {lastModified}</p>
           */}

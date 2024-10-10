@@ -1,32 +1,32 @@
-"use client";
-import { useState, useEffect } from "react";
 import styles from "./page.module.css";
-import PostList from "../components/PostList/PostList";
-import CategoryList from "../components/CategoryList/CategoryList";
-import SearchBar from "../components/SearchBar/SearchBar";
+import BlogContent from "@components/BlogContent/BlogContent";
 
 async function getPosts() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
   const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/posts?_embed`, {
     next: { revalidate: 60 },
   });
+  if (!res.ok) {
+    throw new Error("Failed to fetch posts");
+  }
   return res.json();
 }
 
-export default function Blog() {
-  console.log("Blog page loaded");
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [posts, setPosts] = useState([]);
+async function getCategories() {
+  const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
+  const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`, {
+    next: { revalidate: 60 },
+  });
+  if (!res.ok) {
+    throw new Error("Failed to fetch categories");
+  }
+  return res.json();
+}
 
-  useEffect(() => {
-    async function fetchPosts() {
-      const fetchedPosts = await getPosts();
-      setPosts(fetchedPosts);
-      // setLoading(false); // Set loading to false after posts are fetched
-    }
-    fetchPosts();
-  }, []);
+export default async function Blog() {
+  console.log("Blog page loaded");
+
+  const [posts, categories] = await Promise.all([getPosts(), getCategories()]);
 
   return (
     <div className={styles.blogMain}>
@@ -43,17 +43,7 @@ export default function Blog() {
           shaping the future of the industry.
         </p>
       </div>
-      <SearchBar onSearch={setSearchQuery} />
-      <CategoryList
-        onSelectCategory={setSelectedCategory}
-        selectedCategory={selectedCategory}
-      />
-
-      <PostList
-        posts={posts}
-        selectedCategory={selectedCategory}
-        searchQuery={searchQuery}
-      />
+      <BlogContent posts={posts} categories={categories} />
     </div>
   );
 }
