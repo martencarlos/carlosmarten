@@ -4,28 +4,11 @@ import Card from "../Card/Card";
 import SkeletonLoader from "../SkeletonLoader/SkeletonLoader"; // Adjust the path as needed
 import styles from "./postlist.module.css";
 
-async function getPosts() {
-  const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
-  const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/posts?_embed`, {
-    next: { revalidate: 60 },
-  });
-  return res.json();
-}
-
-export default function PostList({ selectedCategory, searchQuery }) {
+export default function PostList({ posts, selectedCategory, searchQuery }) {
   console.log("PostList loaded");
-  const [posts, setPosts] = useState([]);
+  // const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
-  const [loading, setLoading] = useState(true); // New loading state
-
-  useEffect(() => {
-    async function fetchPosts() {
-      const fetchedPosts = await getPosts();
-      setPosts(fetchedPosts);
-      setLoading(false); // Set loading to false after posts are fetched
-    }
-    fetchPosts();
-  }, []);
+  // const [loading, setLoading] = useState(true); // New loading state
 
   useEffect(() => {
     const filtered = posts.filter((post) => {
@@ -39,7 +22,7 @@ export default function PostList({ selectedCategory, searchQuery }) {
     setFilteredPosts(filtered);
   }, [posts, selectedCategory, searchQuery]);
 
-  if (loading) {
+  if (filteredPosts.length === 0) {
     return (
       <div className={styles.loadingContainer}>
         {Array.from({ length: 3 }).map((_, index) => (
