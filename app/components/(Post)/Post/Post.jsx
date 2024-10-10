@@ -17,11 +17,10 @@ function calculateReadingTime(text) {
 
 export default function Post({ post }) {
   console.log("Post loaded");
-  const {  resolvedTheme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
-    
     const handleScroll = () => {
       const totalHeight =
         document.documentElement.scrollHeight - window.innerHeight;
@@ -38,11 +37,6 @@ export default function Post({ post }) {
   };
 
   let time = calculateReadingTime(post.content);
-
-  // Avoid rendering content until mounted to prevent hydration mismatch
-  // if (!mounted) {
-  //   return null;
-  // }
 
   try {
     return (

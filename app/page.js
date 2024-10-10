@@ -1,6 +1,6 @@
 import styles from "./page.module.css";
-import PostList from "./components/PostList/PostList";
-import Hero from "./components/Hero/Hero";
+import PostList from "@components/(Post)/PostList/PostList";
+import Hero from "@components/Hero/Hero";
 
 async function getPosts() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;

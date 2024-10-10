@@ -27,6 +27,7 @@ const ProjectCard = ({ project }) => (
   <Link href={project.url} passHref>
     <div className={styles.projectCard}>
       <Image
+        priority
         src={project.image}
         width={200}
         height={200}

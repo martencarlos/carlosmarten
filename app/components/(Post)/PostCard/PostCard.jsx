@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import styles from "./card.module.css";
+import styles from "./postcard.module.css";
 import { useTheme } from "next-themes";
 
-export default function Card({ post }) {
-  console.log("Card loaded");
+export default function PostCard({ post }) {
+  console.log("Post Card loaded");
   const { resolvedTheme } = useTheme();
 
   const createDate = new Date(post.date).toLocaleDateString();

@@ -1,5 +1,5 @@
 // app/contact/page.js
-import ContactForm from "@components/ContactForm/ContactForm";
+import ContactForm from "@components/(contact)/ContactForm/ContactForm";
 import styles from "./page.module.css";
 
 export default function ContactPage() {

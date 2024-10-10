@@ -5,7 +5,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter for redirection
 import LoginForm from "@components/(auth)/LoginForm/LoginForm";
-import LoadingComponent from "@components/LoadingComponent/LoadingComponent";
+import LoadingComponent from "@components/(aux)/LoadingComponent/LoadingComponent";
 import styles from "./page.module.css";
 
 

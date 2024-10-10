@@ -24,6 +24,7 @@ export default function About() {
         <Image
           src="/images/me.png"
           width={400}
+          priority
           height={400}
           alt="Carlos Marten"
           className={styles.profilePic}

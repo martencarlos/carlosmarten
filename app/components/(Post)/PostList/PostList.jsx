@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import Card from "../Card/Card";
-import SkeletonLoader from "../SkeletonLoader/SkeletonLoader";
+import Card from "@components/(Post)/PostCard/PostCard";
+import SkeletonLoader from "@components/(aux)/SkeletonLoader/SkeletonLoader";
 import styles from "./postlist.module.css";
 
 export default function PostList({ posts, selectedCategory, searchQuery }) {

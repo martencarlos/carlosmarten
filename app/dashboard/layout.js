@@ -4,7 +4,7 @@ import Sidebar from "@components/(auth)/Sidebar/Sidebar"; // Import your Sidebar
 import styles from "./layout.module.css"; // Import your CSS module for layout
 import { useRouter } from "next/navigation"; // For redirection
 import { useEffect, useState } from "react"; // For state management
-import LoadingComponent from "@components/LoadingComponent/LoadingComponent"; // Import your loading component
+import LoadingComponent from "@components/(aux)/LoadingComponent/LoadingComponent"; // Import your loading component
 
 const DashboardLayout = ({ children }) => {
   const router = useRouter(); // Initialize useRouter
