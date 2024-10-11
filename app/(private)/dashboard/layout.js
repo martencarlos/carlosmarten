@@ -1,41 +1,16 @@
 // app/dashboard/layout.js
-"use client";
-import Sidebar from "components/private/Sidebar/Sidebar"; // Import your Sidebar component
+
+import { supabase } from "@lib/supabaseClient";
+import { redirect } from "next/navigation"; // For redirection
+
 import styles from "./layout.module.css"; // Import your CSS module for layout
-import { useRouter } from "next/navigation"; // For redirection
-import { useEffect, useState } from "react"; // For state management
-import LoadingComponent from "components/(aux)/LoadingComponent/LoadingComponent"; // Import your loading component
+import Sidebar from "@components/private/Sidebar/Sidebar"; // Import your Sidebar component
 
-const DashboardLayout = ({ children }) => {
-  const router = useRouter(); // Initialize useRouter
-  // const [session, setSession] = useState(null);
-  const [loading, setLoading] = useState(true); // Initialize loading state
+export default async function DashboardLayout({ children }) {
+  const session = await supabase.auth.getSession();
 
-  useEffect(() => {
-    const checkSession = async () => {
-      const response = await fetch("/api/session"); // Use your API route to check session
-      if (response.ok) {
-        const { session } = await response.json();
-        if (session) {
-          // setSession(session); // Set session if valid
-          setLoading(false); // Stop loading
-        } else {
-          router.push("/login"); // Redirect to login page if no session
-        }
-      } else {
-        router.push("/error"); // Redirect on error
-      }
-    };
-
-    checkSession();
-  }, [router]);
-
-  if (loading) {
-    return (
-      <div className={styles.layout}>
-        <LoadingComponent />
-      </div>
-    );
+  if (session.data.session === null) {
+    redirect("/login");
   }
 
   return (
@@ -44,6 +19,4 @@ const DashboardLayout = ({ children }) => {
       <main className={styles.mainContent}>{children}</main>
     </div>
   );
-};
-
-export default DashboardLayout;
+}

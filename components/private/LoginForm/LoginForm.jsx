@@ -1,65 +1,56 @@
-"use client";
-
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
+import { supabase } from "@lib/supabaseClient";
 
 import styles from "./page.module.css";
 
-export default function LoginForm() {
+export default async function LoginForm() {
   console.log("LoginForm loaded");
-  const router = useRouter();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  // Handle form submission
+  async function handleLogin(formData) {
+    "use server"; // Mark this function as a server action
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+    // Retrieve form fields from FormData
+    const email = formData.get("email");
+    const password = formData.get("password");
 
-    const response = await fetch("/api/session", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
 
-    if (response.ok) {
-      router.push("/dashboard");
+    if (error) {
+      console.log("Error logging in:", error.message);
     } else {
-      const { error } = await response.json();
-      setErrorMessage(error); // Set the error message to display
+      // On success, redirect to the dashboard
+      console.log("Login successful: ");
+      redirect("/dashboard");
     }
-  };
+  }
 
   return (
     <div className={styles.container}>
-      <form className={styles.form} onSubmit={handleLogin}>
+      <form className={styles.form} action={handleLogin}>
         <div>
-          <label className={styles.label}>Email:</label>
           <input
             className={styles.input}
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="email"
+            placeholder="email"
             required
           />
         </div>
         <div>
-          <label className={styles.label}>Password:</label>
           <input
             className={styles.input}
+            name="password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            placeholder="password"
             required
           />
         </div>
         <button className={styles.button} type="submit">
           Login
         </button>
-        {errorMessage && <p className={styles.error}>{errorMessage}</p>}{" "}
-        {/* Display error message if any */}
       </form>
     </div>
   );

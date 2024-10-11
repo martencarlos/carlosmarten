@@ -1,9 +1,8 @@
 // components/Dashboard.js
 
-import styles from './page.module.css';
+import styles from "./page.module.css";
 
-const Dashboard = () => {
-
+export default async function Dashboard() {
   console.log("Dashboard loaded");
 
   return (
@@ -11,6 +10,4 @@ const Dashboard = () => {
       <h2>Dashboard</h2>
     </div>
   );
-};
-
-export default Dashboard;
+}

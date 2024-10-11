@@ -16,17 +16,9 @@ const Sidebar = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleLogout = async () => {
-    const response = await fetch("/api/session", {
-      method: "DELETE",
-    });
-    if (response.ok) {
-      router.push("/login");
-    } else {
-      const { error } = await response.json();
-      alert("Logout failed: " + error);
-    }
-  };
+  function handleLogout() {
+    router.push("/logout");
+  }
 
   return (
     <div className={`${styles.sidebar} ${isOpen ? styles.active : ""}`}>
