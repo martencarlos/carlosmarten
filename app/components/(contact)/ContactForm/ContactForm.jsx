@@ -1,97 +1,79 @@
-'use client';
-
-import { useState } from 'react';
-import styles from './contact.module.css';
-import { FaUser, FaEnvelope, FaCommentDots } from 'react-icons/fa'; // Importing icons
+"use client";
+import { useState } from "react";
+import styles from "./contact.module.css";
+import { FaUser, FaEnvelope, FaCommentDots } from "react-icons/fa"; // Importing icons
+import { addContact } from "@actions/actions"; // Import the server action
 
 export default function ContactForm() {
-  console.log('Contact form loaded');
-
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [status, setStatus] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(false); // Manage loading state
+  const [submitted, setSubmitted] = useState(false); // Manage success state
+  const [error, setError] = useState(null); // Manage error state
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+    e.preventDefault(); // Prevent the default form submission
+    setLoading(true); // Set loading to true when submission starts
+    setError(null); // Reset error state
+    setSubmitted(false); // Reset submitted state
+
+    const formData = new FormData(e.target); // Collect the form data
 
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, message }),
-      });
+      // Send the form data using the server action
+      await addContact(formData);
 
-      if (res.ok) {
-        setStatus('success');
-        setName('');
-        setEmail('');
-        setMessage('');
-      } else {
-        setStatus('error');
-      }
-    } catch (error) {
-      setStatus('error');
+      // If successful, set the submitted state
+      setSubmitted(true);
+    } catch (err) {
+      // If there's an error, store it in state
+      setError("There was an issue submitting the form.");
+    } finally {
+      setLoading(false); // Stop the loading state once submission is complete
     }
-
-    setIsSubmitting(false);
   };
 
-  if (status === 'success') {
-    return (
-      <div className={`${styles.status} ${styles.statusSuccess}`}>
-        Message sent successfully! We&apos;ll get back to you soon.
-      </div>
-    );
-  }
-
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
-      <div className={styles.formGroup}>
-        <FaUser className={styles.icon} />
-        <input
-          type="text"
-          id="name"
-          placeholder="Your Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          className={styles.input}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <FaEnvelope className={styles.icon} />
-        <input
-          type="email"
-          id="email"
-          placeholder="Your Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className={styles.input}
-        />
-      </div>
-      <div className={styles.formGroup}>
-        <FaCommentDots className={styles.icon} />
-        <textarea
-          id="message"
-          placeholder="Your Message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          required
-          className={styles.textarea}
-        />
-      </div>
-      <button type="submit" className={styles.button} disabled={isSubmitting}>
-        {isSubmitting ? <span className={styles.spinner}></span> : 'Send'}
-      </button>
-      {status === 'error' && (
-        <div className={`${styles.status} ${styles.statusError}`}>
-          Failed to send message. Please try again.
-        </div>
+    <div>
+      {submitted ? (
+        <p className={styles.successMessage}>
+          Thank you! Your message has been sent.
+        </p>
+      ) : (
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.formGroup}>
+            <FaUser className={styles.icon} />
+            <input
+              type="text"
+              name="name"
+              placeholder="Your Name"
+              required
+              className={styles.input}
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <FaEnvelope className={styles.icon} />
+            <input
+              type="email"
+              name="email"
+              placeholder="Your Email"
+              required
+              className={styles.input}
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <FaCommentDots className={styles.icon} />
+            <textarea
+              name="message"
+              placeholder="Your Message"
+              required
+              className={styles.textarea}
+            />
+          </div>
+          <button type="submit" className={styles.button} disabled={loading}>
+            {loading ? "Sending..." : "Send"}
+          </button>
+          {error && <p className={styles.errorMessage}>{error}</p>}
+        </form>
       )}
-    </form>
+    </div>
   );
 }

@@ -1,38 +1,12 @@
-"use client";
+import { FaUser, FaEnvelope, FaComment } from "react-icons/fa";
+import styles from "./contactslist.module.css";
+import LoadingComponent from "@components/(aux)/LoadingComponent/LoadingComponent";
 
-import React, { useEffect, useState } from 'react';
-import { FaUser, FaEnvelope, FaComment } from 'react-icons/fa';
-import styles from './contactslist.module.css';
-import LoadingComponent from '@components/(aux)/LoadingComponent/LoadingComponent';
-
-const ContactsList = () => {
-
+export default function ContactsList({ contacts }) {
   console.log("ContactsList loaded");
-  const [contacts, setContacts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchContacts = async () => {
-      try {
-        const response = await fetch('/api/contact');
-        if (!response.ok) {
-          throw new Error('Failed to fetch contacts');
-        }
-        const data = await response.json();
-        setContacts(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchContacts();
-  }, []);
-
-  if (loading) return <LoadingComponent />;
-  if (error) return <p className={styles.message}>Error: {error}</p>;
+  if (!contacts) {
+    return <LoadingComponent />;
+  }
 
   return (
     <div className={styles.container}>
@@ -56,6 +30,4 @@ const ContactsList = () => {
       ))}
     </div>
   );
-};
-
-export default ContactsList;
+}

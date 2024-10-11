@@ -1,20 +1,20 @@
 // components/Dashboard.js
 
-'use client';
+import ContactsList from "@components/(auth)/ContactsList/ContactsList";
+import styles from "./page.module.css";
+import { sql } from "@vercel/postgres";
 
-import ContactsList from '@components/(auth)/ContactsList/ContactsList';
-import styles from './page.module.css';
+export const revalidate = 0; // Disable ISR and force fresh data on every request
 
-const Contacts = () => {
-
+export default async function Contacts() {
   console.log("Dashboard - Contacts loaded");
+  const res = await sql`SELECT * FROM contacts ORDER BY id DESC`;
+  const contacts = res.rows;
 
   return (
     <div className={styles.contactsMain}>
       <h2>List of people who contacted</h2>
-      <ContactsList />
+      <ContactsList contacts={contacts} />
     </div>
   );
-};
-
-export default Contacts;
+}
