@@ -1,9 +1,14 @@
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from "@lib/supabaseClient";
 
 export async function GET() {
-  const { data: { session }, error } = await supabase.auth.getSession();
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession();
   if (error) {
-    return new Response(JSON.stringify({ error: error.message }), { status: 401 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 401,
+    });
   }
   return new Response(JSON.stringify({ session }), { status: 200 });
 }
@@ -19,20 +24,24 @@ export async function POST(request) {
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 400,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   }
 
   return new Response(JSON.stringify(data), {
     status: 200,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { "Content-Type": "application/json" },
   });
 }
 
 export async function DELETE() {
   const { error } = await supabase.auth.signOut();
   if (error) {
-    return new Response(JSON.stringify({ error: error.message }), { status: 401 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 401,
+    });
   }
-  return new Response(JSON.stringify({ message: 'Logged out successfully' }), { status: 200 });
+  return new Response(JSON.stringify({ message: "Logged out successfully" }), {
+    status: 200,
+  });
 }

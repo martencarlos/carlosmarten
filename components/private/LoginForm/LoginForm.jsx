@@ -1,32 +1,31 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
+import styles from "./page.module.css";
 
-import styles from './page.module.css';
-
-const LoginForm = ({setSession}) => {
-
+export default function LoginForm() {
   console.log("LoginForm loaded");
+  const router = useRouter();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const response = await fetch('/api/session', {
-      method: 'POST',
+    const response = await fetch("/api/session", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
     });
 
     if (response.ok) {
-      setSession(response.json()); // Update session state
-
+      router.push("/dashboard");
     } else {
       const { error } = await response.json();
       setErrorMessage(error); // Set the error message to display
@@ -56,11 +55,12 @@ const LoginForm = ({setSession}) => {
             required
           />
         </div>
-        <button className={styles.button} type="submit">Login</button>
-        {errorMessage && <p className={styles.error}>{errorMessage}</p>} {/* Display error message if any */}
+        <button className={styles.button} type="submit">
+          Login
+        </button>
+        {errorMessage && <p className={styles.error}>{errorMessage}</p>}{" "}
+        {/* Display error message if any */}
       </form>
     </div>
   );
-};
-
-export default LoginForm;
+}

@@ -1,6 +1,6 @@
 import { FaUser, FaEnvelope, FaComment } from "react-icons/fa";
 import styles from "./contactslist.module.css";
-import LoadingComponent from "@components/(aux)/LoadingComponent/LoadingComponent";
+import LoadingComponent from "components/(aux)/LoadingComponent/LoadingComponent";
 
 export default function ContactsList({ contacts }) {
   console.log("ContactsList loaded");

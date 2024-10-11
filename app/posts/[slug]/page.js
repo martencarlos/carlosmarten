@@ -1,8 +1,8 @@
 // app/posts/[slug]/page.js
 import { notFound } from "next/navigation";
-import Post from "@components/(Post)/Post/Post";
+import Post from "components/Article/Post/Post";
 import styles from "./page.module.css";
-import BackButton from "@components/(Post)/BackButton/BackButton";
+import BackButton from "components/Article/BackButton/BackButton";
 
 async function getPost(slug) {
   console.log("fetching post loaded");

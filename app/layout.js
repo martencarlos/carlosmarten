@@ -1,19 +1,18 @@
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import { Roboto } from 'next/font/google'
+import { Roboto } from "next/font/google";
 
-import Navbar from "./components/Navbar/Navbar";
-import Footer from "@components/Footer/Footer";
+import Navbar from "../components/Navbar/Navbar";
+import Footer from "components/Footer/Footer";
 
 // Initialize the font
 const roboto = Roboto({
-  weight: ['400', '700'],
-  subsets: ['latin'],
-  display: 'swap',
-})
-
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata = {
   title: "Carlos Marten",

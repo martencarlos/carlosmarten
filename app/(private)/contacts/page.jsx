@@ -1,6 +1,6 @@
 // components/Dashboard.js
 
-import ContactsList from "@components/(auth)/ContactsList/ContactsList";
+import ContactsList from "components/private/ContactsList/ContactsList";
 import styles from "./page.module.css";
 import { sql } from "@vercel/postgres";
 

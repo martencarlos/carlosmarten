@@ -1,5 +1,5 @@
 import styles from "./page.module.css";
-import Card from "@components/(Post)/PostCard/PostCard";
+import Card from "components/Article/PostCard/PostCard";
 const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
 
 async function getCategories() {

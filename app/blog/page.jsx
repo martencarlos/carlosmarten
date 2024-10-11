@@ -1,5 +1,5 @@
 import styles from "./page.module.css";
-import BlogContent from "@components/(blog)/BlogContent/BlogContent";
+import BlogContent from "components/Blog/BlogContent/BlogContent";
 
 async function getPosts() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;

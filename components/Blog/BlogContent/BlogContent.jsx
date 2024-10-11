@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 
-import PostList from "@components/(Post)/PostList/PostList";
-import CategoryList from "@components/(blog)/CategoryList/CategoryList";
-import SearchBar from "@components/(blog)/SearchBar/SearchBar";
+import PostList from "components/Article/PostList/PostList";
+import CategoryList from "components/Blog/CategoryList/CategoryList";
+import SearchBar from "components/Blog/SearchBar/SearchBar";
 
 export default function Blog({ posts, categories }) {
   console.log("Blog Content loaded");

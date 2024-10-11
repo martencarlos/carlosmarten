@@ -2,7 +2,7 @@
 import { useState } from "react";
 import styles from "./contact.module.css";
 import { FaUser, FaEnvelope, FaCommentDots } from "react-icons/fa"; // Importing icons
-import { addContact } from "@actions/actions"; // Import the server action
+import { addContact } from "actions/actions"; // Import the server action
 
 export default function ContactForm() {
   const [loading, setLoading] = useState(false); // Manage loading state

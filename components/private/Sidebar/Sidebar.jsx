@@ -42,11 +42,11 @@ const Sidebar = () => {
           <li className={pathname === "/dashboard" ? styles.activeLink : ""}>
             <Link href="/dashboard">Overview</Link>
           </li>
-          <li className={pathname === "/dashboard/contacts" ? styles.activeLink : ""}>
-            <Link href="/dashboard/contacts">Contacts</Link>
+          <li className={pathname === "/contacts" ? styles.activeLink : ""}>
+            <Link href="/contacts">Contacts</Link>
           </li>
-          <li className={pathname === "/dashboard/settings" ? styles.activeLink : ""}>
-            <Link href="/dashboard/settings">Settings</Link>
+          <li className={pathname === "/settings" ? styles.activeLink : ""}>
+            <Link href="/settings">Settings</Link>
           </li>
         </ul>
       </nav>
