@@ -9,7 +9,6 @@ export default function PostCard({ post }) {
   const { resolvedTheme } = useTheme();
 
   const createDate = new Date(post.date).toLocaleDateString();
-  // const lastModified = new Date(post.modified).toLocaleDateString();
 
   const categories =
     post._embedded?.["wp:term"]?.[0]?.map((category) => category.name) || [];
@@ -40,20 +39,12 @@ export default function PostCard({ post }) {
             </Link>
           ))}
         </div>
-        {/* Uncomment if you want to display tags
-          <div className={styles.card_tags}>
-            {tags.map(tag => (
-              <span key={tag} className={styles.card_tag}>{tag}</span>
-            ))}
-          </div>
-          */}
       </div>
       <div className={styles.card_meta}>
         {/*<p className={styles.card_author}>By {author}</p>*/}
-        <p className={styles.card_date} suppressHydrationWarning >Created: {createDate}</p>
-        {/* Uncomment if you want to display last modified date
-          <p className={styles.card_date}>Last modified: {lastModified}</p>
-          */}
+        <p className={styles.card_date} suppressHydrationWarning>
+          Created: {createDate}
+        </p>
       </div>
     </div>
   );
