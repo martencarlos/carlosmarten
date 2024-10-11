@@ -21,7 +21,7 @@ const Sidebar = () => {
       method: "DELETE",
     });
     if (response.ok) {
-      router.push("/admin");
+      router.push("/login");
     } else {
       const { error } = await response.json();
       alert("Logout failed: " + error);
@@ -42,11 +42,19 @@ const Sidebar = () => {
           <li className={pathname === "/dashboard" ? styles.activeLink : ""}>
             <Link href="/dashboard">Overview</Link>
           </li>
-          <li className={pathname === "/contacts" ? styles.activeLink : ""}>
-            <Link href="/contacts">Contacts</Link>
+          <li
+            className={
+              pathname === "/dashboard/contacts" ? styles.activeLink : ""
+            }
+          >
+            <Link href="/dashboard/contacts">Contacts</Link>
           </li>
-          <li className={pathname === "/settings" ? styles.activeLink : ""}>
-            <Link href="/settings">Settings</Link>
+          <li
+            className={
+              pathname === "/dashboard/settings" ? styles.activeLink : ""
+            }
+          >
+            <Link href="/dashboard/settings">Settings</Link>
           </li>
         </ul>
       </nav>

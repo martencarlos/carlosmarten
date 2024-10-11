@@ -20,10 +20,10 @@ const DashboardLayout = ({ children }) => {
           // setSession(session); // Set session if valid
           setLoading(false); // Stop loading
         } else {
-          router.push("/admin"); // Redirect to login page if no session
+          router.push("/login"); // Redirect to login page if no session
         }
       } else {
-        router.push("/admin"); // Redirect on error
+        router.push("/error"); // Redirect on error
       }
     };
 
