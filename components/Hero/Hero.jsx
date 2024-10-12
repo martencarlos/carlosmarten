@@ -17,13 +17,14 @@ const Hero = () => {
     <div
       className={`${styles.heroSection} ${theme === "dark" ? styles.dark : ""}`}
     >
-      {/* Left Image */}
+      {/* Left Image 
       <motion.div
         className={styles.imageContainer}
         initial={{ opacity: 0, x: -100 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8 }}
-      >
+      >*/}
+      <div className={styles.imageContainer}>
         <Image
           src="/images/me.png"
           alt="Hero Image"
@@ -32,15 +33,17 @@ const Hero = () => {
           height={200}
           className={styles.roundedImage}
         />
-      </motion.div>
+      </div>
+      {/*</motion.div>*/}
 
-      {/* Right Text */}
+      {/* Right Text 
       <motion.div
         className={styles.textContainer}
         initial={{ opacity: 0, x: 100 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8 }}
-      >
+      >*/}
+      <div className={styles.textContainer}>
         <h2 className={styles.title}>
           Interested in Business Technology, Design, Projects and News?
         </h2>
@@ -62,7 +65,8 @@ const Hero = () => {
           technology. Join me as we explore new ideas and bring innovative
           concepts to life!
         </p>
-      </motion.div>
+      </div>
+      {/*  </motion.div>*/}
     </div>
   );
 };
