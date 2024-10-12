@@ -14,11 +14,15 @@ function calculateReadingTime(text) {
   const readingTimeMinutes = Math.ceil(wordCount / wordsPerMinute);
   return readingTimeMinutes;
 }
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
 
 export default function Post({ post }) {
   console.log("Post loaded");
   const { resolvedTheme } = useTheme();
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [time, setTime] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,11 +36,10 @@ export default function Post({ post }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  let time = calculateReadingTime(post.content);
+  useEffect(() => {
+    const time = calculateReadingTime(post.content);
+    setTime(time);
+  }, [post.content]);
 
   try {
     return (
