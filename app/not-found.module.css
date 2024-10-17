@@ -1,0 +1,21 @@
+.notfoundcontainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 177px);
+    width: 100%;
+    gap: 20px;
+}
+
+.allpostsbutton{
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: var(--third-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+.allpostsbutton:hover{
+    background-color: var(--fourth-color);
+}

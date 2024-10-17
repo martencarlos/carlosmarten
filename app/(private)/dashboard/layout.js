@@ -7,18 +7,21 @@ import Sidebar from "@components/private/Sidebar/Sidebar"; // Import your Sideba
 
 export default async function DashboardLayout({ children }) {
   const session = await auth();
+  console.log(session);
 
-  if (!session.user)
+  if (!session) {
     return (
-      <div>
-        <h1>Access Denied</h1>
+      <div className={styles.layout}>
+        <h1 className={styles.error}>Access Denied</h1>
         <p>You must be signed in to access this page.</p>
       </div>
     );
-  return (
-    <div className={styles.layout}>
-      <Sidebar />
-      <main className={styles.mainContent}>{children}</main>
-    </div>
-  );
+  } else {
+    return (
+      <div className={styles.layout}>
+        <Sidebar />
+        <main className={styles.mainContent}>{children}</main>
+      </div>
+    );
+  }
 }
