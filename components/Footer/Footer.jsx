@@ -15,8 +15,8 @@ const Footer = () => {
           <Link href="/contact" className={styles.link}>
             Contact
           </Link>
-          <Link href="/privacy" className={styles.link}>
-            Privacy
+          <Link href="/login" className={styles.link}>
+            Admin
           </Link>
         </nav>
       </div>
