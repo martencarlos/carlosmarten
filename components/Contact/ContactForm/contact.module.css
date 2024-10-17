@@ -50,10 +50,11 @@
 
 
 .input:focus, .textarea:focus {
-  border-color: #0070f3;
+  border-color: var(--third-color);
   outline: none;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 112, 243, 0.2);
+  animation: pulse 2s infinite;
 }
 
 .textarea {
@@ -65,7 +66,7 @@
   width: 100%;
   padding: 14px;
   margin-top:30px;
-  background-color: #0070f3;
+  background-color: var(--third-color);
   color: white;
   font-size: 1.1rem;
   font-weight: bold;
@@ -76,8 +77,8 @@
 }
 
 .button:hover {
-  background-color: #005bb5;
-  transform: translateY(-3px);
+  background-color: rgb(62, 77, 162);
+  transform: translateY(-2px);
 }
 
 .button:disabled {
@@ -87,7 +88,7 @@
 
 .successMessage, .errorMessage {
   text-align: center;
-  color: #0070f3;
+  color: var(--third-color);
   margin-top: 20px;
 }
 
@@ -109,8 +110,8 @@
 .successTitle {
   font-size: 3rem;
   font-weight: bold;
-  color: #0070f3;
-  background: linear-gradient(90deg, #0070f3, #00c6ff);
+  color: var(--third-color);
+  background: linear-gradient(90deg, var(--third-color), #00c6ff);
   -webkit-background-clip: text;
   color: transparent;
   margin-bottom: 10px;
@@ -145,6 +146,20 @@
     opacity: 1;
   }
 }
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--second-color);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+  }
+}
+
+
 
 
 /* Media Query for Desktop */
