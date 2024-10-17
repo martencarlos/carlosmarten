@@ -4,21 +4,17 @@ import { useState } from "react";
 import Link from "next/link";
 import { FaBars, FaTimes } from "react-icons/fa";
 import styles from "./sidebar.module.css";
-import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import { SignOut } from "@components/(auth)/signout-button/signout-button";
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
+  const isOpen = true;
+
   const pathname = usePathname(); // To highlight active link
 
   const toggleSidebar = () => {
-    setIsOpen(!isOpen);
+    is(!isOpen);
   };
-
-  function handleLogout() {
-    router.push("/logout");
-  }
 
   return (
     <div className={`${styles.sidebar} ${isOpen ? styles.active : ""}`}>
@@ -52,9 +48,7 @@ const Sidebar = () => {
       </nav>
 
       <footer className={styles.sidebarFooter}>
-        <button className={styles.logout} onClick={handleLogout}>
-          Logout
-        </button>
+        <SignOut className={styles.logout} />
       </footer>
     </div>
   );
