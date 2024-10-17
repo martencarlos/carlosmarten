@@ -1,0 +1,24 @@
+/* signin-button.module.css */
+.signinbutton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: #24292e; /* GitHub black */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.signinbutton:hover {
+  background-color: #333;
+}
+
+.icon {
+  margin-right: 8px; /* Space between the icon and text */
+  font-size: 1.5rem;
+}

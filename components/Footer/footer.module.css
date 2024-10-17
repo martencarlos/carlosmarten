@@ -26,6 +26,13 @@
   text-decoration: underline;
 }
 
+@media (max-width: 380px){
+  .content {
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
 
 
 /* Dark mode styles are handled by CSS variables */

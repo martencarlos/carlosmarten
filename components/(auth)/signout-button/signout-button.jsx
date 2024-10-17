@@ -1,14 +1,14 @@
-import { signOut } from "/auth.js";
+"use client"; // This is a client component
+import { signOut } from "next-auth/react";
+import styles from "@components/private/Sidebar/sidebar.module.css";
 
-export function SignOut() {
+export default function SignOutButton() {
   return (
-    <form
-      action={async () => {
-        "use server";
-        await signOut();
-      }}
+    <button
+      className={styles.logout}
+      onClick={() => signOut({ callbackUrl: "/login" })}
     >
-      <button type="submit">Sign Out</button>
-    </form>
+      Sign Out
+    </button>
   );
 }

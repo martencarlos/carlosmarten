@@ -2,10 +2,10 @@
 
 .layout {
   display: flex;
-  min-height: calc(100vh - 180px);
+  flex-direction: column;
+  min-height: calc(100vh - 177px);
   justify-content: center;
   align-items: center;
-  /* height: 100vh; */
 
 }
 
@@ -17,4 +17,10 @@
   align-items: center;
   justify-content: center;
   /* background-color: #f4f4f4; */
+}
+
+.error{
+  font-size: 2rem;
+  font-weight: bold;
+  color: rgb(199, 69, 69)
 }

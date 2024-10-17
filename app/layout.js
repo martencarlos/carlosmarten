@@ -9,9 +9,11 @@ import Footer from "components/Footer/Footer";
 
 // Initialize the font
 const roboto = Roboto({
-  weight: ["400", "700"],
-  subsets: ["latin"],
   display: "swap",
+  preload: true,
+  weight: ["400", "500", "700"],
+  style: ["normal"],
+  subsets: ["latin"],
 });
 
 export const metadata = {

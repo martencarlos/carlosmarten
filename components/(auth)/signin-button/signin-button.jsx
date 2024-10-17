@@ -1,14 +1,16 @@
-import { signIn } from "/auth.js";
+"use client";
+import { signIn } from "next-auth/react";
+import { FaGithub } from "react-icons/fa";
+import styles from "./signin-button.module.css";
 
-export function SignIn() {
+export default function SignInButton() {
   return (
-    <form
-      action={async () => {
-        "use server";
-        await signIn("github", { redirectTo: "/dashboard" });
-      }}
+    <button
+      className={styles.signinbutton}
+      onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
     >
-      <button type="submit">Sign in</button>
-    </form>
+      <FaGithub className={styles.icon} /> {/* GitHub Icon */}
+      Sign In with GitHub
+    </button>
   );
 }

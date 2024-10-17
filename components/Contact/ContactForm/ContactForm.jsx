@@ -3,61 +3,70 @@ import { useState } from "react";
 import styles from "./contact.module.css";
 import { FaUser, FaEnvelope, FaCommentDots } from "react-icons/fa"; // Importing icons
 import { addContact } from "actions/actions"; // Import the server action
+import confetti from "canvas-confetti"; // Import canvas-confetti for the effect
 
 export default function ContactForm() {
-  const [loading, setLoading] = useState(false); // Manage loading state
-  const [submitted, setSubmitted] = useState(false); // Manage success state
-  const [error, setError] = useState(null); // Manage error state
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent the default form submission
-    setLoading(true); // Set loading to true when submission starts
-    setError(null); // Reset error state
-    setSubmitted(false); // Reset submitted state
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setSubmitted(false);
 
-    const formData = new FormData(e.target); // Collect the form data
+    const formData = new FormData(e.target);
 
     try {
-      // Send the form data using the server action
       await addContact(formData);
-
-      // If successful, set the submitted state
       setSubmitted(true);
+      // Trigger confetti when form is successfully submitted
+      confetti({
+        particleCount: 150,
+        spread: 60,
+        origin: { y: 0.6 },
+        zIndex: 10000,
+      });
     } catch (err) {
-      // If there's an error, store it in state
       setError("There was an issue submitting the form.");
     } finally {
-      setLoading(false); // Stop the loading state once submission is complete
+      setLoading(false);
     }
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       {submitted ? (
-        <p className={styles.successMessage}>
-          Thank you! Your message has been sent.
-        </p>
+        <div className={styles.successMessageContainer}>
+          <h1 className={styles.successTitle}>🎉 Thank you! 🎉</h1>
+          <p className={styles.successText}>
+            Your message has been successfully sent.
+          </p>
+        </div>
       ) : (
         <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.formGroup}>
-            <FaUser className={styles.icon} />
-            <input
-              type="text"
-              name="name"
-              placeholder="Your Name"
-              required
-              className={styles.input}
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <FaEnvelope className={styles.icon} />
-            <input
-              type="email"
-              name="email"
-              placeholder="Your Email"
-              required
-              className={styles.input}
-            />
+          <div className={styles.row}>
+            <div className={styles.formGroup}>
+              <FaUser className={styles.icon} />
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                required
+                className={styles.input}
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <FaEnvelope className={styles.icon} />
+              <input
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                required
+                className={styles.input}
+              />
+            </div>
           </div>
           <div className={styles.formGroup}>
             <FaCommentDots className={styles.icon} />
