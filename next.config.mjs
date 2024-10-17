@@ -31,6 +31,19 @@ const nextConfig = {
       },
     ];
   },
+  async headers() {
+    return [
+      {
+        source: "/wordpress/:path*",
+        headers: [
+          {
+            key: "x-forwarded-host",
+            value: "www.carlosmarten.com",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 // Use ES Modules syntax for exporting
