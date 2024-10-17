@@ -12,7 +12,7 @@ const Sidebar = () => {
   const pathname = usePathname(); // To highlight active link
 
   const toggleSidebar = () => {
-    is(!isOpen);
+    setIsOpen(!isOpen);
   };
 
   return (
