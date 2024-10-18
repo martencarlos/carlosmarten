@@ -77,7 +77,7 @@
 }
 
 .button:hover {
-  background-color: rgb(62, 77, 162);
+  background-color: var(--fourth-color);
   transform: translateY(-2px);
 }
 

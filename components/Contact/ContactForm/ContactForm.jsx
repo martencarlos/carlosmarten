@@ -18,21 +18,16 @@ export default function ContactForm() {
 
     const formData = new FormData(e.target);
 
-    try {
-      await addContact(formData);
-      setSubmitted(true);
-      // Trigger confetti when form is successfully submitted
-      confetti({
-        particleCount: 150,
-        spread: 60,
-        origin: { y: 0.6 },
-        zIndex: 10000,
-      });
-    } catch (err) {
-      setError("There was an issue submitting the form.");
-    } finally {
-      setLoading(false);
-    }
+    await addContact(formData);
+    setSubmitted(true);
+    setLoading(false);
+    // Trigger confetti when form is successfully submitted
+    confetti({
+      particleCount: 150,
+      spread: 60,
+      origin: { y: 0.6 },
+      zIndex: 10000,
+    });
   };
 
   return (
