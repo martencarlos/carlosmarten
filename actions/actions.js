@@ -18,7 +18,9 @@ export async function fetchWordPressPage(slug) {
   const wpUrl = `https://${process.env.NEXT_PUBLIC_WP_URL}/${slug}`;
 
   // Fetch the content from the WordPress site
-  const response = await fetch(wpUrl);
+  const response = await fetch(wpUrl, {
+    next: { cache: "no-store" }, // This disables caching
+  });
 
   if (!response.ok) {
     console.error("Error fetching WordPress content:", response.status);
