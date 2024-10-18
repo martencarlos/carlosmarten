@@ -19,6 +19,11 @@ export async function fetchWordPressPage(slug) {
 
   // Fetch the content from the WordPress site
   const response = await fetch(wpUrl, {
+    headers: {
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+      Pragma: "no-cache",
+      Expires: "0",
+    },
     next: { cache: "no-store" }, // This disables caching
   });
 
