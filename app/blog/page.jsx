@@ -31,10 +31,10 @@ export default async function Blog() {
   return (
     <div className={styles.blogMain}>
       <div className={styles.blogHeader}>
-        <h1 className={styles.blogTitle}>Welcome to My Blog</h1>
-        <p className={styles.subTitle}>
+        <h2 className={styles.blogTitle}>
           Insights on Technology, Consulting, and Digital Transformation.
-        </p>
+        </h2>
+        {/* <p className={styles.subTitle}>x</p> */}
         <p className={styles.blogDescription}>
           Explore in-depth articles on the latest in IT consulting, cutting-edge
           technologies, and digital strategies that drive business success. From

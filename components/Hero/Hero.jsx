@@ -44,9 +44,9 @@ const Hero = () => {
         transition={{ duration: 0.8 }}
       >*/}
       <div className={styles.textContainer}>
-        <h2 className={styles.title}>
+        <h3 className={styles.title}>
           Interested in Business Technology, Design, Projects and News?
-        </h2>
+        </h3>
         <br />
         <p className={styles.subtitle}>
           As an IT Business Consultant, I am passionate about new technologies

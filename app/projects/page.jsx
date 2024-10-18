@@ -1,25 +1,25 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import styles from './page.module.css';
+import Link from "next/link";
+import Image from "next/image";
+import styles from "./page.module.css";
 
 const projects = [
   {
     id: 1,
-    name: 'Holiday booking project',
-    image: '/images/feature_holiday.png',
-    url: 'https://tadelfia.carlosmarten.com/',
+    name: "Holiday booking project",
+    image: "/images/feature_holiday.png",
+    url: "https://tadelfia.carlosmarten.com/",
   },
   {
     id: 2,
-    name: 'E-commerce project',
-    image: '/images/feature_webframe.png',
-    url: 'https://webframe.carlosmarten.com/',
+    name: "E-commerce project",
+    image: "/images/feature_webframe.png",
+    url: "https://webframe.carlosmarten.com/",
   },
   {
     id: 3,
-    name: 'Blog project',
-    image: '/images/feature_blog.png',
-    url: 'https://project-blog.carlosmarten.com/',
+    name: "Blog project",
+    image: "/images/feature_blog.png",
+    url: "https://project-blog.carlosmarten.com/",
   },
 ];
 
@@ -44,8 +44,9 @@ export default function ProjectsPage() {
   return (
     <div className={styles.projectsContainer}>
       <h1 className={styles.pageTitle}>Web Projects</h1>
+      <br />
       <h2 className={styles.pageSubTitle}>
-        Check out these live projects
+        Explore the latest web implementations
       </h2>
 
       <div className={styles.pageDescription}>
@@ -55,13 +56,14 @@ export default function ProjectsPage() {
         </p>
         <br />
         <p>
-          From a dynamic holiday booking platform to an intuitive e-commerce site,
-          and a versatile blog, each project reflects my focus on creating functional,
-          user-friendly solutions.
+          From a dynamic holiday booking platform to an intuitive e-commerce
+          site, and a versatile blog, each project reflects my focus on creating
+          functional, user-friendly solutions.
         </p>
         <br />
         <p>
-          Explore these projects to see the blend of creativity and technology that drives my work.
+          Explore these projects to see the blend of creativity and technology
+          that drives my work.
         </p>
       </div>
 
