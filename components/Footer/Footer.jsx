@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SiSailsdotjs } from "react-icons/si";
 
 import styles from "./footer.module.css";
 
@@ -15,8 +16,8 @@ const Footer = () => {
           <Link href="/contact" className={styles.link}>
             Contact
           </Link>
-          <Link href="/login" className={styles.link}>
-            Admin
+          <Link href="/dashboard" className={styles.link}>
+            <SiSailsdotjs />
           </Link>
         </nav>
       </div>

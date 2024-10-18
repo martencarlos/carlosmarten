@@ -8,10 +8,10 @@
 }
 
 .form {
-  background-color: #fff;
+  /* background-color: #fff; */
   padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  /* border-radius: 16px; */
+  /* box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1); */
   width: 100%;
   max-width: 600px;
   transition: all 0.3s ease;
@@ -33,7 +33,7 @@
 .icon {
   position: absolute;
   left: 15px;
-  color: #666;
+  color: #b7b7b7;
   font-size: 1.2rem;
 }
 
@@ -43,7 +43,7 @@
   border-radius: 12px;
   border: 1px solid #ddd;
   font-size: 1rem;
-  background-color: #f9f9f9;
+  /* background-color: #f9f9f9; */
   transition: all 0.3s ease;
 }
 
@@ -52,8 +52,8 @@
 .input:focus, .textarea:focus {
   border-color: var(--third-color);
   outline: none;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 112, 243, 0.2);
+  /* background-color: #fff; */
+  box-shadow: 0 0 10px var(--first-color);
   animation: pulse 2s infinite;
 }
 
@@ -111,7 +111,7 @@
   font-size: 3rem;
   font-weight: bold;
   color: var(--third-color);
-  background: linear-gradient(90deg, var(--third-color), #00c6ff);
+  background: linear-gradient(90deg, var(--third-color), var(--second-color));
   -webkit-background-clip: text;
   color: transparent;
   margin-bottom: 10px;
@@ -169,5 +169,11 @@
   }
   .form {
     padding: 20px;
+  }
+  .successTitle {
+    font-size: 30px;
+  }
+  .successText {
+    font-size: 18px;
   }
 }

@@ -9,6 +9,13 @@
   }
 }
 
+.loadingContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 177px);
+}
+
 .loader {
   display: flex;
   justify-content: center;

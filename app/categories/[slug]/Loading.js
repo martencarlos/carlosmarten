@@ -1,6 +1,11 @@
-import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
+import LoadingComponent from "@components/(aux)/LoadingComponent/LoadingComponent";
+import styles from "@components/(aux)/LoadingComponent/loadingcomponent.module.css";
 
 export default function Loading() {
   // Or a custom loading skeleton component
-  return <LoadingComponent />;
+  return (
+    <div className={styles.loadingContainer}>
+      <LoadingComponent />
+    </div>
+  );
 }
