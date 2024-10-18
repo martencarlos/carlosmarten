@@ -12,3 +12,20 @@ export async function addContact(formData) {
     `;
   revalidatePath("/contact");
 }
+
+export async function fetchWordPressPage(slug) {
+  // Construct the URL to fetch the page from WordPress
+  const wpUrl = `https://${process.env.NEXT_PUBLIC_WP_URL}/${slug}`;
+
+  // Fetch the content from the WordPress site
+  const response = await fetch(wpUrl);
+
+  if (!response.ok) {
+    console.error("Error fetching WordPress content:", response.status);
+    return null;
+  }
+
+  // Return the HTML content
+  const html = await response.text();
+  return html;
+}

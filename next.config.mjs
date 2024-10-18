@@ -23,27 +23,14 @@ const nextConfig = {
       },
     ],
   },
-  async rewrites() {
-    return [
-      {
-        source: "/wordpress/:path*",
-        destination: `https://${process.env.NEXT_PUBLIC_WP_URL}/:path*`, // URL of your WordPress server
-      },
-    ];
-  },
-  async headers() {
-    return [
-      {
-        source: "/wordpress/:path*",
-        headers: [
-          {
-            key: "x-forwarded-host",
-            value: "www.carlosmarten.com",
-          },
-        ],
-      },
-    ];
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: "/wordpress/:path*",
+  //       destination: `https://${process.env.NEXT_PUBLIC_WP_URL}/:path*`, // URL of your WordPress server
+  //     },
+  //   ];
+  // },
 };
 
 // Use ES Modules syntax for exporting
