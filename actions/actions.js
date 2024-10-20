@@ -13,6 +13,8 @@ export async function addContact(formData) {
   revalidatePath("/contact");
 }
 
+const dynamic = "force-dynamic";
+
 export async function fetchWordPressPage(slug) {
   const wpUrl = `https://${
     process.env.NEXT_PUBLIC_WP_URL
@@ -24,7 +26,7 @@ export async function fetchWordPressPage(slug) {
       Pragma: "no-cache",
       Expires: "0",
     },
-    next: { cache: "no-store" },
+    next: { revalidate: 0 },
   });
 
   if (!response.ok) {
