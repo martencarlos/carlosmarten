@@ -21,6 +21,12 @@ const nextConfig = {
         port: "", // Leave this empty if there's no specific port
         pathname: "/**", // Wildcard to allow all image paths
       },
+      {
+        protocol: "https", // Specify the protocol (http or https)
+        hostname: "rocketmedia.b-cdn.net", // Domain name
+        port: "", // Leave this empty if there's no specific port
+        pathname: "/**", // Wildcard to allow all image paths
+      },
     ],
   },
   // async rewrites() {

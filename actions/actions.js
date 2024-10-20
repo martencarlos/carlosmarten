@@ -14,17 +14,17 @@ export async function addContact(formData) {
 }
 
 export async function fetchWordPressPage(slug) {
-  // Construct the URL to fetch the page from WordPress
-  const wpUrl = `https://${process.env.NEXT_PUBLIC_WP_URL}/${slug}`;
+  const wpUrl = `https://${
+    process.env.NEXT_PUBLIC_WP_URL
+  }/${slug}?t=${new Date().getTime()}`; // Cache busting with timestamp
 
-  // Fetch the content from the WordPress site
   const response = await fetch(wpUrl, {
     headers: {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
       Pragma: "no-cache",
       Expires: "0",
     },
-    next: { cache: "no-store" }, // This disables caching
+    next: { cache: "no-store" },
   });
 
   if (!response.ok) {
@@ -32,7 +32,6 @@ export async function fetchWordPressPage(slug) {
     return null;
   }
 
-  // Return the HTML content
   const html = await response.text();
   return html;
 }

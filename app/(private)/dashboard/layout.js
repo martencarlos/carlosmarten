@@ -9,14 +9,16 @@ import Sidebar from "@components/private/Sidebar/Sidebar"; // Import your Sideba
 export default async function DashboardLayout({ children }) {
   const session = await auth();
 
-  if (!session) {
-    redirect("/login");
-  } else {
-    return (
-      <div className={styles.layout}>
-        <Sidebar />
-        <main className={styles.mainContent}>{children}</main>
-      </div>
-    );
-  }
+  if (!session) redirect("/login");
+
+  return (
+    <div className={styles.layout}>
+      {session && (
+        <div>
+          <Sidebar />
+          <main className={styles.mainContent}>{children}</main>
+        </div>
+      )}
+    </div>
+  );
 }

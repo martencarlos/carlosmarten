@@ -21,6 +21,13 @@ const projects = [
     image: "/images/feature_blog.png",
     url: "https://project-blog.carlosmarten.com/",
   },
+  {
+    id: 4,
+    name: "Wordpress pages",
+    image:
+      "https://rocketmedia.b-cdn.net/wp-content/uploads/2021/11/wordpress-ventajas-banner.png",
+    url: `${process.env.HOST}/wordpress/`,
+  },
 ];
 
 const ProjectCard = ({ project }) => (
@@ -72,6 +79,8 @@ export default function ProjectsPage() {
           <ProjectCard key={project.id} project={project} />
         ))}
       </div>
+      <br />
+      <br />
     </div>
   );
 }
