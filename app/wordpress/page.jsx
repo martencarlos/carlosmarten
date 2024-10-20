@@ -8,13 +8,13 @@ export default async function WordPress() {
     return <div className={styles.pageContainer}>Page not found</div>;
   } else {
     // console.log(htmlContent);
-    const updatedContent = htmlContent.replace(
-      /https:\/\/wp\.carlosmarten\.com/g,
-      `${process.env.HOST}/wordpress`
-    );
+    // const updatedContent = htmlContent.replace(
+    //   /https:\/\/wp\.carlosmarten\.com/g,
+    //   `${process.env.HOST}/wordpress`
+    // );
     return (
       <div className={styles.pageContainer}>
-        <div dangerouslySetInnerHTML={{ __html: updatedContent }} />
+        <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
       </div>
     );
   }
