@@ -1,11 +1,11 @@
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "next-themes";
-import "./globals.css";
+import "../globals.css";
 import { Roboto } from "next/font/google";
 
-import Navbar from "../components/Navbar/Navbar";
-import Footer from "components/Footer/Footer";
+import Navbar from "@components/Navbar/Navbar";
+import Footer from "@components/Footer/Footer";
 
 // Initialize the font
 const roboto = Roboto({
@@ -24,7 +24,7 @@ export const metadata = {
     shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
   },
-  manifest: "/site.webmanifest",
+  manifest: "/manifest.json",
   WebApp: {
     capable: true,
     statusBarStyle: "default",

@@ -1,5 +1,6 @@
 import styles from "./page.module.css";
 import { fetchWordPressPage } from "@actions/actions";
+import BackButton from "@components/Article/BackButton/BackButton";
 
 export default async function WordPress() {
   const htmlContent = await fetchWordPressPage("/");
@@ -13,9 +14,16 @@ export default async function WordPress() {
     //   `${process.env.HOST}/wordpress`
     // );
     return (
-      <div className={styles.pageContainer}>
-        <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-      </div>
+      // <div className={styles.pageContainer}>
+      <html lang="en" suppressHydrationWarning>
+        <body>
+          <div className={styles.backbuttonContainer}>
+            <BackButton />
+          </div>
+          <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+        </body>
+      </html>
+      // </div>
     );
   }
 }

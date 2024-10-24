@@ -1,6 +1,6 @@
 // app/dashboard/layout.js
 
-import { auth } from "/auth.js"; // Import the auth middleware
+import { auth } from "@actions/../auth.js"; // Import the auth middleware
 import { redirect } from "next/navigation";
 
 import styles from "./layout.module.css"; // Import your CSS module for layout
