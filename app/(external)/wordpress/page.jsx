@@ -14,16 +14,12 @@ export default async function WordPress() {
     //   `${process.env.HOST}/wordpress`
     // );
     return (
-      // <div className={styles.pageContainer}>
-      <html lang="en" suppressHydrationWarning>
-        <body>
-          <div className={styles.backbuttonContainer}>
-            <BackButton />
-          </div>
-          <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-        </body>
-      </html>
-      // </div>
+      <div className={styles.pageContainer}>
+        <div className={styles.backbuttonContainer}>
+          <BackButton />
+        </div>
+        <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+      </div>
     );
   }
 }
