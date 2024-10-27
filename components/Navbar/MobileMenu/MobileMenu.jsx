@@ -19,7 +19,6 @@ const MobileMenu = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-
   const handleLinkClick = () => {
     if (isMobile) {
       setIsOpen(false);
@@ -32,7 +31,11 @@ const MobileMenu = () => {
   };
 
   return (
-    <>
+    <div
+      className={`${styles.mobileMenu} ${
+        resolvedTheme === "dark" ? styles.dark : ""
+      }`}
+    >
       <button
         aria-label="Toggle menu"
         className={`${styles.hamburger} ${isOpen ? styles.open : ""}`}
@@ -78,7 +81,7 @@ const MobileMenu = () => {
           </li>
         </ul>
       )}
-    </>
+    </div>
   );
 };
 

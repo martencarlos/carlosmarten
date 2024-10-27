@@ -1,4 +1,8 @@
 
+.mobileMenu{
+  display: none;
+}
+
 .navList {
   list-style: none;
   padding: 0;
@@ -77,6 +81,9 @@
 }
 
 @media (max-width: 768px) {
+  .mobileMenu {
+    display: flex;
+  }
 
   .hamburger {
     display: flex;
@@ -110,6 +117,13 @@
     padding: 0.75rem 1.5rem;
     width: 100%;
     text-align: center;
+  }
+  .mobileMenu.dark .navLink:hover {
+    background-color: rgb(54, 54, 54);
+  }
+
+  .mobileMenu.dark .themeToggle:hover {
+    background-color: rgb(54, 54, 54);
   }
 }
 

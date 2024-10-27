@@ -7,6 +7,7 @@ import Link from "next/link";
 import { FaClock, FaUser, FaCalendar } from "react-icons/fa";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { FaChevronUp } from "react-icons/fa6";
 
 function calculateReadingTime(text) {
   const wordsPerMinute = 200;
@@ -106,7 +107,7 @@ export default function Post({ post }) {
           />
         </article>
         <button className={styles.scrollToTopButton} onClick={scrollToTop}>
-          ↑
+          <FaChevronUp />
         </button>
       </div>
     );
