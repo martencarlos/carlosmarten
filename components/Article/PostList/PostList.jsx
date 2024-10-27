@@ -4,11 +4,17 @@ import Card from "components/Article/PostCard/PostCard";
 import SkeletonLoader from "components/(aux)/SkeletonLoader/SkeletonLoader";
 import styles from "./postlist.module.css";
 
+const POSTS_PER_PAGE = 6; // Adjust this number as needed
+
 export default function PostList({ posts, selectedCategory, searchQuery }) {
-  console.log("PostList loaded");
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
+    setCurrentPage(1); // Reset to first page when filters change
+
     if (selectedCategory || searchQuery) {
       const filtered = posts.filter((post) => {
         const matchesCategory =
@@ -19,10 +25,42 @@ export default function PostList({ posts, selectedCategory, searchQuery }) {
         return matchesCategory && matchesSearch;
       });
       setFilteredPosts(filtered);
+    } else {
+      setFilteredPosts(posts);
     }
+    setIsLoading(false);
   }, [posts, selectedCategory, searchQuery]);
 
-  // SHOW SKELETON if posts are not loaded. posts.length === 0
+  // Pagination calculations
+  const totalPosts = filteredPosts.length;
+  const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+  const endIndex = startIndex + POSTS_PER_PAGE;
+  const currentPosts = filteredPosts.slice(startIndex, endIndex);
+
+  const handlePageChange = (pageNumber) => {
+    setIsLoading(true);
+    setCurrentPage(pageNumber);
+    // window.scrollTo({ top: 0, behavior: "smooth" });
+    setTimeout(() => setIsLoading(false), 300);
+  };
+
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const showPages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(showPages / 2));
+    let endPage = Math.min(totalPages, startPage + showPages - 1);
+
+    if (endPage - startPage + 1 < showPages) {
+      startPage = Math.max(1, endPage - showPages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  };
+
   if (!posts || posts.length === 0) {
     return (
       <div className={styles.loadingContainer}>
@@ -32,22 +70,8 @@ export default function PostList({ posts, selectedCategory, searchQuery }) {
       </div>
     );
   }
-  // SHOW ALL POSTS if there is no selected category or search query
-  else if (!selectedCategory && !searchQuery) {
-    return (
-      <div className={styles.one_column} suppressHydrationWarning>
-        <ul className={styles.ul}>
-          {posts.map((post) => (
-            <li className={styles.li} key={post.id}>
-              <Card a post={post} />
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
-  // SHOW NO POSTS FOUND if there is a selected category or search query and no filtered posts are found
-  else if (filteredPosts.length === 0) {
+
+  if (filteredPosts.length === 0 && (selectedCategory || searchQuery)) {
     return (
       <div className={styles.one_column}>
         <p className={styles.noPosts}>
@@ -56,18 +80,67 @@ export default function PostList({ posts, selectedCategory, searchQuery }) {
       </div>
     );
   }
-  // SHOW FILTERED POSTS if there is a selected category or search query and filtered posts are found
-  else {
-    return (
-      <div className={styles.one_column}>
-        <ul className={styles.ul}>
-          {filteredPosts.map((post) => (
-            <li className={styles.li} key={post.id}>
-              <Card post={post} />
-            </li>
+
+  return (
+    <div className={styles.one_column}>
+      {isLoading ? (
+        <div className={styles.loadingContainer}>
+          {Array.from({ length: 3 }).map((_, index) => (
+            <SkeletonLoader key={index} />
           ))}
-        </ul>
-      </div>
-    );
-  }
+        </div>
+      ) : (
+        <>
+          <div className={styles.postsInfo}>
+            Showing {startIndex + 1}-{Math.min(endIndex, totalPosts)} of{" "}
+            {totalPosts} posts
+          </div>
+
+          <ul className={styles.ul}>
+            {currentPosts.map((post) => (
+              <li className={styles.li} key={post.id}>
+                <Card post={post} />
+              </li>
+            ))}
+          </ul>
+
+          {totalPages > 1 && (
+            <div className={styles.pagination}>
+              <button
+                className={`${styles.pageButton} ${
+                  currentPage === 1 ? styles.disabled : ""
+                }`}
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+
+              {getPageNumbers().map((number) => (
+                <button
+                  key={number}
+                  className={`${styles.pageButton} ${
+                    currentPage === number ? styles.active : ""
+                  }`}
+                  onClick={() => handlePageChange(number)}
+                >
+                  {number}
+                </button>
+              ))}
+
+              <button
+                className={`${styles.pageButton} ${
+                  currentPage === totalPages ? styles.disabled : ""
+                }`}
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
 }
