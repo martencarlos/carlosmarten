@@ -4,6 +4,9 @@ import Post from "components/Article/Post/Post";
 import styles from "./page.module.css";
 import BackButton from "components/Article/BackButton/BackButton";
 
+import { existsSync } from "fs";
+import path from "path";
+
 async function getPost(slug) {
   console.log("fetching post loaded");
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
@@ -50,11 +53,29 @@ export default async function BlogPost({ params }) {
     <div>Post not found</div>;
   }
 
+  // Check if audio exists on the server side
+  const audioPath = path.join(
+    process.cwd(),
+    "public",
+    "audio",
+    `${params.slug}.mp3`
+  );
+  const hasAudio = existsSync(audioPath);
+  const audioUrl = hasAudio ? `/audio/${params.slug}.mp3` : null;
+
   return (
     <div className={styles.container}>
       <div className={styles.backbuttonContainer}>
         <BackButton />
       </div>
+      {audioUrl && (
+        <div className="mb-6">
+          <audio controls className="w-full">
+            <source src={audioUrl} type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+      )}
       <Post post={post} />
     </div>
   );
