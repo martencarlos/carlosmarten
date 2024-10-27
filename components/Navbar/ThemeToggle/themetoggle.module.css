@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  
+  color: var(--foreground);
   transition: background-color 0.3s, color 0.3s;
   border-radius: 50%;
 }
@@ -16,5 +16,6 @@
 }
 
 .themeToggle.dark:hover {
-  color: var(--background);
+  
+  background-color: rgba(48, 48, 48, 0.9);
 }
