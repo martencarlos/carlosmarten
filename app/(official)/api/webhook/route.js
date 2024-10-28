@@ -1,10 +1,10 @@
-import { generateAudioForPost } from "@actions/actions";
+import { handlePostWebhook } from "@actions/actions";
 
 export async function POST(request) {
   const formData = await request.formData();
 
   try {
-    await generateAudioForPost(formData);
+    await handlePostWebhook(formData);
     return new Response(JSON.stringify({ success: true }), {
       headers: { "Content-Type": "application/json" },
     });

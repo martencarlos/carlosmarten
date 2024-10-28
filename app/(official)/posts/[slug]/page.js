@@ -4,8 +4,39 @@ import Post from "components/Article/Post/Post";
 import styles from "./page.module.css";
 import BackButton from "components/Article/BackButton/BackButton";
 
-import { existsSync } from "fs";
-import path from "path";
+import { s3Client } from "@lib/aws-config";
+import { GetObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
+async function getAudioUrl(postId) {
+  try {
+    // Check if audio file exists
+    const headCommand = new HeadObjectCommand({
+      Bucket: process.env.AWS_S3_BUCKET,
+      Key: `audio/${postId}.mp3`,
+    });
+
+    try {
+      await s3Client.send(headCommand);
+    } catch (error) {
+      if (error.name === "NotFound") {
+        return null;
+      }
+      throw error;
+    }
+
+    // Generate presigned URL
+    const command = new GetObjectCommand({
+      Bucket: process.env.AWS_S3_BUCKET,
+      Key: `audio/${postId}.mp3`,
+    });
+
+    return await getSignedUrl(s3Client, command, { expiresIn: 3600 }); // URL expires in 1 hour
+  } catch (error) {
+    console.error("Error getting audio URL:", error);
+    return null;
+  }
+}
 
 async function getPost(slug) {
   console.log("fetching post loaded");
@@ -46,22 +77,15 @@ async function getPost(slug) {
 
 export default async function BlogPost({ params }) {
   console.log("BlogPost loaded");
-  let post = null;
-  post = await getPost(params.slug);
+
+  const [post, audioUrl] = await Promise.all([
+    getPost(params.slug), // Your existing post fetching function
+    getAudioUrl(params.slug),
+  ]);
 
   if (!post) {
     <div>Post not found</div>;
   }
-
-  // Check if audio exists on the server side
-  const audioPath = path.join(
-    process.cwd(),
-    "public",
-    "audio",
-    `${params.slug}.mp3`
-  );
-  const hasAudio = existsSync(audioPath);
-  const audioUrl = hasAudio ? `/audio/${params.slug}.mp3` : null;
 
   return (
     <div className={styles.container}>

@@ -26,7 +26,7 @@ const projects = [
     name: "Wordpress pages",
     image:
       "https://rocketmedia.b-cdn.net/wp-content/uploads/2021/11/wordpress-ventajas-banner.png",
-    url: `${process.env.HOST}/wordpress/`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/wordpress/`,
   },
 ];
 
