@@ -1,9 +1,19 @@
-import {
-  ReceiveMessageCommand,
-  DeleteMessageCommand,
-} from "@aws-sdk/client-sqs";
-import { PutObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
-import { sqsClient, s3Client } from "../lib/aws-config";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client } from "@aws-sdk/client-s3";
+import fetch from "node-fetch";
+
+const s3Client = new S3Client({
+  region: process.env.AWS_REGION,
+});
+
+// Helper function to generate slug from the title
+function generateSlug(title) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "") // Remove special characters
+    .replace(/\s+/g, "-") // Replace spaces with hyphens
+    .trim();
+}
 
 async function generateAudio(text) {
   const response = await fetch(
@@ -27,16 +37,16 @@ async function generateAudio(text) {
   );
 
   if (!response.ok) {
-    throw new Error("Failed to generate audio");
+    throw new Error(`Failed to generate audio: ${await response.text()}`);
   }
 
   return response.arrayBuffer();
 }
 
-async function uploadToS3(buffer, postId) {
+async function uploadToS3(buffer, slug) {
   const command = new PutObjectCommand({
     Bucket: process.env.AWS_S3_BUCKET,
-    Key: `audio/${postId}.mp3`,
+    Key: `audio/${slug}.mp3`, // Using slug in the S3 key
     Body: Buffer.from(buffer),
     ContentType: "audio/mpeg",
   });
@@ -44,59 +54,45 @@ async function uploadToS3(buffer, postId) {
   await s3Client.send(command);
 }
 
-async function processMessage(message) {
-  try {
-    const postData = JSON.parse(message.Body);
-    const text = `${postData.title}. ${postData.content}`;
+export const handler = async (event) => {
+  console.log("Processing messages:", JSON.stringify(event));
 
-    // Generate audio
-    const audioBuffer = await generateAudio(text);
+  const results = [];
 
-    // Upload to S3
-    await uploadToS3(audioBuffer, postData.id);
-
-    // Delete message from queue
-    const deleteCommand = new DeleteMessageCommand({
-      QueueUrl: process.env.AWS_SQS_QUEUE_URL,
-      ReceiptHandle: message.ReceiptHandle,
-    });
-    await sqsClient.send(deleteCommand);
-
-    // Trigger revalidation
-    await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL}/api/revalidate?path=/posts/${postData.id}&secret=${process.env.REVALIDATION_SECRET}`
-    );
-
-    console.log(`Processed audio for post ${postData.id}`);
-  } catch (error) {
-    console.error("Error processing message:", error);
-    // Message will automatically return to queue after visibility timeout
-  }
-}
-
-async function pollQueue() {
-  while (true) {
+  for (const record of event.Records) {
     try {
-      const command = new ReceiveMessageCommand({
-        QueueUrl: process.env.AWS_SQS_QUEUE_URL,
-        MaxNumberOfMessages: 1,
-        WaitTimeSeconds: 20, // Long polling
+      const postData = JSON.parse(record.body);
+      console.log("Processing post:", postData.title);
+
+      const text = `${postData.title}. ${postData.content}`;
+      const slug = generateSlug(postData.title);
+
+      // Generate audio
+      const audioBuffer = await generateAudio(text);
+      console.log("Audio generated for post:", slug);
+
+      // Upload to S3
+      await uploadToS3(audioBuffer, slug);
+      console.log("Audio uploaded for post:", slug);
+
+      console.log(`Successfully processed post ${slug}`);
+      results.push({
+        postSlug: slug,
+        status: "success",
       });
-
-      const response = await sqsClient.send(command);
-
-      if (response.Messages) {
-        for (const message of response.Messages) {
-          await processMessage(message);
-        }
-      }
     } catch (error) {
-      console.error("Error polling queue:", error);
-      // Wait before retrying on error
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      console.error("Error processing message:", error);
+      results.push({
+        postSlug: generateSlug(JSON.parse(record.body).title),
+        status: "error",
+        error: error.message,
+      });
+      throw error; // This will cause Lambda to retry the message
     }
   }
-}
 
-// Start processing
-pollQueue();
+  return {
+    statusCode: 200,
+    body: JSON.stringify(results),
+  };
+};
