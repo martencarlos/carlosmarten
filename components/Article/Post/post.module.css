@@ -191,6 +191,16 @@
   background-color: #155574;
 }
 
+.audioPlayer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
 @media (max-width: 600px) {
   .container {
     padding: 0px;

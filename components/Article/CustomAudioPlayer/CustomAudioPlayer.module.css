@@ -1,0 +1,26 @@
+.playerWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.playerWrapper:hover {
+  color: #333;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+}
+
+.text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.audioElement {
+  display: none;
+}

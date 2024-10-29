@@ -8,6 +8,7 @@ import { FaClock, FaUser, FaCalendar } from "react-icons/fa";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { FaChevronUp } from "react-icons/fa6";
+import CustomAudioPlayer from "@components/Article/CustomAudioPlayer/CustomAudioPlayer";
 
 function calculateReadingTime(text) {
   const wordsPerMinute = 200;
@@ -19,7 +20,7 @@ const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
-export default function Post({ post }) {
+export default function Post({ post, audioUrl }) {
   console.log("Post loaded");
   const { resolvedTheme } = useTheme();
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -65,7 +66,14 @@ export default function Post({ post }) {
               />
             </div>
           )}
+          {audioUrl && (
+            <div className={styles.audioPlayer}>
+              <CustomAudioPlayer audioUrl={audioUrl} />
+            </div>
+          )}
+
           <h1 className={styles.title}>{post.title}</h1>
+
           <div className={styles.postMeta}>
             <div className={styles.authorDateInfo}>
               <div className={styles.authorInfo}>
@@ -80,6 +88,7 @@ export default function Post({ post }) {
                   {time} min read
                 </span>
               </div>
+
               <div className={styles.dateInfo}>
                 <div>
                   <span className={styles.metaLabel}>
@@ -101,6 +110,7 @@ export default function Post({ post }) {
             </div>
             {post.pinned && <p className={styles.pinnedPost}>Pinned Post</p>}
           </div>
+
           <div
             className={styles.content}
             dangerouslySetInnerHTML={{ __html: post.content }}

@@ -92,15 +92,7 @@ export default async function BlogPost({ params }) {
       <div className={styles.backbuttonContainer}>
         <BackButton />
       </div>
-      {audioUrl && (
-        <div className="mb-6">
-          <audio controls className="w-full">
-            <source src={audioUrl} type="audio/mpeg" />
-            Your browser does not support the audio element.
-          </audio>
-        </div>
-      )}
-      <Post post={post} />
+      <Post post={post} audioUrl={audioUrl} />
     </div>
   );
 }
