@@ -1,3 +1,5 @@
+//This script is not running here, it is running in a lambda function
+
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { S3Client } from "@aws-sdk/client-s3";
 import fetch from "node-fetch";

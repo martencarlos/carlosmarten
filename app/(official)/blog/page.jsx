@@ -1,5 +1,6 @@
 import styles from "./page.module.css";
 import BlogContent from "components/Blog/BlogContent/BlogContent";
+// import NotificationSubscriber from "@components/NotificationSubscriber";
 
 async function getPosts() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
