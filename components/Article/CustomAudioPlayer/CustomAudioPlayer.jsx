@@ -30,7 +30,7 @@ export default function CustomAudioPlayer({ audioUrl }) {
       {/*<HiOutlineHeadphones className={styles.icon} />*/}
       <FaHeadphonesSimple />
       <span className={styles.text}>
-        {isPlaying ? "Listening" : "Listen the article"}
+        {isPlaying ? "Listening" : "Listen to the article"}
       </span>
       <audio
         ref={audioRef}
