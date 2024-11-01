@@ -5,7 +5,7 @@
 
   line-height: 1.5;
   /* color: #333; */
-  position: relative;
+  
 }
 
 .progressBar {
@@ -19,7 +19,7 @@
 }
 
 .article {
-  
+  position: relative;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -169,7 +169,8 @@
 
 
 .scrollToTopButton {
-  position: fixed;
+  position: absolute;
+  opacity: 0.8;
   bottom: 50px;
   right: 50px;
   background-color: var(--third-color);
@@ -178,7 +179,7 @@
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  padding: 10px 10px;
+  padding: 15px 15px;
   cursor: pointer;
   display: none;
   align-items: center;

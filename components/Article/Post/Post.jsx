@@ -115,10 +115,10 @@ export default function Post({ post, audioUrl }) {
             className={styles.content}
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
+          <button className={styles.scrollToTopButton} onClick={scrollToTop}>
+            <FaChevronUp />
+          </button>
         </article>
-        <button className={styles.scrollToTopButton} onClick={scrollToTop}>
-          <FaChevronUp />
-        </button>
       </div>
     );
   } catch (error) {
