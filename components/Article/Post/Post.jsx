@@ -8,7 +8,7 @@ import { FaClock, FaUser, FaCalendar } from "react-icons/fa";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { FaChevronUp } from "react-icons/fa6";
-import CustomAudioPlayer from "@components/Article/CustomAudioPlayer/CustomAudioPlayer";
+import AudioPlayer from "@components/Article/CustomAudioPlayer/CustomAudioPlayer";
 
 function calculateReadingTime(text) {
   const wordsPerMinute = 200;
@@ -68,7 +68,7 @@ export default function Post({ post, audioUrl }) {
           )}
           {audioUrl && (
             <div className={styles.audioPlayer}>
-              <CustomAudioPlayer audioUrl={audioUrl} />
+              <AudioPlayer audioUrl={audioUrl} />
             </div>
           )}
 
