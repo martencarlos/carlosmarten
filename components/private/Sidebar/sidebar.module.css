@@ -2,27 +2,14 @@
 
 /* General Styles */
 .sidebar {
-  width: var(--sidebar-width);
-  height: calc(100vh - 178px);
-  border: 1px solid var(--second-color);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  padding: 1rem;
+  min-height: calc(100vh - 176px);
+  padding: 20px;
+  width: 250px;
   background-color: var(--background);
   display: flex;
-  align-self: start;
-  margin-top: 125px;
   flex-direction: column;
-  justify-content: space-between;
-    position: fixed;
-  left: -190px;
-  top: 0;
-  transition: left 0.3s ease-in-out;
-  z-index: 1000;
 }
 
-.sidebar.active {
-  left: 0;
-}
 
 /* Header styles */
 .header {
@@ -39,40 +26,69 @@
 
 /* Nav styles */
 
-.nav{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
+
 .navList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   list-style: none;
+  width: 100%;
   padding: 0;
 }
 
 .navList li {
   margin-bottom: 1rem;
+  width: 100%;
 }
 
 .navList a {
   text-decoration: none;
   font-weight: 500;
   /* color: var(--third-color); */
-  transition: color 0.3s ease;
 }
 
-.navList a:hover {
-  color: var(--fourth-color);
+.link {
+  text-align: center;
 }
+
+.linka {
+  display: block;
+
+  padding: 10px 5px;
+  width: 100%;
+}
+
+.link:hover {
+  background-color: var(--third-color);
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.link:hover a {
+  color: white !important;
+}
+
 
 .navList .activeLink a {
   color: var(--third-color);
   font-weight: bold;
 }
 
+.navList .activeLink a:hover {
+  background-color: var(--third-color);
+  color: white;
+}
+
 /* Toggle button */
 .toggleButton {
-    display: flex;
+  display: flex;
   background: none;
   border: none;
   cursor: pointer;
@@ -84,9 +100,9 @@
   color: var(--hover-link-color);
 }
 
-.sidebarFooter{
-    display: flex;
-    width: 100%;
+.sidebarFooter {
+  display: flex;
+  width: 100%;
 
 }
 
@@ -97,17 +113,12 @@
   background-color: var(--logout-bg-color);
   width: 100%;
   border: none;
-  display:none;
   border-radius: 4px;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-  margin-top: auto;
+  margin-top: 20px;
 }
 
-.sidebar.active .logout{
-    display: block;
-}
 
 
 
@@ -119,13 +130,13 @@
 /* Responsive Styles */
 @media (max-width: 768px) {
   .sidebar {
-    position:fixed;
     width: auto;
     height: auto;
     top: 40%;
-    margin:0px;
-    padding:5px;
-    left:0px;
+    margin: 0px;
+    padding: 5px;
+    left: 0px;
+    min-height: unset;
   }
 
 
@@ -135,11 +146,6 @@
 
   .header {
     display: none;
-  }
-
-
-  .toggleButton {
-    display:none;
   }
 
   .navList li {

@@ -2,25 +2,39 @@
 
 .layout {
   display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - 178px) !important;
+  min-height: calc(100vh - 176px) !important;
   justify-content: center;
   align-items: center;
 
 }
 
+
 .mainContent {
   /* flex: 1; */
   display: flex;
-  flex:1;
-  flex-direction: column;
+  flex: 1;
   align-items: center;
   justify-content: center;
   /* background-color: #f4f4f4; */
 }
 
-.error{
+.fullWidth {
+  width: 100%;
+  display: flex;
+
+}
+
+.error {
   font-size: 2rem;
   font-weight: bold;
   color: rgb(199, 69, 69)
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+
+  .fullWidth {
+    flex-direction: column;
+  }
+
 }

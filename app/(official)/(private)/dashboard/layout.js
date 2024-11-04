@@ -14,7 +14,7 @@ export default async function DashboardLayout({ children }) {
   return (
     <div className={styles.layout}>
       {session && (
-        <div>
+        <div className={styles.fullWidth}>
           <Sidebar />
           <main className={styles.mainContent}>{children}</main>
         </div>
