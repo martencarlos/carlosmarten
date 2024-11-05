@@ -8,7 +8,7 @@ import { FaClock, FaUser, FaCalendar } from "react-icons/fa";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { FaChevronUp } from "react-icons/fa6";
-import AudioPlayer from "@components/Article/CustomAudioPlayer/CustomAudioPlayer";
+import AudioPlayer from "@components/Article/AudioPlayer/AudioPlayer";
 
 function calculateReadingTime(text) {
   const wordsPerMinute = 200;

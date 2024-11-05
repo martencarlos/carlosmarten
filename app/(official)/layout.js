@@ -6,7 +6,9 @@ import { Roboto } from "next/font/google";
 
 import Navbar from "@components/Navbar/Navbar";
 import Footer from "@components/Footer/Footer";
-import AudioProvider from "@context/AudioProvider";
+
+import { AudioProvider } from "@context/AudioContext";
+import GlobalAudioPlayer from "@components/Article/AudioPlayer/GlobalAudioPlayer";
 
 // Initialize the font
 const roboto = Roboto({
@@ -46,6 +48,7 @@ export default function RootLayout({ children }) {
             <Navbar />
             {children}
             <Footer />
+            <GlobalAudioPlayer />
           </AudioProvider>
         </ThemeProvider>
         <Analytics />

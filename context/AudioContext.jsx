@@ -1,21 +1,24 @@
 "use client";
+
 import { createContext, useContext, useState } from "react";
 
 const AudioContext = createContext();
 
-export default function AudioProvider({ children }) {
+export function AudioProvider({ children }) {
   const [audioState, setAudioState] = useState({
     isPlaying: false,
     isPlayerVisible: false,
     audioUrl: null,
+    currentTime: 0,
   });
 
   const startPlaying = (url) => {
-    setAudioState({
+    setAudioState((prev) => ({
+      ...prev,
       isPlaying: true,
       isPlayerVisible: true,
       audioUrl: url,
-    });
+    }));
   };
 
   const stopPlaying = () => {
@@ -26,11 +29,18 @@ export default function AudioProvider({ children }) {
   };
 
   const closePlayer = () => {
-    setAudioState({
+    setAudioState((prev) => ({
+      ...prev,
       isPlaying: false,
       isPlayerVisible: false,
-      audioUrl: null,
-    });
+    }));
+  };
+
+  const updateCurrentTime = (time) => {
+    setAudioState((prev) => ({
+      ...prev,
+      currentTime: time,
+    }));
   };
 
   return (
@@ -40,23 +50,11 @@ export default function AudioProvider({ children }) {
         startPlaying,
         stopPlaying,
         closePlayer,
+        updateCurrentTime,
+        setAudioState,
       }}
     >
       {children}
-      {audioState.audioUrl && (
-        <AudioPlayer
-          audioUrl={audioState.audioUrl}
-          isGloballyPlaying={audioState.isPlaying}
-          isVisible={audioState.isPlayerVisible}
-          onClose={closePlayer}
-          onPlayingChange={(playing) =>
-            setAudioState((prev) => ({
-              ...prev,
-              isPlaying: playing,
-            }))
-          }
-        />
-      )}
     </AudioContext.Provider>
   );
 }
