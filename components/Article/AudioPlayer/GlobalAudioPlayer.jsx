@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import {
   FaPlay,
   FaPause,
@@ -9,6 +9,7 @@ import {
   FaEllipsisV,
   FaTimes,
 } from "react-icons/fa";
+import { MdFileDownload } from "react-icons/md";
 import { useAudio } from "@context/AudioContext";
 import styles from "./AudioPlayer.module.css";
 
@@ -17,6 +18,8 @@ const formatTime = (seconds) => {
   const remainingSeconds = Math.floor(seconds % 60);
   return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
 };
+
+const PLAYBACK_SPEEDS = [0.5, 1, 1.5, 2];
 
 const GlobalAudioPlayer = () => {
   const {
@@ -27,6 +30,7 @@ const GlobalAudioPlayer = () => {
     setAudioState,
   } = useAudio();
   const audioRef = useRef(null);
+  const [currentSpeedIndex, setCurrentSpeedIndex] = useState(2); // Default 1x speed (index 2)
 
   useEffect(() => {
     if (audioRef.current) {
@@ -82,6 +86,32 @@ const GlobalAudioPlayer = () => {
     }
   };
 
+  const changePlaybackSpeed = () => {
+    if (audioRef.current) {
+      const nextIndex = (currentSpeedIndex + 1) % PLAYBACK_SPEEDS.length;
+      setCurrentSpeedIndex(nextIndex);
+      audioRef.current.playbackRate = PLAYBACK_SPEEDS[nextIndex];
+    }
+  };
+
+  const handleDownload = () => {
+    // Create a temporary anchor element
+    const anchor = document.createElement("a");
+    anchor.href = audioState.audioUrl;
+
+    // Extract filename from URL or use a default name
+    const filename = audioState.audioUrl.split("/").pop() || "audio.mp3";
+    anchor.download = filename;
+
+    // Trigger download
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+
+    // Close options menu after download starts
+    setAudioState((prev) => ({ ...prev, showOptions: false }));
+  };
+
   if (!audioState.isPlayerVisible) return null;
 
   return (
@@ -125,10 +155,22 @@ const GlobalAudioPlayer = () => {
               </button>
               {audioState.showOptions && (
                 <div className={styles.optionsMenu}>
-                  <button className={styles.optionItem}>
-                    Playback Speed: 1x
+                  <button
+                    className={styles.optionItem}
+                    onClick={changePlaybackSpeed}
+                  >
+                    <span>Playback Speed:</span>
+                    <span className={styles.icon}>
+                      {PLAYBACK_SPEEDS[currentSpeedIndex]}x
+                    </span>
                   </button>
-                  <button className={styles.optionItem}>Download Audio</button>
+                  <button
+                    className={styles.optionItem}
+                    onClick={handleDownload}
+                  >
+                    <span>Download Audio </span>
+                    <MdFileDownload className={styles.icon} />
+                  </button>
                 </div>
               )}
             </div>
