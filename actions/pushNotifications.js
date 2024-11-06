@@ -1,4 +1,3 @@
-// actions/pushNotifications.js
 "use server";
 
 import { sql } from "@vercel/postgres";

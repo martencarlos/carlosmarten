@@ -26,9 +26,15 @@ export default function PushNotification() {
   const [registration, setRegistration] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    if ("serviceWorker" in navigator && "PushManager" in window) {
+    setIsClient(true);
+    if (
+      typeof window !== "undefined" &&
+      "serviceWorker" in navigator &&
+      "PushManager" in window
+    ) {
       registerServiceWorker();
     }
   }, []);
@@ -89,7 +95,16 @@ export default function PushNotification() {
     }
   }
 
-  if (!("serviceWorker" in navigator && "PushManager" in window)) {
+  // Don't render anything during SSR
+  if (!isClient) {
+    return null;
+  }
+
+  // Check for browser support after client-side hydration
+  if (
+    typeof window !== "undefined" &&
+    (!("serviceWorker" in navigator) || !("PushManager" in window))
+  ) {
     return null;
   }
 

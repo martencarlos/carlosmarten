@@ -31,7 +31,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   console.log("RootLayout loaded");
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body>
         <ThemeProvider attribute="class">
           <AudioProvider>

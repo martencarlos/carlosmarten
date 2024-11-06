@@ -9,8 +9,7 @@ self.addEventListener("push", function (event) {
       badge: "/favicon-32x32.png",
       vibrate: [100, 50, 100],
       data: {
-        dateOfArrival: Date.now(),
-        url: data.url,
+        url: data.url, // Store the URL for later use
       },
     };
 
@@ -21,5 +20,6 @@ self.addEventListener("push", function (event) {
 self.addEventListener("notificationclick", function (event) {
   event.notification.close();
 
+  // Navigate to the post URL when notification is clicked
   event.waitUntil(clients.openWindow(event.notification.data.url));
 });
