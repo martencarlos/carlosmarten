@@ -118,3 +118,10 @@
   color: inherit;
   display: block;
 }
+
+@media (max-width: 600px) {
+
+  .card_excerpt {
+    display: none;
+  }
+}
