@@ -19,7 +19,7 @@ export default function About() {
       <h1 className={`${styles.title} ${isVisible ? styles.visible : ""}`}>
         About Me
       </h1>
-      <br />
+
       <div className={`${styles.content} ${isVisible ? styles.visible : ""}`}>
         <Image
           src="/images/me.png"
@@ -29,15 +29,15 @@ export default function About() {
           alt="Carlos Marten"
           className={styles.profilePic}
         />
-        <br />
+
         <p>
           Hi, I am Carlos Marten. Welcome to my personal blog! I am a technology
           & business consultant based in Bilbao, Spain. This site is where I
           share my thoughts, projects, and experiences.
         </p>
-        <br />
+
         <h2>What I Do</h2>
-        <br />
+
         <ul className={styles.list}>
           <li>Write blog posts about new technologies</li>
           <li>Work on projects related to web/app development</li>
@@ -46,12 +46,12 @@ export default function About() {
         <br />
         <h2>My Background</h2>
         <p>
-          <br />I have 10+ of experience in technolgy & business consulting
-          services. My passion for new technologies has led me to start this
-          blog in 2024. When I am not writing or providing consulting services,
-          you can find me playing tennis or golf.
+          I have 10+ of experience in technolgy & business consulting services.
+          My passion for new technologies has led me to start this blog in 2024.
+          When I am not writing or providing consulting services, you can find
+          me playing tennis or golf.
         </p>
-        <br />
+
         <p>
           I am an experienced business consultant and project manager with a
           strong background in financial services and digital transformation.
@@ -59,21 +59,21 @@ export default function About() {
           unit at a big and reputed consulting firm, specializing in financial
           services.
         </p>
-        <br />
+
         <p>
           I hold an Executive MBA from TUM School of Management, and prior to my
           current position, I gained extensive experience at Banco Santander
           group company: PagoNxt, where I managed digitalization projects and
           customer onboarding processes using Salesforce and other technologies.
         </p>
-        <br />
+
         <p>
           My experience also includes working as a Senior Consultant at
           Deloitte, where I focused on IT transformation and financial product
           implementation. I am fluent in four languages and hold certifications
           in agile methodologies and blockchain technologies.
         </p>
-        <br />
+
         <div className={styles.cta}>
           <Link href="/blog" className={styles.button}>
             Read My Blog
@@ -83,7 +83,7 @@ export default function About() {
           </Link>
         </div>
       </div>
-      <br />
+
       <br />
     </div>
   );
