@@ -1,8 +1,8 @@
 "use client";
 
-
 import { useTheme } from "next-themes";
-import { Sun, Moon } from "lucide-react";
+// import { Sun, Moon } from "lucide-react";
+import { FaSun, FaMoon } from "react-icons/fa";
 import styles from "./themetoggle.module.css";
 
 const ThemeToggle = () => {
@@ -15,9 +15,9 @@ const ThemeToggle = () => {
       className={`${styles.themeToggle} ${theme === "dark" ? styles.dark : ""}`}
     >
       {theme === "dark" ? (
-        <Sun size={20} aria-label="sun" />
+        <FaSun size={20} aria-label="sun" />
       ) : (
-        <Moon size={20} aria-label="moon" />
+        <FaMoon size={20} aria-label="moon" />
       )}
     </button>
   );
