@@ -1,15 +1,23 @@
 /* Center the main container */
 .one_column {
   display: flex;
-  flex-direction: column; /* Align items vertically */
+  flex-direction: column;
+  /* Align items vertically */
   align-items: center;
-  padding:30px 0px;
+  padding: 30px 0px;
   /* justify-content: center; */
-  min-height: calc(100vh - 170px);
+  min-height: calc(100vh - 178px);
   padding: 2rem;
 }
 
-.blogHeader{
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 177px);
+}
+
+.blogHeader {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,15 +35,21 @@
 
 /* Style for the heading */
 .h1 {
-  font-size: 2em;         /* Font size for the heading */
+  font-size: 2em;
+  /* Font size for the heading */
 
 }
+
 /* Style for the unordered list */
 .ul {
-  list-style-type: none;  /* Remove default bullet points */
-  width: 100%;            /* Full width of the parent container */
-  max-width: 750px;       /* Optional: limit the max width */
-  padding: 0;             /* Remove default padding */
+  list-style-type: none;
+  /* Remove default bullet points */
+  width: 100%;
+  /* Full width of the parent container */
+  max-width: 750px;
+  /* Optional: limit the max width */
+  padding: 0;
+  /* Remove default padding */
 }
 
 @media (max-width: 768px) {
