@@ -1,0 +1,74 @@
+.container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid var(--second-color);
+    border-radius: 8px;
+    max-width: 400px;
+}
+
+.title {
+    margin-bottom: 15px;
+    color: var(--fourth-color);
+}
+
+.textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid var(--second-color);
+    border-radius: 4px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.button {
+    padding: 10px 20px;
+    background-color: var(--third-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.button:hover:not(:disabled) {
+    background-color: var(--fourth-color);
+}
+
+.button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.button.loading {
+    position: relative;
+    color: transparent;
+}
+
+.button.loading::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid white;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.error {
+    color: #e63946;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}

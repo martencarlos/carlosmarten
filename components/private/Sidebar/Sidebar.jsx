@@ -36,7 +36,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <>
+    <div>
       <button
         className={styles.toggleButton}
         onClick={() => setIsOpen(!isOpen)}
@@ -74,7 +74,7 @@ const Sidebar = () => {
           <SignOutButton />
         </footer>
       </aside>
-    </>
+    </div>
   );
 };
 

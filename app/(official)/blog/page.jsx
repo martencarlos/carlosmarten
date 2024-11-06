@@ -1,5 +1,8 @@
 import styles from "./page.module.css";
 import BlogContent from "components/Blog/BlogContent/BlogContent";
+
+import PushNotification from "@components/PushNotification/PushNotification";
+import NotificationTest from "@components/NotificationTest/NotificationTest";
 // import NotificationSubscriber from "@components/NotificationSubscriber";
 
 async function getPosts() {
@@ -43,6 +46,8 @@ export default async function Blog() {
           blog offers practical tips, expert analysis, and the latest trends
           shaping the future of the industry.
         </p>
+        <PushNotification />
+        <NotificationTest />
       </div>
       <BlogContent posts={posts} categories={categories} />
     </div>
