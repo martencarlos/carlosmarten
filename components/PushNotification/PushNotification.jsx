@@ -207,7 +207,7 @@ export default function PushNotification() {
               Tap the share button <span className={styles.icon}>⎋</span>
             </li>
             <li>
-              Select "Add to Home Screen" <span className={styles.icon}>+</span>
+              Select Add to Home Screen <span className={styles.icon}>+</span>
             </li>
             <li>Open the app from your home screen</li>
             <li>Return here to subscribe</li>
