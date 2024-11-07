@@ -46,34 +46,35 @@ export async function fetchWordPressPage(slug) {
 
 //POST WEBHOOK - HANDLE POST WEBHOOK
 export async function handlePostWebhook(formData) {
+  //security check
   const secret = formData.get("secret");
-
   if (secret !== process.env.WEBHOOK_SECRET) {
     throw new Error("Unauthorized webhook request");
   }
 
+  //extract of data
   const postData = {
-    id: formData.get("id"),
+    slug: formData.get("slug"),
     title: formData.get("title"),
     content: formData.get("content"),
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/posts/${formData.get("id")}`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/posts/${formData.get("slug")}`,
   };
 
   // Send notifications to all subscribers
   await sendNotifications(postData);
 
-  // Continue with your existing SQS logic
+  // Send data to SQS for audio generation
   try {
     const command = new SendMessageCommand({
       QueueUrl: process.env.AWS_SQS_QUEUE_URL,
       MessageBody: JSON.stringify(postData),
     });
-
     await sqsClient.send(command);
-    revalidatePath(`/posts/${postData.id}`);
     return { success: true, message: "Audio generation queued" };
   } catch (error) {
     console.error("Error queuing message:", error);
     throw error;
+  } finally {
+    revalidatePath(`/posts/${postData.slug}`);
   }
 }

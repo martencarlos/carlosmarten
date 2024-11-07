@@ -23,8 +23,6 @@ export default function NotificationTest() {
       if (!result.success) {
         throw new Error(result.error || "Failed to send notification");
       }
-
-      alert("Test notification sent successfully!");
     } catch (err) {
       console.error("Error sending test notification:", err);
       setError(err.message);

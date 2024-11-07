@@ -119,8 +119,8 @@ export default function PushNotification() {
         {isLoading
           ? "Processing..."
           : isSubscribed
-          ? "Disable Notifications"
-          : "Enable Notifications"}
+          ? "Unsubscribe"
+          : "Subscribe to get notified of new posts"}
       </button>
     </div>
   );

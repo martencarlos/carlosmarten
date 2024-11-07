@@ -1,7 +1,7 @@
 "use server";
 
 import { sql } from "@vercel/postgres";
-import webpush from "web-push";
+import webpush, { supportedUrgency } from "web-push";
 
 webpush.setVapidDetails(
   "mailto:martencarlos@gmail.com",
@@ -53,6 +53,7 @@ export async function unsubscribeUser(subscription) {
 // Send notification (used in webhook handler)
 export async function sendNotifications(postData) {
   try {
+    // Get all subscriptions
     const { rows: subscriptions } = await sql`
       SELECT endpoint, p256dh, auth 
       FROM push_subscriptions
@@ -68,14 +69,18 @@ export async function sendNotifications(postData) {
           },
         };
 
-        await webpush.sendNotification(
-          pushSubscription,
-          JSON.stringify({
-            title: `New Post: ${postData.title}`,
-            body: postData.content.substring(0, 100) + "...",
-            url: `/posts/${postData.id}`,
-          })
-        );
+        const payload = JSON.stringify({
+          title: `New Post: ${postData.title}`,
+          body: postData.content.substring(0, 100) + "...",
+          tag: postData.id,
+          url: `/posts/${postData.slug}`,
+        });
+
+        const options = {
+          TTL: 10,
+        };
+
+        await webpush.sendNotification(pushSubscription, payload);
       } catch (error) {
         if (error.statusCode === 410) {
           // Remove invalid subscription
@@ -111,7 +116,7 @@ export async function sendTestNotification(data) {
       };
     }
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL + "/posts";
 
     const notifications = subscriptions.map(async (sub) => {
       try {
@@ -123,14 +128,19 @@ export async function sendTestNotification(data) {
           },
         };
 
-        await webpush.sendNotification(
-          pushSubscription,
-          JSON.stringify({
-            title: data.title,
-            body: data.url,
-            url: siteUrl, // Using environment variable instead of window.location
-          })
-        );
+        const payload = JSON.stringify({
+          title: data.title,
+          body: data.content,
+          url: siteUrl,
+          tag: "test-notification",
+        });
+
+        const options = {
+          TTL: 60,
+          urgency: "high",
+        };
+
+        await webpush.sendNotification(pushSubscription, payload, options);
       } catch (error) {
         if (error.statusCode === 410) {
           // Remove invalid subscription
