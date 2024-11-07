@@ -52,3 +52,86 @@
         transform: rotate(360deg);
     }
 }
+
+
+
+
+/* IOS COMPATIBILITY */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.button {
+    background-color: var(--third-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+}
+
+.button:hover {
+    background-color: var(--fourth-color);
+}
+
+.button.loading {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+.error {
+    color: #dc3545;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.iosInstructions {
+    background-color: var(--first-color);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.iosInstructions h3 {
+    color: var(--fourth-color);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.iosInstructions p {
+    margin-bottom: 1rem;
+}
+
+.iosInstructions ol {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.iosInstructions li {
+    margin: 0.5rem 0;
+    line-height: 1.4;
+}
+
+.iosInstructions span {
+    display: inline-block;
+    margin: 0 0.25rem;
+    font-size: 1.2em;
+}
+
+.iosInstructions button {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* Dark mode support */
+:global(.dark) .iosInstructions {
+    background-color: var(--background-dark);
+    border: 1px solid var(--third-color);
+}

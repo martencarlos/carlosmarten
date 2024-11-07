@@ -25,65 +25,89 @@ export default function PushNotification() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isClient, setIsClient] = useState(false);
-  const [debugInfo, setDebugInfo] = useState("");
+  const [isPWA, setIsPWA] = useState(false);
+  const [showIOSInstructions, setShowIOSInstructions] = useState(false);
 
   const logDebug = (message) => {
     console.log(message);
-    setDebugInfo((prev) => `${prev}\n${new Date().toISOString()}: ${message}`);
   };
 
-  // Only check for existing subscription on mount
+  // Check device and PWA status
   useEffect(() => {
     setIsClient(true);
 
-    const checkExistingSubscription = async () => {
-      try {
-        if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
-          logDebug("Push notifications not supported");
-          return;
-        }
+    // Check if running as PWA
+    const isStandalone =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone;
+    setIsPWA(isStandalone);
 
-        // Check for existing service worker registration
-        const existingRegistration =
-          await navigator.serviceWorker.getRegistration();
+    // Check if iOS
+    const isIOS =
+      /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-        if (existingRegistration) {
-          logDebug("Found existing service worker");
-          const pushSubscription =
-            await existingRegistration.pushManager.getSubscription();
+    // Check iOS version (needed for push notification support)
+    if (isIOS) {
+      const version = parseInt(
+        navigator.userAgent.match(/OS (\d+)_/)?.[1] || "0"
+      );
 
-          if (pushSubscription) {
-            logDebug("Found existing push subscription");
-            setIsSubscribed(true);
-            setSubscription(pushSubscription);
-            setRegistration(existingRegistration);
-          } else {
-            // Just store the registration for later use
-            setRegistration(existingRegistration);
-          }
-        }
-      } catch (error) {
-        logDebug(`Initialization error: ${error.message}`);
+      if (!isStandalone) {
+        setShowIOSInstructions(true);
       }
-    };
+    }
 
-    checkExistingSubscription();
+    // Check for existing subscription if conditions are met
+    if ((isStandalone && isIOS && version >= 16) || !isIOS) {
+      checkExistingSubscription();
+    }
   }, []);
+
+  const checkExistingSubscription = async () => {
+    try {
+      if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
+        logDebug("Push notifications not supported");
+        return;
+      }
+
+      const existingRegistration =
+        await navigator.serviceWorker.getRegistration();
+
+      if (existingRegistration) {
+        logDebug("Found existing service worker");
+        const pushSubscription =
+          await existingRegistration.pushManager.getSubscription();
+
+        if (pushSubscription) {
+          logDebug("Found existing push subscription");
+          setIsSubscribed(true);
+          setSubscription(pushSubscription);
+          setRegistration(existingRegistration);
+        } else {
+          setRegistration(existingRegistration);
+        }
+      }
+    } catch (error) {
+      logDebug(`Initialization error: ${error.message}`);
+    }
+  };
 
   async function handleSubscribe() {
     try {
       setIsLoading(true);
       setError(null);
 
-      logDebug("Manual subscription starting...");
+      // Special handling for iOS
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !isPWA) {
+        setShowIOSInstructions(true);
+        return;
+      }
 
-      // Request permission here instead of on load
       const permission = await Notification.requestPermission();
       if (permission !== "granted") {
         throw new Error("Notification permission denied");
       }
 
-      // Get or create service worker registration
       const reg =
         registration ||
         (await navigator.serviceWorker.register("/sw.js", {
@@ -101,10 +125,7 @@ export default function PushNotification() {
       const pushSubscription = await reg.pushManager.subscribe(
         subscribeOptions
       );
-      logDebug("Push subscription created");
-
       await subscribeUser(pushSubscription);
-      logDebug("Subscription saved to server");
 
       setIsSubscribed(true);
       setSubscription(pushSubscription);
@@ -127,16 +148,13 @@ export default function PushNotification() {
       setError(null);
 
       if (subscription) {
-        logDebug("Unsubscribing...");
         await unsubscribeUser(subscription);
         await subscription.unsubscribe();
-        logDebug("Unsubscribed successfully");
       }
 
       setIsSubscribed(false);
       setSubscription(null);
     } catch (error) {
-      logDebug(`Unsubscribe error: ${error.message}`);
       setError("Failed to unsubscribe");
     } finally {
       setIsLoading(false);
@@ -144,6 +162,39 @@ export default function PushNotification() {
   }
 
   if (!isClient) return null;
+
+  // Show installation instructions for iOS
+  if (showIOSInstructions) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.iosInstructions}>
+          <h3>Enable Push Notifications</h3>
+          <p>To receive notifications on iOS:</p>
+          <ol>
+            <li>
+              Tap the share button <span>⎋</span>
+            </li>
+            <li>
+              Select &quot;Add to Home Screen&quot; <span>+</span>
+            </li>
+            <li>Open the app from your home screen</li>
+            <li>Come back here and tap Subscribe</li>
+          </ol>
+          <button
+            className={styles.button}
+            onClick={() => setShowIOSInstructions(false)}
+          >
+            Got it
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't show subscribe button if not compatible
+  if (!isPWA && /iPad|iPhone|iPod/.test(navigator.userAgent)) {
+    return null;
+  }
 
   return (
     <div className={styles.container}>
@@ -159,10 +210,6 @@ export default function PushNotification() {
           ? "Unsubscribe from notifications"
           : "Subscribe to notifications"}
       </button>
-
-      <div className={styles.debugPanel}>
-        <pre>{debugInfo}</pre>
-      </div>
     </div>
   );
 }

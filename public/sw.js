@@ -55,30 +55,26 @@ self.addEventListener("push", (event) => {
         body: data.body,
         icon: "/android-chrome-192x192.png",
         badge: "/favicon-32x32.png",
-        vibrate: [200, 100, 200],
+        vibrate: [100],
         tag: data.tag || "blog-notification",
         renotify: true,
-        requireInteraction: true,
-        silent: false,
-        timestamp: Date.now(),
         data: {
           url: data.url || "/",
-          postId: data.id,
           // Store the URL in both places for compatibility
           openUrl: data.url || "/",
           origin: self.registration.scope,
         },
         // Simplified actions without icons for better compatibility
-        actions: [
-          {
-            action: "open",
-            title: "Read More",
-          },
-          {
-            action: "close",
-            title: "Close",
-          },
-        ],
+        // actions: [
+        //   {
+        //     action: "open",
+        //     title: "Read More",
+        //   },
+        //   {
+        //     action: "close",
+        //     title: "Close",
+        //   },
+        // ],
       };
 
       event.waitUntil(
@@ -102,49 +98,36 @@ self.addEventListener("push", (event) => {
 });
 
 self.addEventListener("notificationclick", (event) => {
-  console.log("Notification clicked:", event);
-
-  // Close the notification
   event.notification.close();
 
-  // Handle the close action
-  if (event.action === "close") {
-    return;
-  }
+  if (event.action === "close") return;
 
-  // Get URL to open (handle both action click and notification click)
   const urlToOpen = new URL(
     event.notification.data.url || "/",
     self.registration.scope
   ).href;
 
-  console.log("Opening URL:", urlToOpen);
-
-  const promiseChain = async () => {
-    try {
-      // Try to find existing window first
-      const windowClients = await clients.matchAll({
+  event.waitUntil(
+    clients
+      .matchAll({
         type: "window",
         includeUncontrolled: true,
-      });
-
-      // Look for an existing window to focus
-      for (const windowClient of windowClients) {
-        if (windowClient.url === urlToOpen) {
-          return windowClient.focus();
+      })
+      .then(function (clientList) {
+        // iOS Safari doesn't support clients.openWindow in all cases
+        // so we try to focus an existing window first
+        for (const client of clientList) {
+          if (client.url === urlToOpen && "focus" in client) {
+            return client.focus();
+          }
         }
-      }
 
-      // If no existing window found, open new one
-      return clients.openWindow(urlToOpen);
-    } catch (error) {
-      console.error("Error handling notification click:", error);
-      // Fallback
-      return clients.openWindow(urlToOpen);
-    }
-  };
-
-  event.waitUntil(promiseChain());
+        // If no existing window, try to open a new one
+        if (clients.openWindow) {
+          return clients.openWindow(urlToOpen);
+        }
+      })
+  );
 });
 
 // Handle notification close
