@@ -1,20 +1,57 @@
 // public/sw.js
-self.addEventListener("push", function (event) {
-  console.log("Push event received in SW");
+const CACHE_VERSION = "v1";
+const CACHE_NAME = `push-notification-${CACHE_VERSION}`;
+
+self.addEventListener("install", (event) => {
+  console.log("Service Worker installing...");
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll([
+        "/",
+        "/android-chrome-192x192.png",
+        "/favicon-32x32.png",
+      ]);
+    })
+  );
+  // Force the waiting service worker to become active
+  self.skipWaiting();
+});
+
+self.addEventListener("activate", (event) => {
+  console.log("Service Worker activating...");
+  event.waitUntil(
+    Promise.all([
+      // Take control of all clients
+      self.clients.claim(),
+      // Remove old caches
+      caches.keys().then((cacheNames) => {
+        return Promise.all(
+          cacheNames
+            .filter((cacheName) => cacheName.startsWith("push-notification-"))
+            .filter((cacheName) => cacheName !== CACHE_NAME)
+            .map((cacheName) => caches.delete(cacheName))
+        );
+      }),
+    ])
+  );
+});
+
+self.addEventListener("push", (event) => {
+  console.log("Push event received");
 
   if (event.data) {
     try {
       const data = event.data.json();
       console.log("Push data:", data);
 
-      // More detailed options for mobile notifications
       const options = {
         body: data.body,
         icon: "/android-chrome-192x192.png",
         badge: "/favicon-32x32.png",
-        vibrate: [100, 50, 100],
+        vibrate: [200, 100, 200],
         tag: "blog-notification",
         renotify: true,
+        requireInteraction: true,
         data: {
           url: data.url || "/",
           time: new Date().getTime(),
@@ -23,71 +60,34 @@ self.addEventListener("push", function (event) {
           {
             action: "open",
             title: "Read More",
-            icon: "/favicon-32x32.png",
           },
           {
             action: "close",
             title: "Close",
-            icon: "/favicon-32x32.png",
           },
         ],
-        // Android specific options
-        requireInteraction: true,
-        silent: false,
-        timestamp: Date.now(),
-        // Make sure there's a default click action
-        data: {
-          onActionClick: {
-            default: { url: data.url || "/" },
-            open: { url: data.url || "/" },
-          },
-        },
       };
-
-      // Log for debugging
-      console.log("Showing notification with options:", options);
 
       event.waitUntil(
         self.registration
           .showNotification(data.title, options)
-          .then(() => {
-            console.log("Notification shown successfully");
-          })
-          .catch((error) => {
-            console.error("Error showing notification:", error);
-            // Try showing a simpler notification as fallback
-            return self.registration.showNotification(data.title, {
-              body: data.body,
-              icon: "/android-chrome-192x192.png",
-            });
-          })
+          .then(() => console.log("Notification shown"))
+          .catch((error) => console.error("Show notification error:", error))
       );
     } catch (error) {
-      console.error("Error processing push event:", error);
-      // Show a basic notification if JSON parsing fails
-      event.waitUntil(
-        self.registration.showNotification("New Update", {
-          body: event.data.text(),
-        })
-      );
+      console.error("Push event processing error:", error);
     }
   }
 });
 
-self.addEventListener("notificationclick", function (event) {
-  console.log("Notification clicked:", event.notification.data);
+self.addEventListener("notificationclick", (event) => {
+  console.log("Notification clicked");
 
-  // Close the notification
   event.notification.close();
 
-  // Handle the action
-  let action = event.action || "default";
-  let actionData = event.notification.data.onActionClick[action];
-  let url = actionData ? actionData.url : "/";
+  if (event.action === "close") return;
 
-  if (action === "close") {
-    return;
-  }
+  const urlToOpen = event.notification.data.url || "/";
 
   event.waitUntil(
     clients
@@ -95,34 +95,13 @@ self.addEventListener("notificationclick", function (event) {
         type: "window",
         includeUncontrolled: true,
       })
-      .then(function (clientList) {
-        // If a window tab is already open, focus it
-        for (let client of clientList) {
-          if (client.url === url && "focus" in client) {
+      .then((clientList) => {
+        for (const client of clientList) {
+          if (client.url === urlToOpen && "focus" in client) {
             return client.focus();
           }
         }
-        // Otherwise open a new tab
-        if (clients.openWindow) {
-          return clients.openWindow(url);
-        }
+        return clients.openWindow(urlToOpen);
       })
-  );
-});
-
-// Force the waiting service worker to become active
-self.addEventListener("activate", function (event) {
-  event.waitUntil(
-    Promise.all([
-      self.clients.claim(),
-      // Clear any old caches if needed
-      caches.keys().then(function (cacheNames) {
-        return Promise.all(
-          cacheNames.map(function (cacheName) {
-            return caches.delete(cacheName);
-          })
-        );
-      }),
-    ])
   );
 });
