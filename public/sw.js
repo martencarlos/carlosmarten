@@ -51,56 +51,50 @@ self.addEventListener("push", (event) => {
       const data = event.data.json();
       console.log("Push data:", data);
 
-      // Wake lock to ensure notification shows in background
-      const showNotification = async () => {
-        try {
-          // Create notification options
-          const options = {
-            body: data.body,
-            icon: "/android-chrome-192x192.png",
-            badge: "/favicon-32x32.png",
-            vibrate: [200, 100, 200],
-            tag: data.tag || "blog-notification",
-            renotify: true,
-            requireInteraction: true,
-            silent: false,
-            timestamp: Date.now(),
-            data: {
-              url: data.url || "/",
-              postId: data.id,
-              openUrl: data.url || "/",
-              // Add origin for proper URL handling
-              origin: self.registration.scope,
-            },
-            actions: [
-              {
-                action: "open",
-                title: "Read More",
-                icon: "/favicon-32x32.png",
-              },
-              {
-                action: "close",
-                title: "Close",
-                icon: "/favicon-32x32.png",
-              },
-            ],
-          };
-
-          // Show the notification
-          await self.registration.showNotification(data.title, options);
-          console.log("Notification shown successfully");
-        } catch (error) {
-          console.error("Error showing notification:", error);
-          // Fallback to basic notification if complex one fails
-          await self.registration.showNotification(data.title, {
-            body: data.body,
-            icon: "/android-chrome-192x192.png",
-          });
-        }
+      const options = {
+        body: data.body,
+        icon: "/android-chrome-192x192.png",
+        badge: "/favicon-32x32.png",
+        vibrate: [200, 100, 200],
+        tag: data.tag || "blog-notification",
+        renotify: true,
+        requireInteraction: true,
+        silent: false,
+        timestamp: Date.now(),
+        data: {
+          url: data.url || "/",
+          postId: data.id,
+          // Store the URL in both places for compatibility
+          openUrl: data.url || "/",
+          origin: self.registration.scope,
+        },
+        // Simplified actions without icons for better compatibility
+        actions: [
+          {
+            action: "open",
+            title: "Read More",
+          },
+          {
+            action: "close",
+            title: "Close",
+          },
+        ],
       };
 
-      // Use waitUntil to keep the service worker alive
-      event.waitUntil(showNotification());
+      event.waitUntil(
+        self.registration
+          .showNotification(data.title, options)
+          .then(() => console.log("Notification shown successfully"))
+          .catch((error) => {
+            console.error("Error showing notification:", error);
+            // Fallback to basic notification
+            return self.registration.showNotification(data.title, {
+              body: data.body,
+              icon: "/android-chrome-192x192.png",
+              data: { url: data.url || "/" },
+            });
+          })
+      );
     } catch (error) {
       console.error("Error processing push data:", error);
     }
@@ -113,17 +107,20 @@ self.addEventListener("notificationclick", (event) => {
   // Close the notification
   event.notification.close();
 
-  if (event.action === "close") return;
+  // Handle the close action
+  if (event.action === "close") {
+    return;
+  }
 
-  // Get URL to open
+  // Get URL to open (handle both action click and notification click)
   const urlToOpen = new URL(
-    event.notification.data.openUrl || "/",
-    event.notification.data.origin || self.registration.scope
+    event.notification.data.url || "/",
+    self.registration.scope
   ).href;
 
   console.log("Opening URL:", urlToOpen);
 
-  const promiseChain = (async () => {
+  const promiseChain = async () => {
     try {
       // Try to find existing window first
       const windowClients = await clients.matchAll({
@@ -131,27 +128,23 @@ self.addEventListener("notificationclick", (event) => {
         includeUncontrolled: true,
       });
 
-      console.log("Existing windows:", windowClients.length);
-
       // Look for an existing window to focus
       for (const windowClient of windowClients) {
         if (windowClient.url === urlToOpen) {
-          await windowClient.focus();
-          return;
+          return windowClient.focus();
         }
       }
 
       // If no existing window found, open new one
-      const client = await clients.openWindow(urlToOpen);
-      if (client) await client.focus();
+      return clients.openWindow(urlToOpen);
     } catch (error) {
       console.error("Error handling notification click:", error);
-      // Fallback to basic window opening
-      await clients.openWindow(urlToOpen);
+      // Fallback
+      return clients.openWindow(urlToOpen);
     }
-  })();
+  };
 
-  event.waitUntil(promiseChain);
+  event.waitUntil(promiseChain());
 });
 
 // Handle notification close

@@ -32,22 +32,14 @@ export default function PushNotification() {
     setDebugInfo((prev) => `${prev}\n${new Date().toISOString()}: ${message}`);
   };
 
+  // Only check for existing subscription on mount
   useEffect(() => {
     setIsClient(true);
 
-    const initializeServiceWorker = async () => {
+    const checkExistingSubscription = async () => {
       try {
         if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
           logDebug("Push notifications not supported");
-          return;
-        }
-
-        // Check permission first
-        const permission = await Notification.requestPermission();
-        logDebug(`Notification permission: ${permission}`);
-
-        if (permission !== "granted") {
-          logDebug("Permission not granted");
           return;
         }
 
@@ -65,51 +57,17 @@ export default function PushNotification() {
             setIsSubscribed(true);
             setSubscription(pushSubscription);
             setRegistration(existingRegistration);
-            return;
+          } else {
+            // Just store the registration for later use
+            setRegistration(existingRegistration);
           }
-        }
-
-        // If no existing registration or subscription, register new one
-        const reg = await navigator.serviceWorker.register("/sw.js", {
-          scope: "/",
-          updateViaCache: "none",
-        });
-
-        logDebug("New service worker registered");
-
-        // Wait for the service worker to be ready
-        await navigator.serviceWorker.ready;
-        logDebug("Service worker ready");
-
-        setRegistration(reg);
-
-        // Try to subscribe immediately if permission is granted
-        const subscribeOptions = {
-          userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(
-            process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
-          ),
-        };
-
-        try {
-          const newSubscription = await reg.pushManager.subscribe(
-            subscribeOptions
-          );
-          logDebug("Auto-subscription successful");
-          setIsSubscribed(true);
-          setSubscription(newSubscription);
-          await subscribeUser(newSubscription);
-        } catch (subscribeError) {
-          logDebug(`Auto-subscription failed: ${subscribeError.message}`);
-          // Don't throw error here, just log it
         }
       } catch (error) {
         logDebug(`Initialization error: ${error.message}`);
-        setError("Failed to initialize push notifications");
       }
     };
 
-    initializeServiceWorker();
+    checkExistingSubscription();
   }, []);
 
   async function handleSubscribe() {
@@ -119,27 +77,19 @@ export default function PushNotification() {
 
       logDebug("Manual subscription starting...");
 
-      // Request wake lock permission if available
-      if ("wakeLock" in navigator) {
-        try {
-          await navigator.wakeLock.request("screen");
-          logDebug("Wake lock acquired");
-        } catch (wakeLockError) {
-          logDebug(`Wake lock error: ${wakeLockError.message}`);
-        }
+      // Request permission here instead of on load
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") {
+        throw new Error("Notification permission denied");
       }
 
-      // Register for periodic background sync if available
-      if ("periodicSync" in registration) {
-        try {
-          await registration.periodicSync.register("keep-alive", {
-            minInterval: 24 * 60 * 60 * 1000, // 24 hours
-          });
-          logDebug("Periodic sync registered");
-        } catch (syncError) {
-          logDebug(`Periodic sync error: ${syncError.message}`);
-        }
-      }
+      // Get or create service worker registration
+      const reg =
+        registration ||
+        (await navigator.serviceWorker.register("/sw.js", {
+          scope: "/",
+          updateViaCache: "none",
+        }));
 
       const subscribeOptions = {
         userVisibleOnly: true,
@@ -148,7 +98,7 @@ export default function PushNotification() {
         ),
       };
 
-      const pushSubscription = await registration.pushManager.subscribe(
+      const pushSubscription = await reg.pushManager.subscribe(
         subscribeOptions
       );
       logDebug("Push subscription created");
@@ -158,9 +108,14 @@ export default function PushNotification() {
 
       setIsSubscribed(true);
       setSubscription(pushSubscription);
+      setRegistration(reg);
     } catch (error) {
       logDebug(`Subscription error: ${error.message}`);
-      setError("Failed to subscribe to notifications");
+      setError(
+        error.message === "Notification permission denied"
+          ? "Please allow notifications to subscribe"
+          : "Failed to subscribe to notifications"
+      );
     } finally {
       setIsLoading(false);
     }
