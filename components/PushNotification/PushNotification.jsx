@@ -119,13 +119,27 @@ export default function PushNotification() {
 
       logDebug("Manual subscription starting...");
 
-      // Ensure we have a registration
-      const reg =
-        registration ||
-        (await navigator.serviceWorker.register("/sw.js", {
-          scope: "/",
-          updateViaCache: "none",
-        }));
+      // Request wake lock permission if available
+      if ("wakeLock" in navigator) {
+        try {
+          await navigator.wakeLock.request("screen");
+          logDebug("Wake lock acquired");
+        } catch (wakeLockError) {
+          logDebug(`Wake lock error: ${wakeLockError.message}`);
+        }
+      }
+
+      // Register for periodic background sync if available
+      if ("periodicSync" in registration) {
+        try {
+          await registration.periodicSync.register("keep-alive", {
+            minInterval: 24 * 60 * 60 * 1000, // 24 hours
+          });
+          logDebug("Periodic sync registered");
+        } catch (syncError) {
+          logDebug(`Periodic sync error: ${syncError.message}`);
+        }
+      }
 
       const subscribeOptions = {
         userVisibleOnly: true,
@@ -134,7 +148,7 @@ export default function PushNotification() {
         ),
       };
 
-      const pushSubscription = await reg.pushManager.subscribe(
+      const pushSubscription = await registration.pushManager.subscribe(
         subscribeOptions
       );
       logDebug("Push subscription created");
@@ -144,7 +158,6 @@ export default function PushNotification() {
 
       setIsSubscribed(true);
       setSubscription(pushSubscription);
-      setRegistration(reg);
     } catch (error) {
       logDebug(`Subscription error: ${error.message}`);
       setError("Failed to subscribe to notifications");
