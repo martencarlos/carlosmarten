@@ -1,4 +1,3 @@
-// components/PushNotification/PushNotification.jsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -27,6 +26,12 @@ export default function PushNotification() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isClient, setIsClient] = useState(false);
+  const [debugInfo, setDebugInfo] = useState("");
+
+  const logDebug = (message) => {
+    console.log(message);
+    setDebugInfo((prev) => `${prev}\n${new Date().toISOString()}: ${message}`);
+  };
 
   useEffect(() => {
     setIsClient(true);
@@ -35,20 +40,57 @@ export default function PushNotification() {
       "serviceWorker" in navigator &&
       "PushManager" in window
     ) {
-      registerServiceWorker();
+      checkNotificationPermission();
     }
   }, []);
 
+  async function checkNotificationPermission() {
+    try {
+      const permission = await Notification.requestPermission();
+      logDebug(`Notification permission status: ${permission}`);
+
+      if (permission === "granted") {
+        registerServiceWorker();
+      } else {
+        setError("Notification permission denied");
+      }
+    } catch (error) {
+      logDebug(`Permission check error: ${error.message}`);
+      setError("Failed to check notification permission");
+    }
+  }
+
   async function registerServiceWorker() {
     try {
-      const reg = await navigator.serviceWorker.register("/sw.js");
+      logDebug("Registering service worker...");
+
+      // Unregister any existing service workers first
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      for (let reg of registrations) {
+        await reg.unregister();
+        logDebug("Unregistered existing service worker");
+      }
+
+      // Register new service worker
+      const reg = await navigator.serviceWorker.register("/sw.js", {
+        scope: "/",
+        updateViaCache: "none",
+      });
+
+      logDebug("Service worker registered successfully");
       setRegistration(reg);
 
+      // Wait for the service worker to be ready
+      await navigator.serviceWorker.ready;
+      logDebug("Service worker is ready");
+
       const existingSubscription = await reg.pushManager.getSubscription();
+      logDebug(`Existing subscription: ${existingSubscription ? "Yes" : "No"}`);
+
       setIsSubscribed(!!existingSubscription);
       setSubscription(existingSubscription);
     } catch (error) {
-      console.error("Service Worker registration failed:", error);
+      logDebug(`Service Worker registration error: ${error.message}`);
       setError("Failed to initialize notifications");
     }
   }
@@ -58,6 +100,8 @@ export default function PushNotification() {
       setIsLoading(true);
       setError(null);
 
+      logDebug("Attempting to subscribe...");
+
       const pushSubscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(
@@ -65,12 +109,16 @@ export default function PushNotification() {
         ),
       });
 
+      logDebug("Successfully created push subscription");
+      logDebug(`Endpoint: ${pushSubscription.endpoint.slice(0, 50)}...`);
+
       await subscribeUser(pushSubscription);
+      logDebug("Subscription saved to server");
 
       setIsSubscribed(true);
       setSubscription(pushSubscription);
     } catch (error) {
-      console.error("Failed to subscribe:", error);
+      logDebug(`Subscription error: ${error.message}`);
       setError("Failed to enable notifications");
     } finally {
       setIsLoading(false);
@@ -82,25 +130,23 @@ export default function PushNotification() {
       setIsLoading(true);
       setError(null);
 
+      logDebug("Unsubscribing...");
       await subscription.unsubscribe();
       await unsubscribeUser(subscription);
+      logDebug("Successfully unsubscribed");
 
       setIsSubscribed(false);
       setSubscription(null);
     } catch (error) {
-      console.error("Error unsubscribing:", error);
+      logDebug(`Unsubscribe error: ${error.message}`);
       setError("Failed to disable notifications");
     } finally {
       setIsLoading(false);
     }
   }
 
-  // Don't render anything during SSR
-  if (!isClient) {
-    return null;
-  }
+  if (!isClient) return null;
 
-  // Check for browser support after client-side hydration
   if (
     typeof window !== "undefined" &&
     (!("serviceWorker" in navigator) || !("PushManager" in window))
@@ -122,6 +168,11 @@ export default function PushNotification() {
           ? "Unsubscribe"
           : "Subscribe to get notified of new posts"}
       </button>
+
+      {/* Debug Info Panel (can be hidden in production) */}
+      <div className={styles.debugPanel}>
+        <pre>{debugInfo}</pre>
+      </div>
     </div>
   );
 }
