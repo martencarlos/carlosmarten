@@ -1,21 +1,28 @@
+// components/PushNotification/PushNotification.jsx
 "use client";
+
 import { useState, useEffect } from "react";
 import { subscribeUser, unsubscribeUser } from "@actions/pushNotifications";
 import styles from "./PushNotification.module.css";
 
 function urlBase64ToUint8Array(base64String) {
-  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding)
-    .replace(/\-/g, "+")
-    .replace(/_/g, "/");
+  try {
+    const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding)
+      .replace(/\-/g, "+")
+      .replace(/_/g, "/");
 
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
 
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  } catch (error) {
+    console.error("Error converting base64 to Uint8Array:", error);
+    throw new Error("Invalid VAPID key format");
   }
-  return outputArray;
 }
 
 export default function PushNotification() {
@@ -25,70 +32,78 @@ export default function PushNotification() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isClient, setIsClient] = useState(false);
-  const [isPWA, setIsPWA] = useState(false);
-  const [showIOSInstructions, setShowIOSInstructions] = useState(false);
+  const [deviceInfo, setDeviceInfo] = useState({
+    isIOS: false,
+    isCompatibleIOS: false,
+    isPWA: false,
+  });
 
-  const logDebug = (message) => {
-    console.log(message);
-  };
-
-  // Check device and PWA status
+  // Detect environment safely
   useEffect(() => {
-    setIsClient(true);
+    try {
+      setIsClient(true);
 
-    // Check if running as PWA
-    const isStandalone =
-      window.matchMedia("(display-mode: standalone)").matches ||
-      window.navigator.standalone;
-    setIsPWA(isStandalone);
+      // Safely check if iOS
+      const isIOS =
+        /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-    // Check if iOS
-    const isIOS =
-      /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-    // Check iOS version (needed for push notification support)
-    if (isIOS) {
-      const version = parseInt(
-        navigator.userAgent.match(/OS (\d+)_/)?.[1] || "0"
-      );
-
-      if (!isStandalone) {
-        setShowIOSInstructions(true);
+      // Safely check iOS version
+      let isCompatibleIOS = false;
+      if (isIOS) {
+        const match = navigator.userAgent.match(/OS (\d+)_/);
+        const version = match ? parseInt(match[1], 10) : 0;
+        isCompatibleIOS = version >= 16;
       }
-    }
 
-    // Check for existing subscription if conditions are met
-    if ((isStandalone && isIOS && version >= 16) || !isIOS) {
-      checkExistingSubscription();
+      // Safely check if PWA
+      const isPWA =
+        window.matchMedia("(display-mode: standalone)").matches ||
+        window.navigator.standalone === true;
+
+      setDeviceInfo({ isIOS, isCompatibleIOS, isPWA });
+
+      // Only initialize service worker if appropriate
+      if (
+        (!isIOS || (isIOS && isCompatibleIOS && isPWA)) &&
+        "serviceWorker" in navigator &&
+        "PushManager" in window
+      ) {
+        initializeServiceWorker();
+      }
+    } catch (error) {
+      console.error("Error during initialization:", error);
+      setError("Failed to initialize notification system");
     }
   }, []);
 
-  const checkExistingSubscription = async () => {
+  const initializeServiceWorker = async () => {
     try {
-      if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
-        logDebug("Push notifications not supported");
+      // Check for existing registration first
+      const existingReg = await navigator.serviceWorker.getRegistration();
+
+      if (existingReg) {
+        console.log("Using existing service worker registration");
+        setRegistration(existingReg);
+
+        const existingSub = await existingReg.pushManager.getSubscription();
+        if (existingSub) {
+          setIsSubscribed(true);
+          setSubscription(existingSub);
+        }
         return;
       }
 
-      const existingRegistration =
-        await navigator.serviceWorker.getRegistration();
-
-      if (existingRegistration) {
-        logDebug("Found existing service worker");
-        const pushSubscription =
-          await existingRegistration.pushManager.getSubscription();
-
-        if (pushSubscription) {
-          logDebug("Found existing push subscription");
-          setIsSubscribed(true);
-          setSubscription(pushSubscription);
-          setRegistration(existingRegistration);
-        } else {
-          setRegistration(existingRegistration);
-        }
+      // Only register new service worker if needed
+      if ("serviceWorker" in navigator) {
+        const reg = await navigator.serviceWorker.register("/sw.js", {
+          scope: "/",
+          updateViaCache: "none",
+        });
+        setRegistration(reg);
       }
     } catch (error) {
-      logDebug(`Initialization error: ${error.message}`);
+      console.error("Service Worker registration failed:", error);
+      // Don't show error to user unless they try to subscribe
     }
   };
 
@@ -97,24 +112,34 @@ export default function PushNotification() {
       setIsLoading(true);
       setError(null);
 
-      // Special handling for iOS
-      if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !isPWA) {
-        setShowIOSInstructions(true);
+      // Check if running in PWA mode on iOS
+      if (deviceInfo.isIOS && !deviceInfo.isPWA) {
+        setError("Please install this website as an app first");
         return;
       }
 
+      // Check iOS compatibility
+      if (deviceInfo.isIOS && !deviceInfo.isCompatibleIOS) {
+        setError("Notifications require iOS 16.4 or later");
+        return;
+      }
+
+      // Request permission first
       const permission = await Notification.requestPermission();
       if (permission !== "granted") {
         throw new Error("Notification permission denied");
       }
 
-      const reg =
-        registration ||
-        (await navigator.serviceWorker.register("/sw.js", {
-          scope: "/",
-          updateViaCache: "none",
-        }));
+      // Ensure we have a service worker registration
+      if (!registration) {
+        await initializeServiceWorker();
+      }
 
+      if (!registration) {
+        throw new Error("Failed to initialize notifications");
+      }
+
+      // Subscribe to push
       const subscribeOptions = {
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(
@@ -122,21 +147,26 @@ export default function PushNotification() {
         ),
       };
 
-      const pushSubscription = await reg.pushManager.subscribe(
+      const pushSubscription = await registration.pushManager.subscribe(
         subscribeOptions
       );
+
+      // Save to server
       await subscribeUser(pushSubscription);
 
       setIsSubscribed(true);
       setSubscription(pushSubscription);
-      setRegistration(reg);
     } catch (error) {
-      logDebug(`Subscription error: ${error.message}`);
-      setError(
-        error.message === "Notification permission denied"
-          ? "Please allow notifications to subscribe"
-          : "Failed to subscribe to notifications"
-      );
+      console.error("Subscription error:", error);
+
+      // User-friendly error messages
+      if (error.message.includes("permission")) {
+        setError("Please allow notifications in your browser settings");
+      } else if (error.message.includes("VAPID")) {
+        setError("Invalid notification configuration");
+      } else {
+        setError("Failed to enable notifications. Please try again");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -155,46 +185,42 @@ export default function PushNotification() {
       setIsSubscribed(false);
       setSubscription(null);
     } catch (error) {
-      setError("Failed to unsubscribe");
+      console.error("Unsubscribe error:", error);
+      setError("Failed to disable notifications");
     } finally {
       setIsLoading(false);
     }
   }
 
+  // Don't render anything during SSR
   if (!isClient) return null;
 
-  // Show installation instructions for iOS
-  if (showIOSInstructions) {
+  // Show installation instructions for iOS non-PWA
+  if (deviceInfo.isIOS && !deviceInfo.isPWA) {
     return (
       <div className={styles.container}>
         <div className={styles.iosInstructions}>
-          <h3>Enable Push Notifications</h3>
+          <h3>Enable Notifications</h3>
           <p>To receive notifications on iOS:</p>
           <ol>
             <li>
-              Tap the share button <span>⎋</span>
+              Tap the share button <span className={styles.icon}>⎋</span>
             </li>
             <li>
-              Select &quot;Add to Home Screen&quot; <span>+</span>
+              Select "Add to Home Screen" <span className={styles.icon}>+</span>
             </li>
             <li>Open the app from your home screen</li>
-            <li>Come back here and tap Subscribe</li>
+            <li>Return here to subscribe</li>
           </ol>
-          <button
-            className={styles.button}
-            onClick={() => setShowIOSInstructions(false)}
-          >
-            Got it
-          </button>
         </div>
       </div>
     );
   }
 
-  // Don't show subscribe button if not compatible
-  if (!isPWA && /iPad|iPhone|iPod/.test(navigator.userAgent)) {
+  // Don't show anything if notifications aren't supported
+  if (deviceInfo.isIOS && !deviceInfo.isCompatibleIOS) return null;
+  if (!("serviceWorker" in navigator) || !("PushManager" in window))
     return null;
-  }
 
   return (
     <div className={styles.container}>
