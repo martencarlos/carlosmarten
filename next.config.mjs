@@ -22,6 +22,7 @@ const nextConfig = {
         pathname: "/**", // Wildcard to allow all image paths
       },
     ],
+    unoptimized: true,
   },
   // async rewrites() {
   //   return [
