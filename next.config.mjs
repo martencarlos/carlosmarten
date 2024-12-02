@@ -21,8 +21,31 @@ const nextConfig = {
         port: "", // Leave this empty if there's no specific port
         pathname: "/**", // Wildcard to allow all image paths
       },
+      {
+        protocol: "https", // Specify the protocol (http or https)
+        hostname: "rocketmedia.b-cdn.net", // Domain name
+        port: "", // Leave this empty if there's no specific port
+        pathname: "/**", // Wildcard to allow all image paths
+      },
     ],
     unoptimized: true,
+  },
+  async headers() {
+    return [
+      {
+        source: "/sw.js",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
+          },
+          {
+            key: "Content-Type",
+            value: "application/javascript; charset=utf-8",
+          },
+        ],
+      },
+    ];
   },
   // async rewrites() {
   //   return [

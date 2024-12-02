@@ -5,7 +5,7 @@
 
   line-height: 1.5;
   /* color: #333; */
-  position: relative;
+
 }
 
 .progressBar {
@@ -19,13 +19,13 @@
 }
 
 .article {
-  
+  position: relative;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
-.container.dark .article{
+.container.dark .article {
   box-shadow: 0 3px 5px rgba(255, 255, 255, 0.3);
 }
 
@@ -59,18 +59,18 @@
 
 .title {
   font-size: 2.5rem;
-  margin: 20px;
+  margin: 0px 20px 20px 20px;
   color: var(--fourth-color);
 }
 
-.container.dark .title{
+.container.dark .title {
   color: var(--second-color);
 }
 
 .postMeta {
-    margin-right: 30px;
-    margin-left: 30px;
-    font-size: 0.9rem;
+  margin-right: 30px;
+  margin-left: 30px;
+  font-size: 0.9rem;
 }
 
 .authorDateInfo {
@@ -79,8 +79,13 @@
   margin-bottom: 15px;
 }
 
-.authorInfo, .dateInfo {
+.authorInfo,
+.dateInfo {
   flex: 1;
+}
+
+.icon {
+  margin-right: 5px;
 }
 
 .timeInfo {
@@ -96,11 +101,13 @@
 }
 
 .metaLabel {
+  display: flex;
+  align-items: center;
   font-weight: bold;
   color: var(--third-color);
 }
 
-.metaÇategories{
+.metaÇategories {
   font-weight: bold;
   margin-right: 5px;
   margin-top: 4px;
@@ -113,15 +120,15 @@
   color: #7f8c8d;
 }
 
-.container.dark .metaValue{
+.container.dark .metaValue {
   color: rgb(235, 235, 235);
 }
 
-.categories{
-    display: flex;
-    align-items: center;
-        margin-top: 20px;
-   
+.categories {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+
 }
 
 
@@ -140,6 +147,7 @@
   font-size: 0.8rem;
   display: inline-block;
 }
+
 .pill:hover {
   background-color: var(--third-color);
   /* color: #2980b9; */
@@ -148,12 +156,13 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.container.dark .pill{
-  background-color: var(--fourth-color) ;
+.container.dark .pill {
+  background-color: var(--fourth-color);
   color: white !important;
 }
-.container.dark .pill:hover{
-  background-color: var(--third-color) ;
+
+.container.dark .pill:hover {
+  background-color: var(--third-color);
 }
 
 .pinnedPost {
@@ -169,7 +178,8 @@
 
 
 .scrollToTopButton {
-  position: fixed;
+  position: absolute;
+  opacity: 0.8;
   bottom: 50px;
   right: 50px;
   background-color: var(--third-color);
@@ -178,7 +188,7 @@
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  font-size: 24px;
+  padding: 15px 15px;
   cursor: pointer;
   display: none;
   align-items: center;
@@ -191,20 +201,28 @@
   background-color: #155574;
 }
 
+.audioPlayer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+  transition: color 0.2s ease;
+}
+
 @media (max-width: 600px) {
   .container {
     padding: 0px;
   }
-  
+
   .featuredImageContainer {
     height: 250px;
   }
 
   .title {
     font-size: 2rem;
-    margin: 20px 20px 15px;
+    /* margin: 20px 20px 15px; */
   }
-  
+
   .content {
     font-size: 1rem;
     padding: 20px;

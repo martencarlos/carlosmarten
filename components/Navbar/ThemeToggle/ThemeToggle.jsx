@@ -1,23 +1,42 @@
 "use client";
 
-
 import { useTheme } from "next-themes";
-import { Sun, Moon } from "lucide-react";
+import { FaSun, FaMoon } from "react-icons/fa";
 import styles from "./themetoggle.module.css";
+import { useEffect, useState } from "react";
 
 const ThemeToggle = () => {
-  console.log("ThemeToggle loaded");
-  const { theme, setTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Only render after mounting to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Don't render anything until mounted
+  if (!mounted) {
+    return (
+      <button className={styles.themeToggle}>
+        <FaMoon size={20} aria-hidden="true" />
+      </button>
+    );
+  }
 
   return (
     <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className={`${styles.themeToggle} ${theme === "dark" ? styles.dark : ""}`}
+      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+      className={`${styles.themeToggle} ${
+        resolvedTheme === "dark" ? styles.dark : ""
+      }`}
+      aria-label={`Switch to ${
+        resolvedTheme === "dark" ? "light" : "dark"
+      } mode`}
     >
-      {theme === "dark" ? (
-        <Sun size={20} aria-label="sun" />
+      {resolvedTheme === "dark" ? (
+        <FaSun size={20} aria-hidden="true" />
       ) : (
-        <Moon size={20} aria-label="moon" />
+        <FaMoon size={20} aria-hidden="true" />
       )}
     </button>
   );

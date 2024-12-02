@@ -70,7 +70,7 @@
 
 .navLink {
   text-decoration: none;
-  color: inherit;
+  color: var(--foreground);
   padding: 0.5rem 1rem;
   border-radius: 4px;
   transition: background-color 0.3s, color 0.3s;
@@ -79,13 +79,18 @@
 
 
 .active {
-  color: var(--third-color); /* Active link color */
+  color: var(--third-color) !important; /* Active link color */
   font-weight: bold; /* Example styling */
 }
 
 
 .navLink:hover {
   background-color: rgba(236, 236, 236, 0.9);
+}
+
+.navbar_container.dark .navLink:hover {
+  background-color: rgba(48, 48, 48, 0.9);
+  color: white;
 }
 
 .themeToggle {
@@ -101,9 +106,6 @@
   border-radius: 50%;
 }
 
-.themeToggle:hover {
-  background-color: rgba(236, 236, 236, 0.9);
-}
 
 .hamburger {
   display: none;
@@ -161,7 +163,6 @@
     gap: 1rem;
     padding-top: 5.5rem;
     transition: transform 0.3s ease-in-out;
-    background-color: var(--background);
     transform: translateX(100%);
   }
 
@@ -184,10 +185,7 @@
   color: #ffffff;
 }
 
-:global(.dark) .navLink:hover,
-:global(.dark) .themeToggle:hover {
-  color: #000000;
-}
+
 
 :global(.dark) .hamburgerLine {
   background-color: #ffffff;

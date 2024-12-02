@@ -16,6 +16,13 @@
     min-height: calc(100vh - 178px);
 }
 
+.loadingContainerFullPage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
 .loader {
   display: flex;
   justify-content: center;

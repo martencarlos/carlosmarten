@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "./mobilemenu.module.css";
-import { Sun, Moon } from "lucide-react";
+import { FaSun, FaMoon } from "react-icons/fa";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
@@ -19,7 +19,6 @@ const MobileMenu = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-
   const handleLinkClick = () => {
     if (isMobile) {
       setIsOpen(false);
@@ -32,7 +31,11 @@ const MobileMenu = () => {
   };
 
   return (
-    <>
+    <div
+      className={`${styles.mobileMenu} ${
+        resolvedTheme === "dark" ? styles.dark : ""
+      }`}
+    >
       <button
         aria-label="Toggle menu"
         className={`${styles.hamburger} ${isOpen ? styles.open : ""}`}
@@ -73,12 +76,12 @@ const MobileMenu = () => {
           </li>
           <li className={styles.navItem}>
             <button onClick={toggleTheme} className={styles.themeToggle}>
-              {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+              {theme === "dark" ? <FaSun size={20} /> : <FaMoon size={20} />}
             </button>
           </li>
         </ul>
       )}
-    </>
+    </div>
   );
 };
 

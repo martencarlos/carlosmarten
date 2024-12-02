@@ -19,7 +19,7 @@
   margin-right: 50px;
   z-index: 1;
   border-radius: 50%; /* Circular shape */
-  overflow: hidden; /* Ensures that the image fits within the circle */
+  /* overflow: hidden;  */
   position: relative; /* For positioning the overlay */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Shadow for depth */
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1)); /* Gradient background */

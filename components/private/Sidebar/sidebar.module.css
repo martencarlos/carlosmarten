@@ -1,113 +1,118 @@
-/* app/dashboard/sidebar.module.css */
-
-/* General Styles */
+/* sidebar.module.css */
 .sidebar {
-  width: var(--sidebar-width);
-  height: calc(100vh - 178px);
-  border: 1px solid var(--second-color);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  padding: 1rem;
-  background-color: var(--background);
-  display: flex;
-  align-self: start;
-  margin-top: 125px;
-  flex-direction: column;
-  justify-content: space-between;
-    position: fixed;
-  left: -190px;
+  position: sticky;
   top: 0;
-  transition: left 0.3s ease-in-out;
-  z-index: 1000;
-}
-
-.sidebar.active {
-  left: 0;
-}
-
-/* Header styles */
-.header {
+  height: calc(100vh - 176px);
+  background-color: var(--background);
+  width: 200px;
+  padding: 1.5rem;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+/* Dark mode compatibility */
+
+.closed {
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.toggleButton {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 101;
+  background: var(--background);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+}
+
+.toggleButton:hover {
+  transform: scale(1.1);
+}
+
+.header {
   margin-bottom: 2rem;
 }
 
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
+
 }
 
-/* Nav styles */
-
-.nav{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.nav {
+  flex-grow: 1;
 }
+
 .navList {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.navList li {
-  margin-bottom: 1rem;
+.navItem {
+  margin-bottom: 0.5rem;
 }
 
-.navList a {
+.navLink {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
   text-decoration: none;
-  font-weight: 500;
-  /* color: var(--third-color); */
-  transition: color 0.3s ease;
+
+  border-radius: 0.5rem;
 }
 
-.navList a:hover {
-  color: var(--fourth-color);
+.navLink:hover {
+  background-color: var(--hover-background, rgba(0, 0, 0, 0.05));
+  transform: translateX(4px);
 }
 
-.navList .activeLink a {
-  color: var(--third-color);
-  font-weight: bold;
+.navIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.75rem;
 }
 
-/* Toggle button */
-.toggleButton {
-    display: flex;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.8rem;
-  /* color: var(--third-color); */
+.active .navLink {
+  background-color: var(--primary-color, #0070f3);
+  color: white;
 }
 
-.toggleButton:hover {
-  color: var(--hover-link-color);
+.active .navLink:hover {
+  transform: none;
+  background-color: var(--fourth-color);
 }
 
-.sidebarFooter{
-    display: flex;
-    width: 100%;
-
+.footer {
+  margin-top: auto;
+  padding-top: 1rem;
 }
-
-/* Logout button */
 
 .logout {
   padding: 0.8rem 1.2rem;
   background-color: var(--logout-bg-color);
   width: 100%;
   border: none;
-  display:none;
   border-radius: 4px;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-  margin-top: auto;
+  margin-top: 20px;
 }
 
-.sidebar.active .logout{
-    display: block;
-}
 
 
 
@@ -116,33 +121,68 @@
   transform: translateY(-2px);
 }
 
-/* Responsive Styles */
+/* Mobile Styles */
 @media (max-width: 768px) {
   .sidebar {
-    position:fixed;
-    width: auto;
-    height: auto;
-    top: 40%;
-    margin:0px;
-    padding:5px;
-    left:0px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    transform: translateX(-100%);
   }
 
+  /* .toggleButton {
+    top: 50%;
+  } */
 
-  .logout {
-    display: block;
+  .open {
+    transform: translateX(0);
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .closed {
+    transform: translateX(-100%);
   }
 
   .header {
-    display: none;
+    display: flex;
+    justify-content: flex-end;
   }
 
+  .navLink:hover {
+    transform: none;
+    background-color: var(--hover-background, rgba(0, 0, 0, 0.05));
+  }
+}
 
-  .toggleButton {
-    display:none;
+/* Animation for content appearing */
+.navItem {
+  opacity: 0;
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    /* transform: translateX(-10px); */
   }
 
-  .navList li {
-    margin: 1.5rem 0;
+  to {
+    opacity: 1;
+    /* transform: translateX(0); */
   }
+}
+
+/* Stagger animation for nav items */
+.navItem:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.navItem:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.navItem:nth-child(3) {
+  animation-delay: 0.3s;
 }

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { useTheme } from 'next-themes';
+import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 import styles from "./backbutton.module.css";
 
 export default function BackButton() {
@@ -10,13 +10,19 @@ export default function BackButton() {
   const { resolvedTheme } = useTheme();
 
   const handleBack = () => {
-    router.back();
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/blog");
+    }
   };
 
   return (
     <button
       onClick={handleBack}
-      className={`${styles.backButton} ${resolvedTheme === 'dark' ? styles.darkMode : styles.lightMode}`}
+      className={`${styles.backButton} ${
+        resolvedTheme === "dark" ? styles.darkMode : styles.lightMode
+      }`}
     >
       &larr; Back
     </button>

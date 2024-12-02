@@ -1,30 +1,37 @@
+// ContactsList.jsx
 import { FaUser, FaEnvelope, FaComment } from "react-icons/fa";
 import styles from "./contactslist.module.css";
-import LoadingComponent from "components/(aux)/LoadingComponent/LoadingComponent";
 
 export default function ContactsList({ contacts }) {
-  console.log("ContactsList loaded");
   if (!contacts) {
-    return <LoadingComponent />;
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingSpinner}></div>
+      </div>
+    );
   }
 
   return (
     <div className={styles.container}>
       {contacts.map((contact) => (
-        <div key={contact.id} className={styles.contactCard}>
-          <div className={styles.contactInfo}>
-            <div className={styles.contactDetail}>
-              <FaUser className={styles.icon} />
-              <span className={styles.value}>{contact.name}</span>
+        <div key={contact.id} className={styles.card}>
+          <div className={styles.cardContent}>
+            <div className={styles.contactInfo}>
+              <div className={styles.infoItem}>
+                <FaUser className={styles.icon} />
+                <span className={styles.infoText}>{contact.name}</span>
+              </div>
+
+              <div className={styles.infoItem}>
+                <FaEnvelope className={styles.icon} />
+                <span className={styles.infoText}>{contact.email}</span>
+              </div>
             </div>
-            <div className={styles.contactDetail}>
-              <FaEnvelope className={styles.icon} />
-              <span className={styles.value}>{contact.email}</span>
+
+            <div className={styles.messageContainer}>
+              <FaComment className={styles.icon} />
+              <p className={styles.message}>{contact.message}</p>
             </div>
-          </div>
-          <div className={styles.messageSection}>
-            <FaComment className={styles.icon} />
-            <span className={styles.messageValue}>{contact.message}</span>
           </div>
         </div>
       ))}

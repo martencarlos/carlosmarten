@@ -1,5 +1,7 @@
 /* General card style */
 .card {
+  display: flex;
+  gap: 20px;
   max-width: 750px;
   margin: 20px auto;
   padding: 20px;
@@ -10,6 +12,13 @@
   font-family: Arial, sans-serif;
 }
 
+.card_image {
+  width: 100px;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
 /* Title style within the card */
 .card_title {
   font-size: 1.5rem;
@@ -18,19 +27,37 @@
   /* color: #333; */
 }
 
+.card_excerpt {
+  font-size: 1rem;
+  margin-bottom: 15px;
+  margin-top: 0px;
+  color: #8f8f8f;
+}
+
+.card_excerpt p {
+  margin: 0px;
+}
+
 .card:hover .card_title {
   color: var(--third-color);
 }
 
-.card.dark:hover .card_title{
+.card.dark:hover .card_title {
   color: var(--second-color);
 }
 
 /* Meta information style */
+
+.card_info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
 .card_meta {
   font-size: 0.9rem;
   color: #bbb;
-  margin-bottom: 10px;
   text-align: right;
 }
 
@@ -41,15 +68,21 @@
 
 .card_date {
   font-style: italic;
+  font-size: small;
   margin: 0;
 }
 
 /* Taxonomies style */
+.card_taxonomies {
+  display: flex;
+  align-items: center;
+}
+
 .card_categories {
   display: flex;
+  flex: 1;
   flex-wrap: wrap;
   gap: 5px;
-  margin-top: 10px;
 }
 
 .card_tag {
@@ -69,7 +102,7 @@
   transition: background-color 0.3s, color 0.3s, transform 0.3s;
 }
 
-.card.dark .card_tag{
+.card.dark .card_tag {
   background-color: var(--third-color);
 }
 
@@ -86,3 +119,9 @@
   display: block;
 }
 
+@media (max-width: 600px) {
+
+  .card_excerpt {
+    display: none;
+  }
+}
