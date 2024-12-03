@@ -5,7 +5,8 @@
       "@components/*": ["components/*"],
       "@actions/*": ["actions/*"],
       "@lib/*": ["lib/*"],
-      "@context/*": ["context/*"]
+      "@context/*": ["context/*"],
+      "@providers/*": ["providers/*"]
     }
   }
 }

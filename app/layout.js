@@ -1,7 +1,10 @@
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { ThemeProvider } from "next-themes";
-import "../globals.css";
+import { ThemeProvider } from "@providers/theme-provider";
+import "./globals.css";
+
+import { AudioProvider } from "@context/AudioContext";
+import GlobalAudioPlayer from "@components/Article/AudioPlayer/GlobalAudioPlayer";
 
 export const metadata = {
   title: "Carlos Marten",
@@ -25,11 +28,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   console.log("RootLayout loaded");
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <body>
-        <ThemeProvider attribute="class">{children}</ThemeProvider>
-        <SpeedInsights />
+        <ThemeProvider>
+          <AudioProvider>
+            {children}
+            <GlobalAudioPlayer />
+          </AudioProvider>
+        </ThemeProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -9,8 +9,8 @@
 }
 
 .heroSection.dark {
-  
-  
+  color: #fcfcfc;
+
 
 }
 
@@ -18,17 +18,23 @@
 .imageContainer {
   margin-right: 50px;
   z-index: 1;
-  border-radius: 50%; /* Circular shape */
+  border-radius: 50%;
+  /* Circular shape */
   /* overflow: hidden;  */
-  position: relative; /* For positioning the overlay */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Shadow for depth */
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1)); /* Gradient background */
+  position: relative;
+  /* For positioning the overlay */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  /* Shadow for depth */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1));
+  /* Gradient background */
 }
 
 .roundedImage {
-    border-radius: 50%;
-    width: 200px; /* Image fits the container */
-    height: auto; /* Maintain aspect ratio */
+  border-radius: 50%;
+  width: 200px;
+  /* Image fits the container */
+  height: auto;
+  /* Maintain aspect ratio */
 }
 
 .textContainer {
@@ -68,8 +74,8 @@
     margin-bottom: 20px;
   }
 
-  .textContainer{
-        max-width: 500px;
+  .textContainer {
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     /* justify-content: center; */

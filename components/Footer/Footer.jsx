@@ -7,7 +7,7 @@ const Footer = () => {
   console.log("Footer loaded");
   return (
     <footer className={styles.footer}>
-      <div className={styles.content}>
+      <div className={styles.content} suppressHydrationWarning>
         <p>&copy; {new Date().getFullYear()} Carlos Marten</p>
         <nav>
           <Link href="/about" className={styles.link}>

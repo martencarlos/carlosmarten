@@ -10,6 +10,11 @@ export default function PostList({ posts, selectedCategory, searchQuery }) {
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -30,6 +35,10 @@ export default function PostList({ posts, selectedCategory, searchQuery }) {
     }
     setIsLoading(false);
   }, [posts, selectedCategory, searchQuery]);
+
+  if (!mounted) {
+    return <div className={styles.one_column}>{/* Initial content */}</div>;
+  }
 
   // Pagination calculations
   const totalPosts = filteredPosts.length;

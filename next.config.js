@@ -4,6 +4,7 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_WP_URL: process.env.NEXT_PUBLIC_WP_URL,
   },
+
   images: {
     remotePatterns: [
       {
@@ -30,6 +31,7 @@ const nextConfig = {
     ],
     unoptimized: true,
   },
+
   async headers() {
     return [
       {
