@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react";
 import { subscribeUser, unsubscribeUser } from "@actions/pushNotifications";
 import styles from "./PushNotification.module.css";
+import { GoShare } from "react-icons/go";
 
 function urlBase64ToUint8Array(base64String) {
   try {
@@ -204,7 +205,7 @@ export default function PushNotification() {
           <p>To receive notifications on iOS:</p>
           <ol>
             <li>
-              Tap the share button <span className={styles.icon}>⎋</span>
+              Tap the share button <GoShare className={styles.icon} />
             </li>
             <li>
               Select Add to Home Screen <span className={styles.icon}>+</span>

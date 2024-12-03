@@ -6365,7 +6365,7 @@ export default function PushNotification() {
           <p>To receive notifications on iOS:</p>
           <ol>
             <li>
-              Tap the share button <span className={styles.icon}>⎋</span>
+              Tap the share button <span className={styles.icon}><FaShareSquare /></span>
             </li>
             <li>
               Select Add to Home Screen <span className={styles.icon}>+</span>
