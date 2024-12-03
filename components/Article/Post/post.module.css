@@ -109,7 +109,7 @@
 .authorDateInfo {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
+
 }
 
 .authorInfo,
@@ -140,12 +140,7 @@
   color: var(--third-color);
 }
 
-.metaÇategories {
-  font-weight: bold;
-  margin-right: 5px;
-  margin-top: 4px;
-  color: var(--third-color);
-}
+
 
 .metaValue {
   color: #7f8c8d;
@@ -158,7 +153,15 @@
 .categories {
   display: flex;
   align-items: center;
-  margin-top: 15px;
+  margin: 10px 0;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.categoryname {
+  font-weight: bold;
+  margin-right: 5px;
+  color: var(--third-color);
 }
 
 .pillContainer {
@@ -266,10 +269,7 @@
     margin: 0px;
   }
 
-  .authorDateInfo {
-    /* flex-direction: column; */
-    gap: 10px;
-  }
+
 
   .dateInfo {
     /* flex-direction: column; */

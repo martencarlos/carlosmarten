@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import Card from "components/Article/PostCard/PostCard";
 import LoadingComponent from "@components/(aux)/LoadingComponent/LoadingComponent";
 const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
+import { useParams } from "next/navigation";
 
 async function getCategories() {
   const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`);
@@ -25,10 +26,13 @@ async function getCategoryPosts(categoryId) {
   return res.json();
 }
 
-export default function Categories({ params }) {
-  const category = params.slug;
+export default function Categories() {
+  const params = useParams();
+
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const category = decodeURIComponent(params.slug);
 
   useEffect(() => {
     async function fetchData() {
