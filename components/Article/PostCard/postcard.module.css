@@ -124,4 +124,12 @@
   .card_excerpt {
     display: none;
   }
+
+  .card_title {
+    font-size: 1.0rem;
+  }
+
+  .card_tag {
+    font-size: 0.7rem;
+  }
 }

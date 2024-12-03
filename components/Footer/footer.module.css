@@ -31,6 +31,10 @@
     flex-direction: column;
     justify-content: center;
   }
+
+  .footer nav {
+    margin: 1rem 0;
+  }
 }
 
 
