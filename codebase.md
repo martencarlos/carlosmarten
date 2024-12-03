@@ -522,14 +522,18 @@ export default async function Contacts() {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top:40px;
+  margin-top: 40px;
 }
 
 .contactsMain h2 {
   margin-bottom: 2rem;
 }
 
-
+@media (max-width: 768px) {
+  .contactsMain {
+    margin-bottom: 2rem;
+  }
+}
 ```
 
 # app\(official)\(private)\dashboard\layout.js
@@ -541,7 +545,7 @@ import { auth } from "@actions/../auth.js"; // Import the auth middleware
 import { redirect } from "next/navigation";
 
 import styles from "./layout.module.css"; // Import your CSS module for layout
-import Sidebar from "@components/private/Sidebar/Sidebar"; // Import your Sidebar component
+import Navigation from "@components/Navigation/Navigation";
 
 export default async function DashboardLayout({ children }) {
   const session = await auth();
@@ -551,10 +555,10 @@ export default async function DashboardLayout({ children }) {
   return (
     <div className={styles.layout}>
       {session && (
-        <div className={styles.fullWidth}>
-          <Sidebar />
+        <>
+          <Navigation />
           <main className={styles.mainContent}>{children}</main>
-        </div>
+        </>
       )}
     </div>
   );
@@ -565,45 +569,29 @@ export default async function DashboardLayout({ children }) {
 # app\(official)\(private)\dashboard\layout.module.css
 
 ```css
-/* app/dashboard/layout.module.css */
-
+/* app/(official)/(private)/dashboard/layout.module.css */
 .layout {
+  min-height: calc(100vh - 178px);
   display: flex;
-  min-height: calc(100vh - 176px) !important;
-  justify-content: center;
-  align-items: center;
 
 }
 
+.container {
+  display: flex;
+  width: 100%;
+}
 
 .mainContent {
-  /* flex: 1; */
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  /* background-color: #f4f4f4; */
-}
 
-.fullWidth {
   width: 100%;
-  display: flex;
+  /* Add padding bottom on mobile for the navigation bar */
 
 }
 
-.error {
-  font-size: 2rem;
-  font-weight: bold;
-  color: rgb(199, 69, 69)
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-
-  .fullWidth {
-    flex-direction: column;
+@media (min-width: 768px) {
+  .main {
+    padding-bottom: 1.5rem;
   }
-
 }
 ```
 
@@ -642,7 +630,6 @@ export default function Dashboard() {
 .dashboard h1 {
   margin-bottom: 1rem;
 }
-
 ```
 
 # app\(official)\(private)\dashboard\settings\page.jsx
@@ -677,7 +664,7 @@ export default Settings;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 176px);
+  min-height: calc(100vh - 178px);
 
 }
 
@@ -713,11 +700,11 @@ export default function Login() {
 ```css
 /* admin-login.module.css */
 .container {
-  min-height: calc(100vh - 176px);
+  min-height: calc(100vh - 177px);
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
 }
 
 .card {
@@ -745,7 +732,6 @@ export default function Login() {
   color: #666;
   margin-bottom: 30px;
 }
-
 ```
 
 # app\(official)\(private)\unauthorized\page.jsx
@@ -1100,7 +1086,6 @@ export default async function Blog() {
           shaping the future of the industry.
         </p>
         <PushNotification />
-        {/* <NotificationTest />*/}
       </div>
       <BlogContent posts={posts} categories={categories} />
     </div>
@@ -1339,11 +1324,11 @@ export default function ContactPage() {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: calc(100vh - 176px);
+  min-height: calc(100vh - 177px);
 }
 
-.container{
-max-width: 600px;
+.container {
+  max-width: 600px;
   margin: 0 auto;
   padding: 30px;
   box-shadow: 0 4px 6px rgba(131, 131, 131, 0.3);
@@ -1354,14 +1339,14 @@ max-width: 600px;
 .title {
   /* font-size: 2.5rem; */
   margin-bottom: 1rem;
-  
+
   text-align: center;
 }
 
 .subtitle {
   font-size: 1.1rem;
   margin-bottom: 2rem;
-  
+
   text-align: center;
 }
 
@@ -3259,7 +3244,6 @@ export default function Post({ post, audioUrl }) {
 .categories {
   display: flex;
   align-items: center;
-  justify-content: center;
 
 
 }
@@ -3268,8 +3252,9 @@ export default function Post({ post, audioUrl }) {
 .pillContainer {
   display: flex;
   flex-wrap: wrap;
+  margin-left: 10px;
   gap: 5px;
-  margin-top: 5px;
+  /* margin-top: 5px; */
 }
 
 .pill {
@@ -4484,7 +4469,7 @@ export default Footer;
   text-decoration: underline;
 }
 
-@media (max-width: 380px){
+@media (max-width: 380px) {
   .content {
     flex-direction: column;
     justify-content: center;
@@ -5277,6 +5262,280 @@ export default ThemeToggle;
   
   background-color: rgba(48, 48, 48, 0.9);
 }
+```
+
+# components\Navigation\Navigation.jsx
+
+```jsx
+// components/Navigation/Navigation.jsx
+"use client";
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  RiDashboardLine,
+  RiContactsLine,
+  RiSettings4Line,
+} from "react-icons/ri";
+import SignOutButton from "@components/(auth)/signout-button/signout-button";
+import styles from "./navigation.module.css";
+
+const NAV_ITEMS = [
+  { path: "/dashboard", label: "Overview", icon: RiDashboardLine },
+  { path: "/dashboard/contacts", label: "Contacts", icon: RiContactsLine },
+  { path: "/dashboard/settings", label: "Settings", icon: RiSettings4Line },
+];
+
+const DesktopSidebar = () => {
+  const pathname = usePathname();
+
+  return (
+    <aside className={styles.desktopSidebar}>
+      <header className={styles.sidebarHeader}>
+        <h1 className={styles.sidebarTitle}>Dashboard</h1>
+      </header>
+
+      <nav className={styles.sidebarNav}>
+        <ul className={styles.sidebarList}>
+          {NAV_ITEMS.map(({ path, label, icon: Icon }) => (
+            <li key={path} className={styles.sidebarItem}>
+              <Link
+                href={path}
+                className={`${styles.sidebarLink} ${
+                  pathname === path ? styles.active : ""
+                }`}
+              >
+                <div className={styles.linkContent}>
+                  <Icon className={styles.icon} />
+                  <span className={styles.label}>{label}</span>
+                </div>
+                {pathname === path && (
+                  <div className={styles.activeIndicator} />
+                )}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <footer className={styles.sidebarFooter}>
+        <SignOutButton />
+      </footer>
+    </aside>
+  );
+};
+
+const MobileNavigation = () => {
+  const pathname = usePathname();
+
+  return (
+    <nav className={styles.mobileNav}>
+      <ul className={styles.mobileList}>
+        {NAV_ITEMS.map(({ path, label, icon: Icon }) => (
+          <li key={path} className={styles.mobileItem}>
+            <Link
+              href={path}
+              className={`${styles.mobileLink} ${
+                pathname === path ? styles.active : ""
+              }`}
+            >
+              <Icon className={styles.mobileIcon} />
+              <span className={styles.mobileLabel}>{label}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+};
+
+const Navigation = () => {
+  return (
+    <>
+      <DesktopSidebar />
+      <MobileNavigation />
+    </>
+  );
+};
+
+export default Navigation;
+
+```
+
+# components\Navigation\navigation.module.css
+
+```css
+/* components/Navigation/navigation.module.css */
+.desktopSidebar {
+    display: none;
+}
+
+.sidebarHeader {
+    margin-bottom: 2rem;
+    padding: 0 0.75rem;
+}
+
+.sidebarTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+.sidebarNav {
+    flex-grow: 1;
+}
+
+.sidebarList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sidebarItem {
+    margin: 0;
+    padding: 0;
+}
+
+.sidebarLink {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    color: var(--foreground);
+    transition: all 0.2s ease;
+}
+
+.linkContent {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 1;
+}
+
+.sidebarLink:hover {
+    background-color: color-mix(in srgb, var(--foreground) 4%, transparent);
+}
+
+.sidebarLink.active {
+    background-color: color-mix(in srgb, var(--foreground) 8%, transparent);
+    font-weight: 500;
+}
+
+.activeIndicator {
+    position: absolute;
+    left: 0;
+    width: 3px;
+    height: 60%;
+    background-color: var(--third-color);
+    border-radius: 0 4px 4px 0;
+    transition: transform 0.2s ease;
+}
+
+.icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: color-mix(in srgb, var(--foreground) 70%, transparent);
+    transition: color 0.2s ease;
+}
+
+.active .icon {
+    color: var(--third-color);
+}
+
+.label {
+    font-size: 0.9375rem;
+}
+
+.sidebarFooter {
+    margin-top: auto;
+    padding: 1rem 0.75rem;
+}
+
+/* Mobile Navigation */
+.mobileNav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--background);
+    border-top: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 50;
+}
+
+.mobileList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 4rem;
+
+}
+
+.mobileItem {
+    flex: 1;
+}
+
+.mobileLink {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    text-decoration: none;
+    color: color-mix(in srgb, var(--foreground) 70%, transparent);
+    transition: color 0.2s ease;
+}
+
+.mobileLink.active {
+    color: var(--third-color);
+}
+
+.mobileIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.mobileLabel {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Desktop Styles */
+@media (min-width: 768px) {
+    .desktopSidebar {
+        display: flex;
+        flex-direction: column;
+        width: 16rem;
+        /* height: calc(100vh - 176px); */
+        background-color: var(--background);
+        padding: 1.25rem 0.75rem;
+        border-right: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+    }
+
+    .mobileNav {
+        display: none;
+    }
+}
+
+/* Dark mode enhancements
+:global(.dark) .sidebarLink:hover {
+    background-color: color-mix(in srgb, var(--foreground) 7%, transparent);
+}
+
+:global(.dark) .sidebarLink.active {
+    background-color: color-mix(in srgb, var(--foreground) 12%, transparent);
+} */
 ```
 
 # components\NotificationTest\NotificationTest.jsx
@@ -6887,5 +7146,37 @@ export const handler = async (event) => {
   };
 };
 
+```
+
+# scripts\wordpressWebhookFunction.php
+
+```php
+ add_action('publish_post', 'notify_nextjs_endpoint', 10, 2);
+function notify_nextjs_endpoint($post_id, $post) {
+    $url = 'https://carlosmarten.com/api/webhook';
+
+    $body = array(
+        'id' => $post_id,
+        'content' => wp_strip_all_tags($post->post_content),
+        'title' => $post->post_title,
+        'secret' => '4bf420bba059ed220d85e03b994202379c8a9c50284d619b'
+    );
+    // Using form-data format instead of JSON
+    $boundary = wp_generate_password(24);
+    $payload = '';
+
+    foreach($body as $name => $value) {
+        $payload .= "--$boundary\r\n";
+        $payload .= "Content-Disposition: form-data; name=\"$name\"\r\n\r\n";
+        $payload .= "$value\r\n";
+    }
+    $payload .= "--$boundary--\r\n";
+    wp_remote_post($url, array(
+        'headers' => array(
+            'Content-Type' => "multipart/form-data; boundary=$boundary"
+        ),
+        'body' => $payload
+    ));
+}
 ```
 

@@ -5,7 +5,6 @@
 
   line-height: 1.5;
   /* color: #333; */
-
 }
 
 .progressBar {
@@ -114,8 +113,6 @@
   color: var(--third-color);
 }
 
-
-
 .metaValue {
   color: #7f8c8d;
 }
@@ -127,10 +124,7 @@
 .categories {
   display: flex;
   align-items: center;
-
-
 }
-
 
 .pillContainer {
   display: flex;
@@ -177,7 +171,6 @@
   padding: 30px;
 }
 
-
 .scrollToTopButton {
   position: absolute;
   opacity: 0.8;
@@ -195,7 +188,7 @@
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s ease;
-  z-index: 1000;
+  z-index: 5;
 }
 
 .scrollToTopButton:hover {
@@ -227,6 +220,7 @@
   .content {
     font-size: 1rem;
     padding: 20px;
+    padding-bottom: 80px;
   }
 
   .postMeta {
