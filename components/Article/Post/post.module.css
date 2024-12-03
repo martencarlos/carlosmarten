@@ -1,5 +1,6 @@
 .container {
   max-width: 800px;
+  min-width: 600px;
   /* margin: 0 auto; */
   padding: 20px;
 
@@ -240,6 +241,7 @@
 @media (max-width: 600px) {
   .container {
     padding: 0px;
+    min-width: unset;
   }
 
   .featuredImageContainer {

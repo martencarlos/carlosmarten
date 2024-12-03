@@ -30,7 +30,7 @@ export default function PostCard({ post }) {
         resolvedTheme === "dark" ? styles.dark : ""
       }`}
     >
-      {post._embedded && (
+      {post._embedded && featuredMediaLink && (
         <Image
           src={featuredMediaLink}
           alt={post.title.rendered}
