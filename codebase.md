@@ -3122,7 +3122,6 @@ export default function Post({ post, audioUrl }) {
 
   line-height: 1.5;
   /* color: #333; */
-
 }
 
 .progressBar {
@@ -3158,7 +3157,16 @@ export default function Post({ post, audioUrl }) {
 
 .content figure {
   display: flex;
-  justify-content: center;
+  overflow-y: scroll;
+
+}
+
+.content ul {
+  margin: 10px 20px;
+}
+
+.content pre {
+  overflow-y: hidden;
 }
 
 .content img {
@@ -3231,8 +3239,6 @@ export default function Post({ post, audioUrl }) {
   color: var(--third-color);
 }
 
-
-
 .metaValue {
   color: #7f8c8d;
 }
@@ -3244,10 +3250,8 @@ export default function Post({ post, audioUrl }) {
 .categories {
   display: flex;
   align-items: center;
-
-
+  margin-top: 15px;
 }
-
 
 .pillContainer {
   display: flex;
@@ -3294,7 +3298,6 @@ export default function Post({ post, audioUrl }) {
   padding: 30px;
 }
 
-
 .scrollToTopButton {
   position: absolute;
   opacity: 0.8;
@@ -3312,7 +3315,7 @@ export default function Post({ post, audioUrl }) {
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s ease;
-  z-index: 1000;
+  z-index: 5;
 }
 
 .scrollToTopButton:hover {
@@ -3344,6 +3347,8 @@ export default function Post({ post, audioUrl }) {
   .content {
     font-size: 1rem;
     padding: 20px;
+    padding-bottom: 80px;
+    width: 100vw;
   }
 
   .postMeta {
@@ -4770,7 +4775,7 @@ export default MobileMenu;
 # components\Navbar\MobileMenu\mobilemenu.module.css
 
 ```css
-.mobileMenuContainer {
+.mobileMenu {
   display: none;
 }
 
@@ -4792,7 +4797,7 @@ export default MobileMenu;
   color: inherit;
   padding: 0.5rem 1rem;
   border-radius: 4px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .navLink:hover {
@@ -4829,79 +4834,73 @@ export default MobileMenu;
   z-index: 10;
 }
 
-@media (min-width: 769px) {
+.hamburgerLine {
+  width: 2rem;
+  height: 0.25rem;
+  background-color: var(--navbar-text-color, var(--foreground));
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+}
+
+.hamburger.open .hamburgerLine:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.hamburger.open .hamburgerLine:nth-child(2) {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.hamburger.open .hamburgerLine:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+  .mobileMenu {
+    display: flex;
+  }
+
   .hamburger {
-    display: none;
-    background-color: var(--navbar-text-color);
+    display: flex;
   }
 
-  .hamburgerLine {
-    width: 2rem;
-    height: 0.25rem;
-    background-color: var(--navbar-text-color, var(--foreground));
-    transition: all 0.3s linear;
-    position: relative;
-    transform-origin: 1px;
+  .navList {
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 300px;
+    z-index: 2;
+    gap: 1rem;
+    padding-top: 5.5rem;
+    transition: transform 0.3s ease-in-out;
+    background-color: var(--background);
+    transform: translateX(100%);
   }
 
-  .hamburger.open .hamburgerLine:nth-child(1) {
-    transform: rotate(45deg);
+  .navList.open {
+    transform: translateX(0);
   }
 
-  .hamburger.open .hamburgerLine:nth-child(2) {
-    opacity: 0;
-    transform: translateX(20px);
+  .navItem {
+    margin: 0.5rem 0;
   }
 
-  .hamburger.open .hamburgerLine:nth-child(3) {
-    transform: rotate(-45deg);
+  .navLink {
+    padding: 0.75rem 1.5rem;
+    width: 100%;
+    text-align: center;
   }
 
-  @media (max-width: 768px) {
-    .mobileMenuContainer {
-      display: flex;
-    }
+  .mobileMenu.dark .navLink:hover {
+    background-color: rgb(54, 54, 54);
+  }
 
-    .hamburger {
-      display: flex;
-    }
-
-    .navList {
-      flex-direction: column;
-      align-items: center;
-      position: fixed;
-      top: 0;
-      right: 0;
-      height: 100vh;
-      width: 300px;
-      z-index: 2;
-      gap: 2rem;
-      padding-top: 5.5rem;
-      transition: transform 0.3s ease-in-out;
-      background-color: var(--background);
-      /* Initially hide the mobile menu off-screen */
-      transform: translateX(100%);
-    }
-
-    .navList.open {
-      transform: translateX(0);
-    }
-
-    .navItem {
-      margin: 0.5rem 0;
-      list-style: none;
-    }
-
-    .navLink {
-      padding: 0.75rem 1.5rem;
-      width: 100%;
-      text-align: center;
-    }
-
-    .mobileMenuContainer.dark .navLink:hover,
-    .mobileMenuContainer.dark .themeToggle:hover {
-      background-color: rgb(54, 54, 54);
-    }
+  .mobileMenu.dark .themeToggle:hover {
+    background-color: rgb(54, 54, 54);
   }
 }
 ```
