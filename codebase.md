@@ -1170,6 +1170,7 @@ import styles from "./page.module.css";
 import Card from "components/Article/PostCard/PostCard";
 import LoadingComponent from "@components/(aux)/LoadingComponent/LoadingComponent";
 const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
+import { useParams } from "next/navigation";
 
 async function getCategories() {
   const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`);
@@ -1191,10 +1192,13 @@ async function getCategoryPosts(categoryId) {
   return res.json();
 }
 
-export default function Categories({ params }) {
-  const category = params.slug;
+export default function Categories() {
+  const params = useParams();
+
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const category = decodeURIComponent(params.slug);
 
   useEffect(() => {
     async function fetchData() {
@@ -1736,9 +1740,11 @@ async function getPost(slug) {
 export default async function BlogPost({ params }) {
   console.log("BlogPost loaded");
 
+  const { slug } = await params;
+
   const [post, audioUrl] = await Promise.all([
-    getPost(params.slug), // Your existing post fetching function
-    getAudioUrl(params.slug),
+    getPost(slug), // Your existing post fetching function
+    getAudioUrl(slug),
   ]);
 
   if (!post) {
@@ -3044,6 +3050,21 @@ export default function Post({ post, audioUrl }) {
             </div>
           )}
 
+          <div className={styles.categories}>
+            {/* <span className={styles.categoryname}>Categories</span> */}
+            <div className={styles.pillContainer}>
+              {post.categories.map((category, index) => (
+                <Link
+                  key={index}
+                  href={`/categories/${category}`}
+                  className={styles.categoryLink}
+                >
+                  <span className={styles.pill}>{category}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+
           <h1 className={styles.title}>{post.title}</h1>
 
           <div className={styles.postMeta}>
@@ -3067,20 +3088,7 @@ export default function Post({ post, audioUrl }) {
                 </span>
               </div>
             </div>
-            <div className={styles.categories}>
-              <span className={styles.metaCategories}>Categories:</span>
-              <div className={styles.pillContainer}>
-                {post.categories.map((category, index) => (
-                  <Link
-                    key={index}
-                    href={`/categories/${category}`}
-                    className={styles.categoryLink}
-                  >
-                    <span className={styles.pill}>{category}</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
+
             {post.pinned && <p className={styles.pinnedPost}>Pinned Post</p>}
           </div>
 
@@ -3117,6 +3125,7 @@ export default function Post({ post, audioUrl }) {
 ```css
 .container {
   max-width: 800px;
+  min-width: 600px;
   /* margin: 0 auto; */
   padding: 20px;
 
@@ -3225,7 +3234,7 @@ export default function Post({ post, audioUrl }) {
 .authorDateInfo {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
+
 }
 
 .authorInfo,
@@ -3256,12 +3265,7 @@ export default function Post({ post, audioUrl }) {
   color: var(--third-color);
 }
 
-.metaÇategories {
-  font-weight: bold;
-  margin-right: 5px;
-  margin-top: 4px;
-  color: var(--third-color);
-}
+
 
 .metaValue {
   color: #7f8c8d;
@@ -3274,7 +3278,15 @@ export default function Post({ post, audioUrl }) {
 .categories {
   display: flex;
   align-items: center;
-  margin-top: 15px;
+  margin: 10px 0;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.categoryname {
+  font-weight: bold;
+  margin-right: 5px;
+  color: var(--third-color);
 }
 
 .pillContainer {
@@ -3357,6 +3369,7 @@ export default function Post({ post, audioUrl }) {
 @media (max-width: 600px) {
   .container {
     padding: 0px;
+    min-width: unset;
   }
 
   .featuredImageContainer {
@@ -3381,10 +3394,7 @@ export default function Post({ post, audioUrl }) {
     margin: 0px;
   }
 
-  .authorDateInfo {
-    /* flex-direction: column; */
-    gap: 10px;
-  }
+
 
   .dateInfo {
     /* flex-direction: column; */
@@ -3437,7 +3447,7 @@ export default function PostCard({ post }) {
         resolvedTheme === "dark" ? styles.dark : ""
       }`}
     >
-      {post._embedded && (
+      {post._embedded && featuredMediaLink && (
         <Image
           src={featuredMediaLink}
           alt={post.title.rendered}
@@ -4011,6 +4021,7 @@ export default function CategoryList({
   margin: 20px 0;
   padding: 20px;
   min-height: 130px;
+  max-width: 800px;
 }
 
 .categoryList h2 {
@@ -4055,9 +4066,11 @@ export default function CategoryList({
   0% {
     box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4);
   }
+
   70% {
     box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
   }
+
   100% {
     box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
   }
@@ -6165,6 +6178,9 @@ export default Sidebar;
 import { useState, useEffect } from "react";
 import { subscribeUser, unsubscribeUser } from "@actions/pushNotifications";
 import styles from "./PushNotification.module.css";
+import { GoShare } from "react-icons/go";
+import { FaBell } from "react-icons/fa";
+import { RiNotificationOffFill } from "react-icons/ri";
 
 function urlBase64ToUint8Array(base64String) {
   try {
@@ -6365,7 +6381,7 @@ export default function PushNotification() {
           <p>To receive notifications on iOS:</p>
           <ol>
             <li>
-              Tap the share button <span className={styles.icon}><FaShareSquare /></span>
+              Tap the share button <GoShare className={styles.icon} />
             </li>
             <li>
               Select Add to Home Screen <span className={styles.icon}>+</span>
@@ -6385,18 +6401,43 @@ export default function PushNotification() {
 
   return (
     <div className={styles.container}>
-      {error && <p className={styles.error}>{error}</p>}
+      {error && (
+        <div className={styles.error}>
+          <p>{error}</p>
+        </div>
+      )}
+
       <button
-        className={`${styles.button} ${isLoading ? styles.loading : ""}`}
+        className={`${styles.button} ${isSubscribed ? styles.subscribed : ""} ${
+          isLoading ? styles.loading : ""
+        }`}
         onClick={isSubscribed ? handleUnsubscribe : handleSubscribe}
         disabled={isLoading}
       >
-        {isLoading
-          ? "Processing..."
-          : isSubscribed
-          ? "Unsubscribe from notifications"
-          : "Subscribe to notifications"}
+        <span className={styles.iconWrapper}>
+          {isSubscribed ? (
+            <RiNotificationOffFill className={styles.icon} />
+          ) : (
+            <FaBell className={`${styles.icon} ${styles.bellIcon}`} />
+          )}
+        </span>
+
+        <span className={styles.text}>
+          {isLoading
+            ? "Processing..."
+            : isSubscribed
+            ? "Unsubscribe from notifications"
+            : "Subscribe to notifications"}
+        </span>
+
+        {isLoading && <span className={styles.spinner}></span>}
       </button>
+
+      {isSubscribed && (
+        <div className={styles.successMessage}>
+          You are all set to receive notifications!
+        </div>
+      )}
     </div>
   );
 }
@@ -6406,23 +6447,37 @@ export default function PushNotification() {
 # components\PushNotification\PushNotification.module.css
 
 ```css
+/* IOS COMPATIBILITY */
+
+
 .container {
-    margin: 20px 0;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
 
 .button {
-    padding: 10px 20px;
-    background-color: var(--third-color);
-    color: white;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
     border: none;
-    border-radius: 5px;
+    border-radius: 50px;
+    background: var(--third-color);
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
+    min-width: 200px;
 }
 
 .button:hover:not(:disabled) {
-    background-color: var(--fourth-color);
+    background: var(--fourth-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .button:disabled {
@@ -6430,73 +6485,126 @@ export default function PushNotification() {
     cursor: not-allowed;
 }
 
-.button.loading {
-    position: relative;
-    color: transparent;
+.subscribed {
+    background: #e5e5e5;
+    color: #666;
 }
 
-.button.loading::after {
-    content: '';
+.subscribed:hover:not(:disabled) {
+    background: #d5d5d5;
+}
+
+.iconWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: transform 0.3s ease;
+}
+
+.bellIcon {
+    animation: bellShake 1s ease-in-out;
+}
+
+.text {
+    flex: 1;
+    text-align: center;
+}
+
+.spinner {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 16px;
-    height: 16px;
-    margin: -8px 0 0 -8px;
-    border: 2px solid white;
-    border-right-color: transparent;
+    right: 1rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
 }
 
 .error {
-    color: #e63946;
-    margin-bottom: 10px;
-    font-size: 0.9em;
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    max-width: 100%;
+    animation: slideIn 0.3s ease;
+}
+
+.successMessage {
+    color: #666;
+    font-size: 0.875rem;
+    animation: fadeIn 0.3s ease;
 }
 
 @keyframes spin {
-    100% {
+    to {
         transform: rotate(360deg);
     }
 }
 
+@keyframes bellShake {
 
+    0%,
+    100% {
+        transform: rotate(0);
+    }
 
+    20%,
+    60% {
+        transform: rotate(25deg);
+    }
 
-/* IOS COMPATIBILITY */
-
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 1rem 0;
+    40%,
+    80% {
+        transform: rotate(-25deg);
+    }
 }
 
-.button {
-    background-color: var(--third-color);
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.2s;
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.button:hover {
-    background-color: var(--fourth-color);
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
-.button.loading {
-    opacity: 0.7;
-    cursor: wait;
+/* Dark mode support */
+:global(.dark) .error {
+    background: rgba(220, 38, 38, 0.2);
+    color: #ef4444;
 }
 
-.error {
-    color: #dc3545;
-    margin-bottom: 1rem;
-    text-align: center;
+:global(.dark) .successMessage {
+    color: #d1d1d1;
+}
+
+:global(.dark) .subscribed {
+    background: #333;
+    color: #e5e5e5;
+}
+
+:global(.dark) .subscribed:hover:not(:disabled) {
+    background: #444;
 }
 
 .iosInstructions {

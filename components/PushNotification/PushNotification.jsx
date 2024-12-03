@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import { subscribeUser, unsubscribeUser } from "@actions/pushNotifications";
 import styles from "./PushNotification.module.css";
 import { GoShare } from "react-icons/go";
+import { FaBell } from "react-icons/fa";
+import { RiNotificationOffFill } from "react-icons/ri";
 
 function urlBase64ToUint8Array(base64String) {
   try {
@@ -225,18 +227,43 @@ export default function PushNotification() {
 
   return (
     <div className={styles.container}>
-      {error && <p className={styles.error}>{error}</p>}
+      {error && (
+        <div className={styles.error}>
+          <p>{error}</p>
+        </div>
+      )}
+
       <button
-        className={`${styles.button} ${isLoading ? styles.loading : ""}`}
+        className={`${styles.button} ${isSubscribed ? styles.subscribed : ""} ${
+          isLoading ? styles.loading : ""
+        }`}
         onClick={isSubscribed ? handleUnsubscribe : handleSubscribe}
         disabled={isLoading}
       >
-        {isLoading
-          ? "Processing..."
-          : isSubscribed
-          ? "Unsubscribe from notifications"
-          : "Subscribe to notifications"}
+        <span className={styles.iconWrapper}>
+          {isSubscribed ? (
+            <RiNotificationOffFill className={styles.icon} />
+          ) : (
+            <FaBell className={`${styles.icon} ${styles.bellIcon}`} />
+          )}
+        </span>
+
+        <span className={styles.text}>
+          {isLoading
+            ? "Processing..."
+            : isSubscribed
+            ? "Unsubscribe from notifications"
+            : "Subscribe to notifications"}
+        </span>
+
+        {isLoading && <span className={styles.spinner}></span>}
       </button>
+
+      {isSubscribed && (
+        <div className={styles.successMessage}>
+          You are all set to receive notifications!
+        </div>
+      )}
     </div>
   );
 }
