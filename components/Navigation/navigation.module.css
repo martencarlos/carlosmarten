@@ -161,11 +161,11 @@
     }
 }
 
-/* Dark mode enhancements */
+/* Dark mode enhancements
 :global(.dark) .sidebarLink:hover {
     background-color: color-mix(in srgb, var(--foreground) 7%, transparent);
 }
 
 :global(.dark) .sidebarLink.active {
     background-color: color-mix(in srgb, var(--foreground) 12%, transparent);
-}
+} */
