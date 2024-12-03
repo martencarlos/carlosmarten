@@ -40,7 +40,16 @@
 
 .content figure {
   display: flex;
-  justify-content: center;
+  overflow-y: scroll;
+
+}
+
+.content ul {
+  margin: 10px 20px;
+}
+
+.content pre {
+  overflow-y: hidden;
 }
 
 .content img {
@@ -221,6 +230,7 @@
     font-size: 1rem;
     padding: 20px;
     padding-bottom: 80px;
+    width: 100vw;
   }
 
   .postMeta {
