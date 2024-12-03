@@ -1,40 +1,24 @@
-/* app/dashboard/layout.module.css */
-
+/* app/(official)/(private)/dashboard/layout.module.css */
 .layout {
+  min-height: calc(100vh - 178px);
   display: flex;
-  min-height: calc(100vh - 176px) !important;
-  justify-content: center;
-  align-items: center;
 
 }
 
+.container {
+  display: flex;
+  width: 100%;
+}
 
 .mainContent {
-  /* flex: 1; */
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  /* background-color: #f4f4f4; */
-}
 
-.fullWidth {
   width: 100%;
-  display: flex;
+  /* Add padding bottom on mobile for the navigation bar */
 
 }
 
-.error {
-  font-size: 2rem;
-  font-weight: bold;
-  color: rgb(199, 69, 69)
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-
-  .fullWidth {
-    flex-direction: column;
+@media (min-width: 768px) {
+  .main {
+    padding-bottom: 1.5rem;
   }
-
 }

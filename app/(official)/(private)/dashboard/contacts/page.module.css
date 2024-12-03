@@ -5,10 +5,15 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top:40px;
+  margin-top: 40px;
 }
 
 .contactsMain h2 {
   margin-bottom: 2rem;
 }
 
+@media (max-width: 768px) {
+  .contactsMain {
+    margin-bottom: 2rem;
+  }
+}

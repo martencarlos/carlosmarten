@@ -47,7 +47,6 @@ export default async function Blog() {
           shaping the future of the industry.
         </p>
         <PushNotification />
-        {/* <NotificationTest />*/}
       </div>
       <BlogContent posts={posts} categories={categories} />
     </div>

@@ -4,7 +4,7 @@ import { auth } from "@actions/../auth.js"; // Import the auth middleware
 import { redirect } from "next/navigation";
 
 import styles from "./layout.module.css"; // Import your CSS module for layout
-import Sidebar from "@components/private/Sidebar/Sidebar"; // Import your Sidebar component
+import Navigation from "@components/Navigation/Navigation";
 
 export default async function DashboardLayout({ children }) {
   const session = await auth();
@@ -14,10 +14,10 @@ export default async function DashboardLayout({ children }) {
   return (
     <div className={styles.layout}>
       {session && (
-        <div className={styles.fullWidth}>
-          <Sidebar />
+        <>
+          <Navigation />
           <main className={styles.mainContent}>{children}</main>
-        </div>
+        </>
       )}
     </div>
   );
