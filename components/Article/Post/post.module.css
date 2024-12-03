@@ -51,9 +51,20 @@
 }
 
 .content h2 {
-  margin-top: 40px;
+  margin-top: 30px;
 }
 
+.content h3 {
+  margin: 20px 0px;
+}
+
+.content h4 {
+  margin: 10px 0px;
+}
+
+.content li {
+  margin: 10px 0px;
+}
 
 
 .content ol+ul {
