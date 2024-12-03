@@ -41,15 +41,28 @@
 .content figure {
   display: flex;
   overflow-y: scroll;
+  margin: 20px 0;
+}
+
+.content td,
+.content th {
+  padding: 10px;
 
 }
 
-.content ul {
+.content h2 {
+  margin-top: 40px;
+}
+
+
+
+.content ol+ul {
   margin: 10px 20px;
 }
 
 .content pre {
   overflow-y: hidden;
+  margin: 20px 0;
 }
 
 .content img {
