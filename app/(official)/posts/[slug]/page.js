@@ -78,9 +78,11 @@ async function getPost(slug) {
 export default async function BlogPost({ params }) {
   console.log("BlogPost loaded");
 
+  const { slug } = await params;
+
   const [post, audioUrl] = await Promise.all([
-    getPost(params.slug), // Your existing post fetching function
-    getAudioUrl(params.slug),
+    getPost(slug), // Your existing post fetching function
+    getAudioUrl(slug),
   ]);
 
   if (!post) {

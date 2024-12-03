@@ -3158,15 +3158,39 @@ export default function Post({ post, audioUrl }) {
 .content figure {
   display: flex;
   overflow-y: scroll;
+  margin: 20px 0;
+}
+
+.content td,
+.content th {
+  padding: 10px;
 
 }
 
-.content ul {
+.content h2 {
+  margin-top: 30px;
+}
+
+.content h3 {
+  margin: 20px 0px;
+}
+
+.content h4 {
+  margin: 10px 0px;
+}
+
+.content li {
+  margin: 10px 0px;
+}
+
+
+.content ol+ul {
   margin: 10px 20px;
 }
 
 .content pre {
   overflow-y: hidden;
+  margin: 20px 0;
 }
 
 .content img {
@@ -3583,6 +3607,14 @@ export default function PostCard({ post }) {
 
   .card_excerpt {
     display: none;
+  }
+
+  .card_title {
+    font-size: 1.0rem;
+  }
+
+  .card_tag {
+    font-size: 0.7rem;
   }
 }
 ```
@@ -4478,6 +4510,10 @@ export default Footer;
   .content {
     flex-direction: column;
     justify-content: center;
+  }
+
+  .footer nav {
+    margin: 1rem 0;
   }
 }
 

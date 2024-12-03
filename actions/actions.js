@@ -54,10 +54,10 @@ export async function handlePostWebhook(formData) {
 
   //extract of data
   const postData = {
-    slug: formData.get("slug"),
+    slug: formData.get("id"),
     title: formData.get("title"),
     content: formData.get("content"),
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/posts/${formData.get("slug")}`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/posts/${formData.get("id")}`,
   };
 
   // Send notifications to all subscribers
