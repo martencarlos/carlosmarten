@@ -4,6 +4,7 @@ import Link from "next/link";
 import styles from "./postcard.module.css";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import OptimizedImage from "@components/OptimizedImage/OptimizedImage";
 
 export default function PostCard({ post }) {
   console.log("Post Card loaded");
@@ -31,7 +32,7 @@ export default function PostCard({ post }) {
       }`}
     >
       {post._embedded && featuredMediaLink && (
-        <Image
+        <OptimizedImage
           src={featuredMediaLink}
           alt={post.title.rendered}
           width={100}

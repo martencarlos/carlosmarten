@@ -1,12 +1,13 @@
 "use client";
 
 import styles from "./post.module.css";
-import Image from "next/image";
+
 import Link from "next/link";
 import { FaClock, FaUser, FaCalendar, FaChevronUp } from "react-icons/fa";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import AudioPlayer from "@components/Article/AudioPlayer/AudioPlayer";
+import OptimizedImage from "@components/OptimizedImage/OptimizedImage";
 
 function calculateReadingTime(text) {
   const wordsPerMinute = 200;
@@ -69,7 +70,7 @@ export default function Post({ post, audioUrl }) {
         <article className={styles.article}>
           {post.featuredImage && (
             <div className={styles.featuredImageContainer}>
-              <Image
+              <OptimizedImage
                 src={post.featuredImage}
                 alt={post.title}
                 fill

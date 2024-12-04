@@ -1,6 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
+
 import styles from "./page.module.css";
+import OptimizedImage from "@components/OptimizedImage/OptimizedImage";
 
 const projects = [
   {
@@ -33,7 +34,7 @@ const projects = [
 const ProjectCard = ({ project }) => (
   <Link href={project.url} passHref>
     <div className={styles.projectCard}>
-      <Image
+      <OptimizedImage
         priority
         src={project.image}
         width={200}

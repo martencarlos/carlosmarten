@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useTheme } from "next-themes";
 import styles from "./hero.module.css";
 import { useState, useEffect } from "react";
+import OptimizedImage from "@components/OptimizedImage/OptimizedImage";
 
 const Hero = () => {
   const { theme } = useTheme();
@@ -32,7 +33,15 @@ const Hero = () => {
         transition={{ duration: 0.8 }}
       >*/}
       <div className={styles.imageContainer}>
-        <Image
+        {/* <Image
+          src="/images/me.png"
+          alt="Hero Image"
+          priority
+          width={200}
+          height={200}
+          className={styles.roundedImage}
+        /> */}
+        <OptimizedImage
           src="/images/me.png"
           alt="Hero Image"
           priority

@@ -1,0 +1,32 @@
+.imageWrapper {
+    position: relative;
+    overflow: hidden;
+    background: #f6f7f8;
+    transition: opacity 0.2s ease;
+}
+
+.loading {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.image {
+    object-fit: cover;
+    transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Dark mode support */
+:global(.dark) .imageWrapper {
+    background: #2a2a2a;
+}
