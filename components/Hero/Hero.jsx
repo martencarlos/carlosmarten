@@ -70,12 +70,11 @@ const Hero = () => {
           posts on business and technology topics.
         </p>
         <p className={styles.subtitle}>
-          <br />
           Check out the projects page for the solutions I have developed across
           various industries, demonstrating the synergy between technology and
           business.
         </p>
-        <br />
+
         <p className={styles.subtitle}>
           Stay updated with the latest insights and trends in business and
           technology. Join me as we explore new ideas and bring innovative

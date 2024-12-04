@@ -41,7 +41,7 @@ export default function ContactForm() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className={styles.form}>
-          <h1 className={styles.title}>Say Hi</h1>
+          <h1 className={styles.title}>Say Hi - let&apos;s get in touch!</h1>
           <div className={styles.row}>
             <div className={styles.formGroup}>
               <FaUser className={styles.icon} />

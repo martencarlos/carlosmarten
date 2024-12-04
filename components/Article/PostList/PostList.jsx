@@ -100,10 +100,10 @@ export default function PostList({ posts, selectedCategory, searchQuery }) {
         </div>
       ) : (
         <>
-          <div className={styles.postsInfo}>
+          {/* <div className={styles.postsInfo}>
             Showing {startIndex + 1}-{Math.min(endIndex, totalPosts)} of{" "}
             {totalPosts} posts
-          </div>
+          </div> */}
 
           <ul className={styles.ul}>
             {currentPosts.map((post) => (
