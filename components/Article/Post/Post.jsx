@@ -89,24 +89,23 @@ export default function Post({ post, audioUrl }) {
             </div>
           )}
 
-          <div className={styles.categories}>
-            {/* <span className={styles.categoryname}>Categories</span> */}
-            <div className={styles.pillContainer}>
-              {post.categories.map((category, index) => (
-                <Link
-                  key={index}
-                  href={`/categories/${category}`}
-                  className={styles.categoryLink}
-                >
-                  <span className={styles.pill}>{category}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-
           <h1 className={styles.title}>{post.title}</h1>
 
           <div className={styles.postMeta}>
+            <div className={styles.categories}>
+              <span className={styles.categoryname}>Categories</span>
+              <div className={styles.pillContainer}>
+                {post.categories.map((category, index) => (
+                  <Link
+                    key={index}
+                    href={`/categories/${category}`}
+                    className={styles.categoryLink}
+                  >
+                    <span className={styles.pill}>{category}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
             <div className={styles.authorDateInfo}>
               <div className={styles.authorInfo}>
                 <span className={styles.metaLabel}>

@@ -41,7 +41,7 @@
 
 .content figure {
   display: flex;
-  overflow-y: scroll;
+  overflow-y: hidden;
   margin: 20px 0;
 }
 
@@ -153,8 +153,7 @@
 .categories {
   display: flex;
   align-items: center;
-  margin: 10px 0;
-  justify-content: space-evenly;
+  margin: 10px 0 15px 0;
   width: 100%;
 }
 
@@ -169,6 +168,8 @@
   flex-wrap: wrap;
   margin-left: 10px;
   gap: 5px;
+  width: 100%;
+  justify-content: flex-start;
   /* margin-top: 5px; */
 }
 
