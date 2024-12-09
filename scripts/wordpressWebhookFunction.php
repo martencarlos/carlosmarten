@@ -1,4 +1,4 @@
- add_action('publish_post', 'notify_nextjs_endpoint', 10, 2);
+ add_action('draft_to_published', 'notify_nextjs_endpoint', 10, 2);
 function notify_nextjs_endpoint($post_id, $post) {
     $url = 'https://carlosmarten.com/api/webhook';
 

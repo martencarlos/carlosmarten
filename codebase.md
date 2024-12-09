@@ -1789,25 +1789,26 @@ export default async function BlogPost({ params }) {
 
 ```jsx
 import Link from "next/link";
-import Image from "next/image";
+
 import styles from "./page.module.css";
+import OptimizedImage from "@components/OptimizedImage/OptimizedImage";
 
 const projects = [
   {
     id: 1,
-    name: "Holiday booking project",
+    name: "Holiday booking platform",
     image: "/images/feature_holiday.png",
     url: "https://tadelfia.carlosmarten.com/",
   },
   {
     id: 2,
-    name: "E-commerce project",
+    name: "E-commerce site",
     image: "/images/feature_webframe.png",
     url: "https://webframe.carlosmarten.com/",
   },
   {
     id: 3,
-    name: "Blog project",
+    name: "Blog website",
     image: "/images/feature_blog.png",
     url: "https://project-blog.carlosmarten.com/",
   },
@@ -1818,12 +1819,19 @@ const projects = [
       "https://rocketmedia.b-cdn.net/wp-content/uploads/2021/11/wordpress-ventajas-banner.png",
     url: `${process.env.NEXT_PUBLIC_SITE_URL}/wordpress/`,
   },
+  {
+    id: 5,
+    name: "Cloud Storage",
+    image:
+      "https://www.hkcert.org/f/guideline/218189/1200c630/hkcert-Cloud%20Storage%20Security%20banner-1860x1046.jpg",
+    url: `https://storage.carlosmarten.com/`,
+  },
 ];
 
 const ProjectCard = ({ project }) => (
   <Link href={project.url} passHref>
     <div className={styles.projectCard}>
-      <Image
+      <OptimizedImage
         priority
         src={project.image}
         width={200}
@@ -1851,13 +1859,13 @@ export default function ProjectsPage() {
           Here, I showcase some of the key projects I have worked on,
           highlighting my experience and skills in web development.
         </p>
-        <br />
+
         <p>
           From a dynamic holiday booking platform to an intuitive e-commerce
           site, and a versatile blog, each project reflects my focus on creating
           functional, user-friendly solutions.
         </p>
-        <br />
+
         <p>
           Explore these projects to see the blend of creativity and technology
           that drives my work.
@@ -2962,12 +2970,13 @@ export default function Loading() {
 "use client";
 
 import styles from "./post.module.css";
-import Image from "next/image";
+
 import Link from "next/link";
 import { FaClock, FaUser, FaCalendar, FaChevronUp } from "react-icons/fa";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import AudioPlayer from "@components/Article/AudioPlayer/AudioPlayer";
+import OptimizedImage from "@components/OptimizedImage/OptimizedImage";
 
 function calculateReadingTime(text) {
   const wordsPerMinute = 200;
@@ -3030,7 +3039,7 @@ export default function Post({ post, audioUrl }) {
         <article className={styles.article}>
           {post.featuredImage && (
             <div className={styles.featuredImageContainer}>
-              <Image
+              <OptimizedImage
                 src={post.featuredImage}
                 alt={post.title}
                 fill
@@ -3421,6 +3430,7 @@ import Link from "next/link";
 import styles from "./postcard.module.css";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import OptimizedImage from "@components/OptimizedImage/OptimizedImage";
 
 export default function PostCard({ post }) {
   console.log("Post Card loaded");
@@ -3448,7 +3458,7 @@ export default function PostCard({ post }) {
       }`}
     >
       {post._embedded && featuredMediaLink && (
-        <Image
+        <OptimizedImage
           src={featuredMediaLink}
           alt={post.title.rendered}
           width={100}
@@ -3508,6 +3518,7 @@ export default function PostCard({ post }) {
 
 .card_image {
   width: 100px;
+  display: flex;
   height: auto;
   border-radius: 8px;
   object-fit: cover;
@@ -3751,10 +3762,10 @@ export default function PostList({ posts, selectedCategory, searchQuery }) {
         </div>
       ) : (
         <>
-          <div className={styles.postsInfo}>
+          {/* <div className={styles.postsInfo}>
             Showing {startIndex + 1}-{Math.min(endIndex, totalPosts)} of{" "}
             {totalPosts} posts
-          </div>
+          </div> */}
 
           <ul className={styles.ul}>
             {currentPosts.map((post) => (
@@ -4183,8 +4194,8 @@ export default function SearchBar({ onSearch }) {
 
 .title {
   /* font-size: 2.5rem; */
-  margin-bottom: 30px;
-
+  margin-bottom: 50px;
+  color: gray;
   text-align: center;
 }
 
@@ -4410,7 +4421,7 @@ export default function ContactForm() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className={styles.form}>
-          <h1 className={styles.title}>Say Hi</h1>
+          <h1 className={styles.title}>Say Hi - let&apos;s get in touch!</h1>
           <div className={styles.row}>
             <div className={styles.formGroup}>
               <FaUser className={styles.icon} />
@@ -4550,6 +4561,7 @@ import Image from "next/image";
 import { useTheme } from "next-themes";
 import styles from "./hero.module.css";
 import { useState, useEffect } from "react";
+import OptimizedImage from "@components/OptimizedImage/OptimizedImage";
 
 const Hero = () => {
   const { theme } = useTheme();
@@ -4577,7 +4589,15 @@ const Hero = () => {
         transition={{ duration: 0.8 }}
       >*/}
       <div className={styles.imageContainer}>
-        <Image
+        {/* <Image
+          src="/images/me.png"
+          alt="Hero Image"
+          priority
+          width={200}
+          height={200}
+          className={styles.roundedImage}
+        /> */}
+        <OptimizedImage
           src="/images/me.png"
           alt="Hero Image"
           priority
@@ -4606,12 +4626,11 @@ const Hero = () => {
           posts on business and technology topics.
         </p>
         <p className={styles.subtitle}>
-          <br />
           Check out the projects page for the solutions I have developed across
           various industries, demonstrating the synergy between technology and
           business.
         </p>
-        <br />
+
         <p className={styles.subtitle}>
           Stay updated with the latest insights and trends in business and
           technology. Join me as we explore new ideas and bring innovative
@@ -4655,14 +4674,15 @@ export default Hero;
   /* overflow: hidden;  */
   position: relative;
   /* For positioning the overlay */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
   /* Shadow for depth */
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1));
+  /* background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1)); */
   /* Gradient background */
 }
 
 .roundedImage {
   border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   width: 200px;
   /* Image fits the container */
   height: auto;
@@ -5722,6 +5742,123 @@ export default function NotificationTest() {
         transform: rotate(360deg);
     }
 }
+```
+
+# components\OptimizedImage\optimized-image.module.css
+
+```css
+.imageWrapper {
+    position: relative;
+    overflow: hidden;
+    background: #f6f7f8;
+    transition: opacity 0.2s ease;
+}
+
+.loading {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.image {
+    object-fit: cover;
+    transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Dark mode support */
+:global(.dark) .imageWrapper {
+    background: #2a2a2a;
+}
+```
+
+# components\OptimizedImage\OptimizedImage.jsx
+
+```jsx
+"use client";
+
+import Image from "next/image";
+import { useState } from "react";
+import styles from "./optimized-image.module.css";
+
+const shimmer = (w, h) => `
+<svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="g">
+      <stop stop-color="#f6f7f8" offset="20%" />
+      <stop stop-color="#edeef1" offset="50%" />
+      <stop stop-color="#f6f7f8" offset="70%" />
+    </linearGradient>
+  </defs>
+  <rect width="${w}" height="${h}" fill="#f6f7f8" />
+  <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
+  <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
+</svg>`;
+
+const toBase64 = (str) =>
+  typeof window === "undefined"
+    ? Buffer.from(str).toString("base64")
+    : window.btoa(str);
+
+export default function OptimizedImage({
+  src,
+  alt,
+  width,
+  height,
+  sizes,
+  priority = false,
+  className,
+  quality = 75,
+  onLoad,
+  style,
+  fill = false,
+}) {
+  const [isLoading, setIsLoading] = useState(true);
+
+  return (
+    <div
+      className={`${styles.imageWrapper} ${isLoading ? styles.loading : ""} ${
+        className ? className : ""
+      }`}
+      style={
+        fill
+          ? { position: "relative", width: "100%", height: "100%" }
+          : undefined
+      }
+    >
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        sizes={sizes}
+        priority={priority}
+        quality={quality}
+        fill={fill}
+        style={style}
+        className={`${styles.Image} ${className ? className : ""} `}
+        placeholder="blur"
+        blurDataURL={`data:image/svg+xml;base64,${toBase64(
+          shimmer(width || 700, height || 475)
+        )}`}
+        onLoadingComplete={() => {
+          setIsLoading(false);
+          if (onLoad) onLoad();
+        }}
+      />
+    </div>
+  );
+}
+
 ```
 
 # components\private\ContactsList\ContactsList.jsx
@@ -6818,6 +6955,10 @@ const nextConfig = {
         pathname: "/**", // Wildcard to allow all image paths
       },
     ],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 60,
     unoptimized: true,
   },
 
