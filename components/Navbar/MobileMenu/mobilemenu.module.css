@@ -60,7 +60,7 @@
 .hamburgerLine {
   width: 2rem;
   height: 0.25rem;
-  background-color: var(--navbar-text-color, var(--foreground));
+  background-color: var(--foreground);
   transition: all 0.3s linear;
   position: relative;
   transform-origin: 1px;
