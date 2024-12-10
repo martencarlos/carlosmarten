@@ -9,7 +9,7 @@ const Footer = () => {
     <footer className={styles.footer}>
       <div className={styles.content} suppressHydrationWarning>
         <p>&copy; {new Date().getFullYear()} Carlos Marten</p>
-        <nav>
+        <nav className={styles.footerNav}>
           <Link href="/about" className={styles.link}>
             About
           </Link>

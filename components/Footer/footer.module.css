@@ -16,6 +16,12 @@
   flex-wrap: wrap;
 }
 
+.footerNav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .link {
   margin-left: 1rem;
   color: var(--text);

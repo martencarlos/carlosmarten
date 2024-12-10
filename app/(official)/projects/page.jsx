@@ -36,6 +36,13 @@ const projects = [
       "https://www.hkcert.org/f/guideline/218189/1200c630/hkcert-Cloud%20Storage%20Security%20banner-1860x1046.jpg",
     url: `https://storage.carlosmarten.com/`,
   },
+  {
+    id: 6,
+    name: "Tetris",
+    image:
+      "https://www.jotdown.es/wp-content/uploads/2018/05/oie_16163755ZTTU8YqCPO.jpg",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/games/tetris/`,
+  },
 ];
 
 const ProjectCard = ({ project }) => (
