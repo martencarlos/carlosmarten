@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
+import { ChevronLeft, ChevronRight, ChevronDown, RotateCw, Pause } from "lucide-react";
 import BackButton from "@components/Article/BackButton/BackButton";
 import styles from "./page.module.css";
 
@@ -11,32 +12,12 @@ const GHOST_CELL = 8;
 
 const SHAPES = [
   [[1, 1, 1, 1]],
-  [
-    [2, 0],
-    [2, 0],
-    [2, 2],
-  ],
-  [
-    [0, 3],
-    [0, 3],
-    [3, 3],
-  ],
-  [
-    [4, 4],
-    [4, 4],
-  ],
-  [
-    [0, 5, 5],
-    [5, 5, 0],
-  ],
-  [
-    [0, 6, 0],
-    [6, 6, 6],
-  ],
-  [
-    [7, 7, 0],
-    [0, 7, 7],
-  ],
+  [[2, 0], [2, 0], [2, 2]],
+  [[0, 3], [0, 3], [3, 3]],
+  [[4, 4], [4, 4]],
+  [[0, 5, 5], [5, 5, 0]],
+  [[0, 6, 0], [6, 6, 6]],
+  [[7, 7, 0], [0, 7, 7]],
 ];
 
 const COLORS = [
@@ -51,10 +32,58 @@ const COLORS = [
   "bg-opacity-30 border-dashed",
 ];
 
+const TouchControls = ({ onMove, onRotate, onPause }) => {
+  return (
+    <div className="flex flex-col items-center gap-4 mt-4">
+      <div className="flex justify-center gap-4">
+        <button
+          onClick={() => onRotate()}
+          className="p-4 bg-gray-700 rounded-full active:bg-gray-600"
+        >
+          <RotateCw className="w-6 h-6" />
+        </button>
+        <button
+          onClick={() => onPause()}
+          className="p-4 bg-gray-700 rounded-full active:bg-gray-600"
+        >
+          <Pause className="w-6 h-6" />
+        </button>
+      </div>
+      <div className="flex justify-center gap-4">
+        <button
+          onTouchStart={(e) => {
+            e.preventDefault();
+            onMove(-1);
+          }}
+          className="p-4 bg-gray-700 rounded-full active:bg-gray-600"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <button
+          onTouchStart={(e) => {
+            e.preventDefault();
+            onMove(0, true);
+          }}
+          className="p-4 bg-gray-700 rounded-full active:bg-gray-600"
+        >
+          <ChevronDown className="w-6 h-6" />
+        </button>
+        <button
+          onTouchStart={(e) => {
+            e.preventDefault();
+            onMove(1);
+          }}
+          className="p-4 bg-gray-700 rounded-full active:bg-gray-600"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const createEmptyBoard = () =>
-  Array(BOARD_HEIGHT)
-    .fill()
-    .map(() => Array(BOARD_WIDTH).fill(EMPTY_CELL));
+  Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(EMPTY_CELL));
 
 const TetrisGame = () => {
   const [board, setBoard] = useState(createEmptyBoard());
@@ -67,6 +96,9 @@ const TetrisGame = () => {
   const [level, setLevel] = useState(1);
   const [lines, setLines] = useState(0);
   const [combo, setCombo] = useState(0);
+  const [isMobile] = useState(
+    typeof window !== "undefined" && window.innerWidth < 768
+  );
 
   const getRandomPiece = () =>
     SHAPES[Math.floor(Math.random() * SHAPES.length)];
@@ -136,7 +168,7 @@ const TetrisGame = () => {
     if (completedLines > 0) {
       const newLines = lines + completedLines;
       const newLevel = Math.floor(newLines / 10) + 1;
-      const comboMultiplier = Math.min(1 + combo * 0.1, 2); // Max 2x multiplier
+      const comboMultiplier = Math.min(1 + combo * 0.1, 2);
       const points =
         [0, 100, 300, 500, 800][completedLines] * level * comboMultiplier;
 
@@ -192,8 +224,20 @@ const TetrisGame = () => {
     }
   };
 
+  const handleMove = (direction, isDownMove = false) => {
+    if (!currentPiece || gameOver || isPaused) return;
+
+    if (isDownMove) {
+      moveDown();
+    } else {
+      moveHorizontal(direction);
+    }
+  };
+
   const handleKeyPress = useCallback(
     (event) => {
+      if (isMobile) return;
+
       switch (event.key) {
         case "ArrowLeft":
           moveHorizontal(-1);
@@ -214,7 +258,7 @@ const TetrisGame = () => {
           break;
       }
     },
-    [moveDown]
+    [moveDown, isMobile]
   );
 
   useEffect(() => {
@@ -311,15 +355,15 @@ const TetrisGame = () => {
   };
 
   return (
-    <div className="flex flex-col w-full justify-center items-center h-full min-h-screen">
+    <div className="flex flex-col w-full justify-center items-center h-full min-h-screen p-4">
       <div className={styles.backbuttonContainer}>
         <BackButton />
       </div>
-      <Card className="w-fit">
+      <Card className="w-fit max-w-full">
         <CardHeader>
-          <CardTitle className="flex justify-between items-center">
+          <CardTitle className="flex flex-col sm:flex-row justify-between items-center gap-2">
             <span>Tetris</span>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4 justify-center">
               <span>Level: {level}</span>
               <span>Score: {score}</span>
               {combo > 1 && (
@@ -331,11 +375,18 @@ const TetrisGame = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 items-center">
             <div className="flex flex-col items-center gap-4">
               <div className="border-2 border-gray-700 p-1 bg-gray-900">
                 {renderBoard()}
               </div>
+              {isMobile && (
+                <TouchControls
+                  onMove={handleMove}
+                  onRotate={rotate}
+                  onPause={() => setIsPaused((prev) => !prev)}
+                />
+              )}
             </div>
 
             <div className="flex flex-col gap-4">
@@ -344,7 +395,7 @@ const TetrisGame = () => {
                 {renderNextPiece()}
               </div>
 
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-gray-600 hidden sm:block">
                 <p>Controls:</p>
                 <p>← → : Move left/right</p>
                 <p>↓ : Move down</p>
