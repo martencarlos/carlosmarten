@@ -43,6 +43,13 @@ const projects = [
       "https://www.jotdown.es/wp-content/uploads/2018/05/oie_16163755ZTTU8YqCPO.jpg",
     url: `${process.env.NEXT_PUBLIC_SITE_URL}/games/tetris/`,
   },
+  {
+    id: 7,
+    name: "Project Management",
+    image:
+      "https://www.masterditec.com/wp-content/uploads/2022/04/Project-Manager-Professional-1080x675.jpg",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/business/project-timeline/`,
+  },
 ];
 
 const ProjectCard = ({ project }) => (

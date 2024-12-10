@@ -64,7 +64,7 @@ export default function OptimizedImage({
         blurDataURL={`data:image/svg+xml;base64,${toBase64(
           shimmer(width || 700, height || 475)
         )}`}
-        onLoadingComplete={() => {
+        onLoad={() => {
           setIsLoading(false);
           if (onLoad) onLoad();
         }}
