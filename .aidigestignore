@@ -1,0 +1,70 @@
+
+
+# THIS IS OPTIMIZED FOR PROJECT TIMELINE IN BUSINESS
+
+# dependencies
+
+/codebase.md
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# testing
+
+/coverage
+
+# next.js
+
+/.next/
+/out/
+
+# production
+
+/build
+
+# misc
+
+.DS_Store
+\*.pem
+
+# debug
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log\*
+
+# local env files
+
+.env\*.local
+
+# vercel
+
+.vercel
+
+# typescript
+
+\*.tsbuildinfo
+next-env.d.ts
+
+.env.local
+
+.vscode/*
+.next/*
+actions/*
+providers/*
+fonts/*
+context/*
+scripts/*
+nodemodules/*
+components/Article/*
+components/Blog/*
+components/Contact/*
+components/Hero/*
+components/Navbar/*
+components/Navigation/*
+components/NotificationTest/*
+components/private/*
+components/PushNotification/*
+public/*
+app/(official)/*

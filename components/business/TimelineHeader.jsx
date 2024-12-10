@@ -1,5 +1,4 @@
 // components/TimelineHeader.tsx
-
 "use client";
 import React from "react";
 
@@ -16,7 +15,7 @@ export const TimelineHeader = ({ viewMode, timelineLabels, dateRange }) => {
                 key={i}
                 className="flex-1 text-center border-l border-gray-200"
               >
-                <div className="text-xs font-semibold">
+                <div className="text-xs font-semibold" suppressHydrationWarning>
                   {date.toLocaleDateString("default", { month: "short" })}
                 </div>
               </div>
@@ -27,30 +26,55 @@ export const TimelineHeader = ({ viewMode, timelineLabels, dateRange }) => {
     );
   }
 
+  // Group timeline labels by month and year
+  const groupedLabels = timelineLabels.reduce((acc, item) => {
+    const monthYear = `${item.month}-${item.year}`;
+    if (!acc[monthYear]) {
+      acc[monthYear] = {
+        month: item.month,
+        year: item.year,
+        days: [],
+      };
+    }
+    acc[monthYear].days.push(item);
+    return acc;
+  }, {});
+
   return (
     <div className="flex border-b mb-4">
       <div className="w-2/5">Task</div>
-      <div className="w-3/5 flex">
-        {timelineLabels.map((item, i) => (
-          <div
-            key={i}
-            className={`flex-1 text-center ${
-              item.isFirstOfMonth ? "border-l border-gray-200" : ""
-            }`}
-          >
-            {(item.month || item.year) && (
-              <div className="border-b border-gray-100 mb-1">
-                {item.month && (
-                  <div className="text-xs text-gray-500">{item.month}</div>
-                )}
-                {item.year && (
-                  <div className="text-xs text-gray-400">{item.year}</div>
-                )}
-              </div>
-            )}
-            <div className="text-xs font-semibold">{item.day}</div>
-          </div>
-        ))}
+      <div className="w-3/5">
+        {/* Month and Year Headers */}
+        <div className="flex">
+          {Object.values(groupedLabels).map((group, index) => (
+            <div
+              key={`${group.month}-${group.year}`}
+              className="border-l border-gray-200"
+              style={{
+                width: `${(group.days.length / timelineLabels.length) * 100}%`,
+              }}
+            >
+              {group.month && (
+                <div className="text-xs text-gray-500 text-center border-b border-gray-100" suppressHydrationWarning>
+                  {group.month}
+                </div>
+              )}
+              {group.year && (
+                <div className="text-xs text-gray-400 text-center border-b border-gray-100">
+                  {group.year}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        {/* Days */}
+        <div className="flex">
+          {timelineLabels.map((item, i) => (
+            <div key={i} className="flex-1 text-center">
+              <div className="text-xs font-semibold">{item.day}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
