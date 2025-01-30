@@ -51,7 +51,7 @@ export async function handlePostWebhook(formData) {
   if (secret !== process.env.WEBHOOK_SECRET) {
     throw new Error("Unauthorized webhook request");
   }
-
+  console.log("secret checks out")
   //extract of data
   const postData = {
     slug: formData.get("slug"),
@@ -59,6 +59,9 @@ export async function handlePostWebhook(formData) {
     content: formData.get("content"),
     url: `${process.env.NEXT_PUBLIC_SITE_URL}/posts/${formData.get("slug")}`,
   };
+
+  console.log("data extracted:")
+  console.log(postData)
 
   // Send notifications to all subscribers
   await sendNotifications(postData);

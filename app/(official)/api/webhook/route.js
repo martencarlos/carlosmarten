@@ -2,7 +2,9 @@ import { handlePostWebhook } from "@actions/actions";
 
 export async function POST(request) {
   const formData = await request.formData();
-
+  console.log("received request from wordpress to send notification")
+  console.log("here is the info received:")
+  console.log(formData)
   try {
     await handlePostWebhook(formData);
     return new Response(JSON.stringify({ success: true }), {

@@ -153,6 +153,7 @@ export default function PushNotification() {
       const pushSubscription = await registration.pushManager.subscribe(
         subscribeOptions
       );
+      console.log(pushSubscription)
 
       // Save to server
       await subscribeUser(pushSubscription);
