@@ -4,7 +4,7 @@ import Hero from "components/Hero/Hero";
 
 async function getPosts() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
-  const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/posts?_embed`, {
+  const res = await fetch(`http://${siteUrl}/wp-json/wp/v2/posts?_embed`, {
     next: { revalidate: 60 },
   });
   return res.json();
