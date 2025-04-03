@@ -1,7 +1,7 @@
 // public/sw.js
 
-// Cache name for offline support
-const CACHE_NAME = "carlosmarten-v1";
+// Cache name for offline support - update version to force refresh
+const CACHE_NAME = "carlosmarten-v2";
 
 // Resources to cache
 const RESOURCES_TO_CACHE = [
@@ -12,6 +12,25 @@ const RESOURCES_TO_CACHE = [
   "/android-chrome-512x512.png",
   "/favicon-32x32.png",
 ];
+
+// Helper function to check if a URL should be cached
+function shouldCache(url) {
+  const urlObj = new URL(url);
+  
+  // Skip caching for WordPress API requests
+  if (urlObj.pathname.includes('wp-json') || 
+      urlObj.hostname === process.env.NEXT_PUBLIC_WP_URL ||
+      urlObj.hostname.includes('wdp.carlosmarten.com')) {
+    return false;
+  }
+  
+  // Skip caching for dynamic content
+  if (urlObj.search.includes('_next/data')) {
+    return false;
+  }
+  
+  return true;
+}
 
 self.addEventListener("install", (event) => {
   console.log("Service Worker installing...");
@@ -64,17 +83,6 @@ self.addEventListener("push", (event) => {
           openUrl: data.url || "/",
           origin: self.registration.scope,
         },
-        // Simplified actions without icons for better compatibility
-        // actions: [
-        //   {
-        //     action: "open",
-        //     title: "Read More",
-        //   },
-        //   {
-        //     action: "close",
-        //     title: "Close",
-        //   },
-        // ],
       };
 
       event.waitUntil(
@@ -135,15 +143,38 @@ self.addEventListener("notificationclose", (event) => {
   console.log("Notification closed:", event.notification);
 });
 
-// Add fetch handler for offline support
+// Updated fetch handler that excludes WordPress content from caching
 self.addEventListener("fetch", (event) => {
+  // Don't cache WordPress or dynamic content
+  if (!shouldCache(event.request.url)) {
+    return;
+  }
+  
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      if (response) {
-        return response;
+    (async () => {
+      // Try to get from cache first
+      const cachedResponse = await caches.match(event.request);
+      if (cachedResponse) {
+        return cachedResponse;
       }
-      return fetch(event.request);
-    })
+      
+      // Otherwise fetch from network
+      try {
+        const networkResponse = await fetch(event.request);
+        
+        // Only cache successful responses
+        if (networkResponse.ok) {
+          const cache = await caches.open(CACHE_NAME);
+          cache.put(event.request, networkResponse.clone());
+        }
+        
+        return networkResponse;
+      } catch (error) {
+        // Network error, we can't do much
+        console.error('Fetch failed:', error);
+        throw error;
+      }
+    })()
   );
 });
 
