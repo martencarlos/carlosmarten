@@ -2,6 +2,11 @@ import styles from "./page.module.css";
 import PostList from "components/Article/PostList/PostList";
 import Hero from "components/Hero/Hero";
 
+// Add this export to disable caching for the entire page
+export const dynamic = 'force-dynamic';
+// Alternatively, you can use:
+export const revalidate = 0;
+
 async function getPosts() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
   const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/posts?_embed`, {
