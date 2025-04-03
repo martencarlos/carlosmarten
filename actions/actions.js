@@ -21,18 +21,17 @@ export async function addContact(formData) {
 const dynamic = "force-dynamic";
 
 //WORDPRESS PAGE PROJECT - FETCH WORDPRESS PAGE
+// Update the fetchWordPressPage function in actions/actions.js
 export async function fetchWordPressPage(slug) {
-  const wpUrl = `https://${
-    process.env.NEXT_PUBLIC_WP_URL
-  }/${slug}?t=${new Date().getTime()}`; // Cache busting with timestamp
+  const wpUrl = `https://${process.env.NEXT_PUBLIC_WP_URL}/${slug}`;
 
   const response = await fetch(wpUrl, {
+    cache: 'no-store',
     headers: {
-      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
-      Pragma: "no-cache",
-      Expires: "0",
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
     },
-    next: { revalidate: 0 },
   });
 
   if (!response.ok) {

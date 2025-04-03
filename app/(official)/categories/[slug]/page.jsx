@@ -7,9 +7,17 @@ const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
 import { useParams } from "next/navigation";
 
 async function getCategories() {
-  const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`);
+  const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`, {
+    cache: 'no-store',
+    headers: {
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    }
+  });
   return res.json();
 }
+
 
 // Function to get the ID by category name
 const getCategoryIdByName = async (categoriesArray, categoryName) => {
@@ -21,7 +29,15 @@ const getCategoryIdByName = async (categoriesArray, categoryName) => {
 
 async function getCategoryPosts(categoryId) {
   const res = await fetch(
-    `https://${siteUrl}/wp-json/wp/v2/posts?categories=${categoryId}`
+    `https://${siteUrl}/wp-json/wp/v2/posts?categories=${categoryId}`,
+    {
+      cache: 'no-store',
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    }
   );
   return res.json();
 }

@@ -5,7 +5,12 @@ import Hero from "components/Hero/Hero";
 async function getPosts() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
   const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/posts?_embed`, {
-    next: { revalidate: 60 },
+    cache: 'no-store',
+    headers: {
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    }
   });
   return res.json();
 }
