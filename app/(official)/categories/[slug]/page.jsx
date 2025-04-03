@@ -7,7 +7,7 @@ const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
 import { useParams } from "next/navigation";
 
 async function getCategories() {
-  const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`);
+  const res = await fetch(`http://${siteUrl}/wp-json/wp/v2/categories`);
   return res.json();
 }
 
@@ -21,7 +21,7 @@ const getCategoryIdByName = async (categoriesArray, categoryName) => {
 
 async function getCategoryPosts(categoryId) {
   const res = await fetch(
-    `https://${siteUrl}/wp-json/wp/v2/posts?categories=${categoryId}`
+    `http://${siteUrl}/wp-json/wp/v2/posts?categories=${categoryId}`
   );
   return res.json();
 }
