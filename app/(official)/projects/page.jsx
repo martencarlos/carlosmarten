@@ -47,7 +47,7 @@ const projects = [
     id: 7,
     name: "Project Management",
     image:
-      "https://www.masterditec.com/wp-content/uploads/2022/04/Project-Manager-Professional-1080x675.jpg",
+      "https://wdp.carlosmarten.com/wp-content/uploads/2025/04/project-management.jpeg",
     url: `${process.env.NEXT_PUBLIC_SITE_URL}/business/project-timeline/`,
   },
 ];
