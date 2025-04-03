@@ -15,7 +15,6 @@ async function getPosts() {
   }
   return res.json();
 }
-
 async function getCategories() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
   const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`, {
