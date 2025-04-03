@@ -13,11 +13,11 @@ const nextConfig = {
         port: "", // Leave it empty unless you need a specific port
       },
       {
-        protocol: "http",
+        protocol: "https",
         hostname: "www.carlosmarten.com",
       },
       {
-        protocol: "http", // Specify the protocol (http or https)
+        protocol: "https", // Specify the protocol (http or https)
         hostname: process.env.NEXT_PUBLIC_WP_URL, // Domain name
         port: "", // Leave this empty if there's no specific port
         pathname: "/**", // Wildcard to allow all image paths

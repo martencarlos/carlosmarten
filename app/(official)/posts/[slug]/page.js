@@ -42,7 +42,7 @@ async function getPost(slug) {
   console.log("fetching post loaded");
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
   const res = await fetch(
-    `http://${siteUrl}/wp-json/wp/v2/posts?slug=${slug}&_embed`,
+    `https://${siteUrl}/wp-json/wp/v2/posts?slug=${slug}&_embed`,
     { next: { revalidate: 60 } }
   );
 

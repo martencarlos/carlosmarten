@@ -22,7 +22,7 @@ const dynamic = "force-dynamic";
 
 //WORDPRESS PAGE PROJECT - FETCH WORDPRESS PAGE
 export async function fetchWordPressPage(slug) {
-  const wpUrl = `http://${
+  const wpUrl = `https://${
     process.env.NEXT_PUBLIC_WP_URL
   }/${slug}?t=${new Date().getTime()}`; // Cache busting with timestamp
 

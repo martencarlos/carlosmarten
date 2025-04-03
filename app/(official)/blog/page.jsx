@@ -7,7 +7,7 @@ import NotificationTest from "@components/NotificationTest/NotificationTest";
 
 async function getPosts() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
-  const res = await fetch(`http://${siteUrl}/wp-json/wp/v2/posts?_embed`, {
+  const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/posts?_embed`, {
     next: { revalidate: 60 },
   });
   if (!res.ok) {
@@ -17,7 +17,7 @@ async function getPosts() {
 }
 async function getCategories() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
-  const res = await fetch(`http://${siteUrl}/wp-json/wp/v2/categories`, {
+  const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`, {
     next: { revalidate: 60 },
   });
   if (!res.ok) {
