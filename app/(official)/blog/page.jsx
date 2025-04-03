@@ -2,8 +2,12 @@ import styles from "./page.module.css";
 import BlogContent from "components/Blog/BlogContent/BlogContent";
 
 import PushNotification from "@components/PushNotification/PushNotification";
-import NotificationTest from "@components/NotificationTest/NotificationTest";
 // import NotificationSubscriber from "@components/NotificationSubscriber";
+
+// Add this export to disable caching for the entire page
+export const dynamic = 'force-dynamic';
+// Alternatively, you can use:
+export const revalidate = 0;
 
 async function getPosts() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
