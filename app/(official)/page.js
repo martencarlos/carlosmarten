@@ -1,42 +1,46 @@
+// app/(official)/page.js
 import styles from "./page.module.css";
 import PostList from "components/Article/PostList/PostList";
 import Hero from "components/Hero/Hero";
 
-// Add this export to disable caching for the entire page
+// Force dynamic rendering
 export const dynamic = 'force-dynamic';
-// Alternatively, you can use:
-export const revalidate = 0;
 
 async function getPosts() {
-  const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
-  const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/posts?_embed`, {
-    cache: 'no-store',
-    headers: {
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': '0'
+  try {
+    const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
+    const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/posts?_embed`, {
+      cache: 'no-store',
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    });
+    
+    if (!res.ok) {
+      throw new Error(`Failed to fetch posts. Status: ${res.status}`);
     }
-  });
-  return res.json();
+    
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    // Return an empty array instead of letting the error propagate
+    // This way, the page will still render even if the fetch fails
+    return [];
+  }
 }
 
 export default async function Home() {
+  console.log("Home page loaded");
+  
+  // Fetch posts and handle any errors
   const posts = await getPosts();
-
-  try {
-    console.log("Home page loaded");
-    return (
-      <main className={styles.main}>
-        <Hero />
-        <PostList posts={posts} selectedCategory={null} searchQuery={null} />
-      </main>
-    );
-  } catch (error) {
-    return (
-      <div>
-        <h1>Error</h1>
-        <p>Failed to load the blog posts. Please try again later.</p>
-      </div>
-    );
-  }
+  
+  return (
+    <main className={styles.main}>
+      <Hero />
+      <PostList posts={posts} selectedCategory={null} searchQuery={null} />
+    </main>
+  );
 }
