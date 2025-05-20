@@ -13,22 +13,49 @@ const RESOURCES_TO_CACHE = [
   "/favicon-32x32.png",
 ];
 
+// --- START OF MODIFICATION ---
+// This value needs to be set, ideally by your build process.
+// It should be the HOSTNAME of your WordPress instance.
+//
+// Original code used: process.env.NEXT_PUBLIC_WP_URL
+//
+// If process.env.NEXT_PUBLIC_WP_URL is a full URL (e.g., "https://mywp.example.com/api"),
+// then CONFIGURED_WP_HOSTNAME should be set to its hostname part (e.g., "mywp.example.com").
+// If process.env.NEXT_PUBLIC_WP_URL is already just the hostname (e.g., "mywp.example.com"),
+// then CONFIGURED_WP_HOSTNAME should be set to that value.
+//
+// Example: If your build system can replace placeholders:
+// const CONFIGURED_WP_HOSTNAME = "__REPLACE_WITH_WP_HOSTNAME__";
+// Otherwise, you might need to hardcode it if it's static, or fetch it.
+const CONFIGURED_WP_HOSTNAME = "wdp.carlosmarten.com"; // E.g., "wdp.carlosmarten.com" or the hostname from your env var.
+                                   // IMPORTANT: Ensure this is populated correctly.
+// --- END OF MODIFICATION ---
+
+
 // Helper function to check if a URL should be cached
 function shouldCache(url) {
-  const urlObj = new URL(url);
+  const urlObj = new URL(url); // Parses the request URL string
+
+  // Skip caching for WordPress API requests or content from the configured WP host
+  const isWpJsonPath = urlObj.pathname.includes('wp-json');
   
-  // Skip caching for WordPress API requests
-  if (urlObj.pathname.includes('wp-json') || 
-      urlObj.hostname === process.env.NEXT_PUBLIC_WP_URL ||
-      urlObj.hostname.includes('wdp.carlosmarten.com')) {
+  // Check against the configured WP hostname (if it's set)
+  const isConfiguredWpHost = CONFIGURED_WP_HOSTNAME && urlObj.hostname === CONFIGURED_WP_HOSTNAME;
+  
+  // Check against the hardcoded 'wdp.carlosmarten.com'
+  // This might be redundant if CONFIGURED_WP_HOSTNAME is set to 'wdp.carlosmarten.com',
+  // but kept for consistency with the original logic if they serve different purposes.
+  const isHardcodedWpDomain = urlObj.hostname.includes('wdp.carlosmarten.com');
+
+  if (isWpJsonPath || isConfiguredWpHost || isHardcodedWpDomain) {
     return false;
   }
-  
-  // Skip caching for dynamic content
+
+  // Skip caching for Next.js dynamic data routes
   if (urlObj.search.includes('_next/data')) {
     return false;
   }
-  
+
   return true;
 }
 
@@ -39,7 +66,10 @@ self.addEventListener("install", (event) => {
 
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
+      console.log("Caching app shell resources:", RESOURCES_TO_CACHE);
       return cache.addAll(RESOURCES_TO_CACHE);
+    }).catch(error => {
+      console.error("Failed to cache app shell resources during install:", error);
     })
   );
 });
@@ -55,7 +85,10 @@ self.addEventListener("activate", (event) => {
         return Promise.all(
           cacheNames
             .filter((name) => name !== CACHE_NAME)
-            .map((name) => caches.delete(name))
+            .map((name) => {
+              console.log("Deleting old cache:", name);
+              return caches.delete(name);
+            })
         );
       }),
     ])
@@ -101,6 +134,16 @@ self.addEventListener("push", (event) => {
       );
     } catch (error) {
       console.error("Error processing push data:", error);
+      // Fallback for non-JSON data or other errors
+      const title = "New Notification";
+      const body = event.data.text ? event.data.text() : "You have a new update.";
+      event.waitUntil(
+        self.registration.showNotification(title, {
+          body: body,
+          icon: "/android-chrome-192x192.png",
+          data: { url: "/" },
+        })
+      );
     }
   }
 });
@@ -122,15 +165,14 @@ self.addEventListener("notificationclick", (event) => {
         includeUncontrolled: true,
       })
       .then(function (clientList) {
-        // iOS Safari doesn't support clients.openWindow in all cases
-        // so we try to focus an existing window first
+        // Try to focus an existing window/tab that has the URL.
         for (const client of clientList) {
           if (client.url === urlToOpen && "focus" in client) {
             return client.focus();
           }
         }
 
-        // If no existing window, try to open a new one
+        // If no existing window is found, or focus is not supported, open a new one.
         if (clients.openWindow) {
           return clients.openWindow(urlToOpen);
         }
@@ -143,42 +185,53 @@ self.addEventListener("notificationclose", (event) => {
   console.log("Notification closed:", event.notification);
 });
 
-// Updated fetch handler that excludes WordPress content from caching
+// Updated fetch handler
 self.addEventListener("fetch", (event) => {
-  // Don't cache WordPress or dynamic content
+  // If the request should not be cached, let the browser handle it normally.
+  // This means the service worker will not intercept this request.
   if (!shouldCache(event.request.url)) {
+    // console.log('Fetch event for non-cacheable URL, skipping SW:', event.request.url);
     return;
   }
   
+  // For cacheable requests, use a cache-first strategy.
   event.respondWith(
     (async () => {
-      // Try to get from cache first
+      // Try to get the response from the cache.
       const cachedResponse = await caches.match(event.request);
       if (cachedResponse) {
+        // console.log('Serving from cache:', event.request.url);
         return cachedResponse;
       }
       
-      // Otherwise fetch from network
+      // If not in cache, fetch from the network.
       try {
+        // console.log('Fetching from network:', event.request.url);
         const networkResponse = await fetch(event.request);
         
-        // Only cache successful responses
-        if (networkResponse.ok) {
+        // Cache the fetched response if it's a successful GET request.
+        // The request.method check is important as non-GET requests usually shouldn't be cached.
+        if (networkResponse.ok && event.request.method === 'GET') {
           const cache = await caches.open(CACHE_NAME);
+          // console.log('Caching new resource:', event.request.url);
+          // It's crucial to clone the response before putting it in the cache,
+          // as the response body can only be consumed once.
           cache.put(event.request, networkResponse.clone());
         }
         
         return networkResponse;
       } catch (error) {
-        // Network error, we can't do much
-        console.error('Fetch failed:', error);
+        console.error('Fetch failed; returning offline page or error:', error);
+        // Optionally, you could return a fallback offline page here:
+        // return caches.match('/offline.html'); // Ensure '/offline.html' is in RESOURCES_TO_CACHE
+        // For now, just rethrow the error, which will likely result in a browser network error page.
         throw error;
       }
     })()
   );
 });
 
-// Helper function to check if a client is focused
+// Helper function to check if a client is focused (not used in current logic but kept)
 async function isClientFocused() {
   const windowClients = await clients.matchAll({
     type: "window",
@@ -187,12 +240,13 @@ async function isClientFocused() {
   return windowClients.some((client) => client.focused);
 }
 
-// Periodic sync for keeping the service worker alive
+// Periodic sync for keeping the service worker alive (browser support and behavior varies)
 self.addEventListener("periodicsync", (event) => {
   if (event.tag === "keep-alive") {
+    console.log("Periodic sync event 'keep-alive' received.");
     event.waitUntil(
-      // Perform minimal task to keep service worker active
-      Promise.resolve()
+      // Perform a minimal task to keep service worker active, e.g., a health check or no-op.
+      Promise.resolve().then(() => console.log("Keep-alive task executed."))
     );
   }
 });
