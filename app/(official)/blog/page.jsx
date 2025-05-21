@@ -7,12 +7,17 @@ import PushNotification from "@components/PushNotification/PushNotification";
 // Add this export to disable caching for the entire page
 export const dynamic = 'force-dynamic';
 // Alternatively, you can use:
-export const revalidate = 0;
+// export const revalidate = 0; // This is equivalent to force-dynamic for fetch
 
 async function getPosts() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
   const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/posts?_embed`, {
-    
+    cache: 'no-store', // Ensure fresh data
+    headers: {
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    }
   });
   if (!res.ok) {
     throw new Error("Failed to fetch posts");
@@ -22,7 +27,12 @@ async function getPosts() {
 async function getCategories() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
   const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`, {
-    
+    cache: 'no-store', // Ensure fresh data
+    headers: {
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    }
   });
   if (!res.ok) {
     throw new Error("Failed to fetch categories");

@@ -51,20 +51,9 @@ next-env.d.ts
 
 .vscode/*
 .next/*
-actions/*
-providers/*
 fonts/*
-context/*
 scripts/*
 nodemodules/*
-components/Article/*
-components/Blog/*
-components/Contact/*
-components/Hero/*
-components/Navbar/*
-components/Navigation/*
-components/NotificationTest/*
-components/private/*
-components/PushNotification/*
 public/*
-app/(official)/*
+codebase.md
+

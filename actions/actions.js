@@ -78,5 +78,7 @@ export async function handlePostWebhook(formData) {
     throw error;
   } finally {
     revalidatePath(`/posts/${postData.slug}`);
+    revalidatePath('/'); // Revalidate home page
+    revalidatePath('/blog'); // Revalidate blog list page
   }
 }
