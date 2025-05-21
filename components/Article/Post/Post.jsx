@@ -6,7 +6,6 @@ import Link from "next/link";
 import { FaClock, FaUser, FaCalendar, FaChevronUp } from "react-icons/fa";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import AudioPlayer from "@components/Article/AudioPlayer/AudioPlayer";
 import OptimizedImage from "@components/OptimizedImage/OptimizedImage";
 
 function calculateReadingTime(text) {
@@ -19,7 +18,7 @@ const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
-export default function Post({ post, audioUrl }) {
+export default function Post({ post }) {
   const { resolvedTheme } = useTheme();
   const [scrollProgress, setScrollProgress] = useState(0);
   const [time, setTime] = useState(0);
@@ -84,11 +83,7 @@ export default function Post({ post, audioUrl }) {
               />
             </div>
           )}
-          {audioUrl && (
-            <div className={styles.audioPlayer}>
-              <AudioPlayer audioUrl={audioUrl} />
-            </div>
-          )}
+        
 
           <h1 className={styles.title}>{post.title}</h1>
 

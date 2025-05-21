@@ -1,7 +1,7 @@
 // public/sw.js
 
 // Cache name for offline support - update version to force refresh
-const CACHE_NAME = "carlosmarten-v2";
+const CACHE_NAME = "carlosmarten-v3"; // <-- INCREMENTED VERSION
 
 // Resources to cache
 const RESOURCES_TO_CACHE = [
@@ -11,71 +11,65 @@ const RESOURCES_TO_CACHE = [
   "/android-chrome-192x192.png",
   "/android-chrome-512x512.png",
   "/favicon-32x32.png",
+  // Add any other core static assets that make up your app shell.
+  // If you have an offline.html, add it here too.
+  // '/offline.html',
 ];
 
-// --- START OF MODIFICATION ---
 // This value needs to be set, ideally by your build process.
 // It should be the HOSTNAME of your WordPress instance.
-//
-// Original code used: process.env.NEXT_PUBLIC_WP_URL
-//
-// If process.env.NEXT_PUBLIC_WP_URL is a full URL (e.g., "https://mywp.example.com/api"),
-// then CONFIGURED_WP_HOSTNAME should be set to its hostname part (e.g., "mywp.example.com").
-// If process.env.NEXT_PUBLIC_WP_URL is already just the hostname (e.g., "mywp.example.com"),
-// then CONFIGURED_WP_HOSTNAME should be set to that value.
-//
-// Example: If your build system can replace placeholders:
-// const CONFIGURED_WP_HOSTNAME = "__REPLACE_WITH_WP_HOSTNAME__";
-// Otherwise, you might need to hardcode it if it's static, or fetch it.
-const CONFIGURED_WP_HOSTNAME = "wdp.carlosmarten.com"; // E.g., "wdp.carlosmarten.com" or the hostname from your env var.
-                                   // IMPORTANT: Ensure this is populated correctly.
-// --- END OF MODIFICATION ---
-
+const CONFIGURED_WP_HOSTNAME = "wdp.carlosmarten.com"; // E.g., "wdp.carlosmarten.com"
 
 // Helper function to check if a URL should be cached
 function shouldCache(url) {
-  const urlObj = new URL(url); // Parses the request URL string
+  const urlObj = new URL(url);
 
-  // Skip caching for WordPress API requests or content from the configured WP host
-  const isWpJsonPath = urlObj.pathname.includes('wp-json');
-  
-  // Check against the configured WP hostname (if it's set)
-  const isConfiguredWpHost = CONFIGURED_WP_HOSTNAME && urlObj.hostname === CONFIGURED_WP_HOSTNAME;
-  
-  // Check against the hardcoded 'wdp.carlosmarten.com'
-  // This might be redundant if CONFIGURED_WP_HOSTNAME is set to 'wdp.carlosmarten.com',
-  // but kept for consistency with the original logic if they serve different purposes.
-  const isHardcodedWpDomain = urlObj.hostname.includes('wdp.carlosmarten.com');
-
-  if (isWpJsonPath || isConfiguredWpHost || isHardcodedWpDomain) {
+  // 1. Skip WordPress API paths (e.g., /wp-json/*)
+  if (urlObj.pathname.includes('/wp-json/')) {
+    // console.log(`[SW shouldCache] NO_CACHE (WP API): ${url}`);
     return false;
   }
 
-  // Skip caching for Next.js dynamic data routes
-  if (urlObj.search.includes('_next/data')) {
+  // 2. Skip requests TO the configured WordPress hostname
+  // This is to avoid caching API responses or dynamic content directly from WP
+  // that should always be fresh from the network.
+  if (CONFIGURED_WP_HOSTNAME && urlObj.hostname === CONFIGURED_WP_HOSTNAME) {
+    // console.log(`[SW shouldCache] NO_CACHE (Configured WP Host): ${url}`);
     return false;
   }
 
+  // 3. Skip Next.js dynamic data routes (e.g., /_next/data/BUILD_ID/page.json)
+  if (urlObj.pathname.startsWith('/_next/data/')) {
+    // console.log(`[SW shouldCache] NO_CACHE (Next.js data): ${url}`);
+    return false;
+  }
+
+  // Add other specific exclusions if needed:
+  // if (urlObj.pathname.startsWith('/api/')) { // Example: your own backend APIs
+  //   return false;
+  // }
+
+  // console.log(`[SW shouldCache] CACHE: ${url}`);
   return true;
 }
 
 self.addEventListener("install", (event) => {
-  console.log("Service Worker installing...");
+  console.log(`[SW] Event: install (v: ${CACHE_NAME})`);
   // Force waiting Service Worker to become active
   self.skipWaiting();
 
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log("Caching app shell resources:", RESOURCES_TO_CACHE);
+      console.log("[SW] Caching app shell resources:", RESOURCES_TO_CACHE);
       return cache.addAll(RESOURCES_TO_CACHE);
     }).catch(error => {
-      console.error("Failed to cache app shell resources during install:", error);
+      console.error("[SW] Failed to cache app shell resources during install:", error);
     })
   );
 });
 
 self.addEventListener("activate", (event) => {
-  console.log("Service Worker activating...");
+  console.log(`[SW] Event: activate (v: ${CACHE_NAME})`);
   // Take control of all pages immediately
   event.waitUntil(
     Promise.all([
@@ -86,55 +80,101 @@ self.addEventListener("activate", (event) => {
           cacheNames
             .filter((name) => name !== CACHE_NAME)
             .map((name) => {
-              console.log("Deleting old cache:", name);
+              console.log("[SW] Deleting old cache:", name);
               return caches.delete(name);
             })
         );
       }),
-    ])
+    ]).then(() => console.log("[SW] Activated and old caches cleaned."))
+      .catch(error => console.error("[SW] Activation or old cache cleanup failed:", error))
   );
 });
 
+self.addEventListener("fetch", (event) => {
+  const url = event.request.url;
+
+  // If the request should not be cached, let the browser handle it normally (network-only).
+  if (!shouldCache(url)) {
+    // console.log('[SW] Fetch event for non-cacheable URL, passing through:', url);
+    return; // Let the browser handle it, SW does not intercept.
+  }
+
+  // For cacheable requests, use a cache-first strategy.
+  event.respondWith(
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+      const cachedResponse = await cache.match(event.request);
+
+      if (cachedResponse) {
+        // console.log('[SW] Serving from cache:', url);
+        return cachedResponse;
+      }
+
+      // console.log('[SW] Fetching from network (and caching):', url);
+      try {
+        const networkResponse = await fetch(event.request);
+
+        // Cache the fetched response if it's a successful GET request and cacheable.
+        // Note: shouldCache has already filtered non-cacheable URLs at the top.
+        if (networkResponse && networkResponse.ok && event.request.method === 'GET') {
+          // console.log('[SW] Caching new resource:', url);
+          // It's crucial to clone the response before putting it in the cache and returning it,
+          // as the response body can only be consumed once.
+          await cache.put(event.request, networkResponse.clone());
+        }
+        return networkResponse;
+      } catch (error) {
+        console.error('[SW] Fetch failed; network error for:', url, error);
+        // Optionally, return a fallback offline page here if one is cached:
+        // const offlinePage = await caches.match('/offline.html');
+        // if (offlinePage) return offlinePage;
+        throw error; // Propagate the error to the browser
+      }
+    })()
+  );
+});
+
+
 self.addEventListener("push", (event) => {
-  console.log("Push event received:", event);
+  console.log("[SW] Push event received:", event);
 
   if (event.data) {
     try {
       const data = event.data.json();
-      console.log("Push data:", data);
+      console.log("[SW] Push data:", data);
 
       const options = {
-        body: data.body,
-        icon: "/android-chrome-192x192.png",
-        badge: "/favicon-32x32.png",
-        vibrate: [100],
-        tag: data.tag || "blog-notification",
-        renotify: true,
+        body: data.body || "New content available.",
+        icon: data.icon || "/android-chrome-192x192.png",
+        badge: data.badge || "/favicon-32x32.png",
+        vibrate: data.vibrate || [100, 50, 100],
+        tag: data.tag || "general-notification",
+        renotify: typeof data.renotify === 'boolean' ? data.renotify : true,
         data: {
-          url: data.url || "/",
+          url: data.url || "/", // URL to open on click
           // Store the URL in both places for compatibility
           openUrl: data.url || "/",
           origin: self.registration.scope,
+          ...data.data // Allow any other custom data
         },
       };
 
       event.waitUntil(
         self.registration
-          .showNotification(data.title, options)
-          .then(() => console.log("Notification shown successfully"))
+          .showNotification(data.title || "New Notification", options)
+          .then(() => console.log("[SW] Notification shown successfully"))
           .catch((error) => {
-            console.error("Error showing notification:", error);
-            // Fallback to basic notification
-            return self.registration.showNotification(data.title, {
-              body: data.body,
+            console.error("[SW] Error showing notification:", error);
+            // Fallback to basic notification if advanced options fail
+            return self.registration.showNotification(data.title || "New Notification", {
+              body: data.body || "New content available.",
               icon: "/android-chrome-192x192.png",
               data: { url: data.url || "/" },
             });
           })
       );
     } catch (error) {
-      console.error("Error processing push data:", error);
-      // Fallback for non-JSON data or other errors
+      console.error("[SW] Error processing push data:", error);
       const title = "New Notification";
       const body = event.data.text ? event.data.text() : "You have a new update.";
       event.waitUntil(
@@ -145,18 +185,26 @@ self.addEventListener("push", (event) => {
         })
       );
     }
+  } else {
+    console.log("[SW] Push event received with no data.");
   }
 });
 
 self.addEventListener("notificationclick", (event) => {
+  console.log("[SW] Notification click received:", event.notification);
   event.notification.close();
 
-  if (event.action === "close") return;
+  if (event.action === "close") { // If you add actions to notifications
+    console.log("[SW] Notification action: close");
+    return;
+  }
 
   const urlToOpen = new URL(
-    event.notification.data.url || "/",
-    self.registration.scope
+    event.notification.data.url || event.notification.data.openUrl || "/", // Check both common data properties
+    self.registration.scope // Base URL for relative paths
   ).href;
+
+  console.log("[SW] Attempting to open URL:", urlToOpen);
 
   event.waitUntil(
     clients
@@ -164,15 +212,24 @@ self.addEventListener("notificationclick", (event) => {
         type: "window",
         includeUncontrolled: true,
       })
-      .then(function (clientList) {
-        // Try to focus an existing window/tab that has the URL.
+      .then((clientList) => {
         for (const client of clientList) {
+          // If a window with the target URL already exists, focus it.
+          // Check client.url (actual URL) and if it has focus method
           if (client.url === urlToOpen && "focus" in client) {
+            console.log("[SW] Found existing client, focusing:", client.url);
             return client.focus();
           }
         }
-
         // If no existing window is found, or focus is not supported, open a new one.
+        if (clients.openWindow) {
+          console.log("[SW] No existing client found, opening new window:", urlToOpen);
+          return clients.openWindow(urlToOpen);
+        }
+        console.log("[SW] Could not open window, clients.openWindow is not available.");
+      }).catch(error => {
+        console.error("[SW] Error handling notification click:", error);
+        // Fallback: try opening the window if the complex logic failed
         if (clients.openWindow) {
           return clients.openWindow(urlToOpen);
         }
@@ -180,58 +237,22 @@ self.addEventListener("notificationclick", (event) => {
   );
 });
 
-// Handle notification close
 self.addEventListener("notificationclose", (event) => {
-  console.log("Notification closed:", event.notification);
+  console.log("[SW] Notification closed:", event.notification);
+  // You can add analytics or other logic here if needed
 });
 
-// Updated fetch handler
-self.addEventListener("fetch", (event) => {
-  // If the request should not be cached, let the browser handle it normally.
-  // This means the service worker will not intercept this request.
-  if (!shouldCache(event.request.url)) {
-    // console.log('Fetch event for non-cacheable URL, skipping SW:', event.request.url);
-    return;
+// Periodic sync (optional, limited support)
+self.addEventListener("periodicsync", (event) => {
+  if (event.tag === "keep-alive") {
+    console.log("[SW] Periodic sync event 'keep-alive' received.");
+    event.waitUntil(
+      Promise.resolve().then(() => console.log("[SW] Keep-alive task executed."))
+    );
   }
-  
-  // For cacheable requests, use a cache-first strategy.
-  event.respondWith(
-    (async () => {
-      // Try to get the response from the cache.
-      const cachedResponse = await caches.match(event.request);
-      if (cachedResponse) {
-        // console.log('Serving from cache:', event.request.url);
-        return cachedResponse;
-      }
-      
-      // If not in cache, fetch from the network.
-      try {
-        // console.log('Fetching from network:', event.request.url);
-        const networkResponse = await fetch(event.request);
-        
-        // Cache the fetched response if it's a successful GET request.
-        // The request.method check is important as non-GET requests usually shouldn't be cached.
-        if (networkResponse.ok && event.request.method === 'GET') {
-          const cache = await caches.open(CACHE_NAME);
-          // console.log('Caching new resource:', event.request.url);
-          // It's crucial to clone the response before putting it in the cache,
-          // as the response body can only be consumed once.
-          cache.put(event.request, networkResponse.clone());
-        }
-        
-        return networkResponse;
-      } catch (error) {
-        console.error('Fetch failed; returning offline page or error:', error);
-        // Optionally, you could return a fallback offline page here:
-        // return caches.match('/offline.html'); // Ensure '/offline.html' is in RESOURCES_TO_CACHE
-        // For now, just rethrow the error, which will likely result in a browser network error page.
-        throw error;
-      }
-    })()
-  );
 });
 
-// Helper function to check if a client is focused (not used in current logic but kept)
+// Helper function to check if a client is focused (not used in current logic but kept if you need it)
 async function isClientFocused() {
   const windowClients = await clients.matchAll({
     type: "window",
@@ -239,14 +260,3 @@ async function isClientFocused() {
   });
   return windowClients.some((client) => client.focused);
 }
-
-// Periodic sync for keeping the service worker alive (browser support and behavior varies)
-self.addEventListener("periodicsync", (event) => {
-  if (event.tag === "keep-alive") {
-    console.log("Periodic sync event 'keep-alive' received.");
-    event.waitUntil(
-      // Perform a minimal task to keep service worker active, e.g., a health check or no-op.
-      Promise.resolve().then(() => console.log("Keep-alive task executed."))
-    );
-  }
-});

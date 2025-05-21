@@ -64,21 +64,8 @@ export async function handlePostWebhook(formData) {
 
   // Send notifications to all subscribers
   await sendNotifications(postData);
-
-  // Send data to SQS for audio generation
-  try {
-    const command = new SendMessageCommand({
-      QueueUrl: process.env.AWS_SQS_QUEUE_URL,
-      MessageBody: JSON.stringify(postData),
-    });
-    await sqsClient.send(command);
-    return { success: true, message: "Audio generation queued" };
-  } catch (error) {
-    console.error("Error queuing message:", error);
-    throw error;
-  } finally {
     revalidatePath(`/posts/${postData.slug}`);
     revalidatePath('/'); // Revalidate home page
     revalidatePath('/blog'); // Revalidate blog list page
-  }
+  
 }
