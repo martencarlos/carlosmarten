@@ -3,8 +3,7 @@
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 
-import { SendMessageCommand } from "@aws-sdk/client-sqs";
-import { sqsClient } from "@lib/aws-config";
+
 import { sendNotifications } from "./pushNotifications";
 
 //CONTACT PAGE - ADD CONTACT
