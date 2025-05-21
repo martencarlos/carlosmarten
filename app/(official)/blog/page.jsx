@@ -6,8 +6,7 @@ import PushNotification from "@components/PushNotification/PushNotification";
 
 // Add this export to disable caching for the entire page
 export const dynamic = 'force-dynamic';
-// Alternatively, you can use:
-// export const revalidate = 0; // This is equivalent to force-dynamic for fetch
+export const revalidate = 0; // This is equivalent to force-dynamic for fetch
 
 async function getPosts() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
