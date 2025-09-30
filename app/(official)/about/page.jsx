@@ -22,7 +22,7 @@ export default function About() {
 
       <div className={`${styles.content} ${isVisible ? styles.visible : ""}`}>
         <Image
-          src="/images/me.png"
+          src="/images/me.jpeg"
           width={400}
           priority
           height={400}

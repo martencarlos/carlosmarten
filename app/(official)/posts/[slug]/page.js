@@ -2,7 +2,6 @@
 import { notFound } from "next/navigation";
 import Post from "components/Article/Post/Post";
 import styles from "./page.module.css";
-import BackButton from "components/Article/BackButton/BackButton";
 
 
 async function getPost(slug) {
@@ -64,9 +63,6 @@ export default async function BlogPost({ params }) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.backbuttonContainer}>
-        <BackButton />
-      </div>
       <Post post={post} />
     </div>
   );

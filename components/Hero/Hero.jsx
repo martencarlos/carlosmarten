@@ -34,7 +34,7 @@ const Hero = () => {
       >*/}
       <div className={styles.imageContainer}>
         {/* <Image
-          src="/images/me.png"
+          src="/images/me.jpeg"
           alt="Hero Image"
           priority
           width={200}
@@ -42,11 +42,11 @@ const Hero = () => {
           className={styles.roundedImage}
         /> */}
         <OptimizedImage
-          src="/images/me.png"
+          src="/images/me.jpeg"
           alt="Hero Image"
           priority
-          width={200}
-          height={200}
+          width={400}
+          height={400}
           className={styles.roundedImage}
         />
       </div>
