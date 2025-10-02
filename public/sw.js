@@ -2,7 +2,7 @@
 
 // IMPORTANT: Increment this version number whenever you make changes to your site
 // This forces the service worker to update and clear old caches
-const CACHE_VERSION = "v4"; // <-- INCREMENT THIS WHEN YOU DEPLOY CHANGES
+const CACHE_VERSION = "v5"; // <-- INCREMENT THIS WHEN YOU DEPLOY CHANGES
 const CACHE_NAME = `carlosmarten-${CACHE_VERSION}`;
 
 // Resources to cache for offline support (only truly static assets)
