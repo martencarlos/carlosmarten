@@ -10,41 +10,47 @@ const projects = [
     image: "/images/feature_holiday.png",
     url: "https://tadelfia.carlosmarten.com/",
   },
-  {
+    {
     id: 2,
+    name: "Ophthalmology website",
+    image: "/images/ofthalmology_featureimage.png",
+    url: "https://bookingengine.carlosmarten.com/",
+  },
+  {
+    id: 3,
     name: "E-commerce site",
     image: "/images/feature_webframe.png",
     url: "https://webframe.carlosmarten.com/",
   },
   {
-    id: 3,
+    id: 4,
     name: "Blog website",
     image: "/images/feature_blog.png",
     url: "https://project-blog.carlosmarten.com/",
   },
   {
-    id: 4,
+    id: 5,
     name: "Wordpress pages",
     image:
       "https://rocketmedia.b-cdn.net/wp-content/uploads/2021/11/wordpress-ventajas-banner.png",
     url: `${process.env.NEXT_PUBLIC_SITE_URL}/wordpress/`,
   },
   {
-    id: 5,
+    id: 6,
     name: "Cloud Storage",
     image:
       "https://www.hkcert.org/f/guideline/218189/1200c630/hkcert-Cloud%20Storage%20Security%20banner-1860x1046.jpg",
     url: `https://storage.carlosmarten.com/`,
   },
   {
-    id: 6,
+    id: 7,
     name: "Tetris",
     image:
       "https://www.jotdown.es/wp-content/uploads/2018/05/oie_16163755ZTTU8YqCPO.jpg",
     url: `${process.env.NEXT_PUBLIC_SITE_URL}/games/tetris/`,
   },
   {
-    id: 7,
+    id: 8,
     name: "Project Management",
     image:
       "https://wdp.carlosmarten.com/wp-content/uploads/2025/04/project-management.jpeg",
