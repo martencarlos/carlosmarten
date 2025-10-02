@@ -10,23 +10,23 @@ const nextConfig = {
       {
         protocol: "http",
         hostname: "localhost",
-        port: "", // Leave it empty unless you need a specific port
+        port: "",
       },
       {
         protocol: "https",
         hostname: "www.carlosmarten.com",
       },
       {
-        protocol: "https", // Specify the protocol (http or https)
-        hostname: process.env.NEXT_PUBLIC_WP_URL, // Domain name
-        port: "", // Leave this empty if there's no specific port
-        pathname: "/**", // Wildcard to allow all image paths
+        protocol: "https",
+        hostname: process.env.NEXT_PUBLIC_WP_URL,
+        port: "",
+        pathname: "/**",
       },
       {
-        protocol: "https", // Specify the protocol (http or https)
-        hostname: "rocketmedia.b-cdn.net", // Domain name
-        port: "", // Leave this empty if there's no specific port
-        pathname: "/**", // Wildcard to allow all image paths
+        protocol: "https",
+        hostname: "rocketmedia.b-cdn.net",
+        port: "",
+        pathname: "/**",
       },
     ],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -51,17 +51,45 @@ const nextConfig = {
           },
         ],
       },
+      {
+        // Prevent caching of HTML pages
+        source: "/:path*",
+        has: [
+          {
+            type: "header",
+            key: "accept",
+            value: "text/html.*",
+          },
+        ],
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
+          },
+        ],
+      },
+      {
+        // Cache static assets but allow revalidation
+        source: "/_next/static/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, must-revalidate",
+          },
+        ],
+      },
+      {
+        // Don't cache API routes
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
+          },
+        ],
+      },
     ];
   },
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: "/wordpress/:path*",
-  //       destination: `https://${process.env.NEXT_PUBLIC_WP_URL}/:path*`, // URL of your WordPress server
-  //     },
-  //   ];
-  // },
 };
 
-// Use ES Modules syntax for exporting
 export default nextConfig;
