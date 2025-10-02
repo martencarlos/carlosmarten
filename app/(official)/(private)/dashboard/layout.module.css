@@ -1,8 +1,7 @@
-/* app/(official)/(private)/dashboard/layout.module.css */
 .layout {
   min-height: calc(100vh - 178px);
   display: flex;
-
+  flex-direction: row;
 }
 
 .container {
@@ -11,14 +10,24 @@
 }
 
 .mainContent {
-
   width: 100%;
-  /* Add padding bottom on mobile for the navigation bar */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+  
+  .mainContent {
+    padding-bottom: 5rem; /* Space for mobile bottom navigation */
+  }
 }
 
 @media (min-width: 768px) {
-  .main {
+  .mainContent {
     padding-bottom: 1.5rem;
   }
 }
