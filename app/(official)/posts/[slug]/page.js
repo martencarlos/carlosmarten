@@ -1,8 +1,9 @@
-// app/posts/[slug]/page.js
+// app/(official)/posts/[slug]/page.js
 import { notFound } from "next/navigation";
 import Post from "components/Article/Post/Post";
 import styles from "./page.module.css";
-
+import { Suspense } from "react";
+import PostSkeleton from "components/Article/Post/PostSkeleton";
 
 async function getPost(slug) {
   console.log("fetching post loaded");
@@ -24,6 +25,7 @@ async function getPost(slug) {
   }
 
   const posts = await res.json();
+  
 
   if (posts.length === 0) {
     notFound();
@@ -53,17 +55,17 @@ export default async function BlogPost({ params }) {
 
   const { slug } = await params;
 
-  const [post] = await Promise.all([
-    getPost(slug), // Your existing post fetching function
-  ]);
+  const post = await getPost(slug);
 
   if (!post) {
-    <div>Post not found</div>;
+    return <div>Post not found</div>;
   }
 
   return (
     <div className={styles.container}>
-      <Post post={post} />
+      <Suspense fallback={<PostSkeleton />}>
+        <Post post={post} />
+      </Suspense>
     </div>
   );
 }

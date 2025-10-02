@@ -1,34 +1,32 @@
 // pages/about.js
 
-"use client";
-import { useEffect, useState } from "react";
-import styles from "./page.module.css";
-import Image from "next/image";
-import Link from "next/link";
+'use client';
+import {useEffect, useState} from 'react';
+import styles from './page.module.css';
+import Image from 'next/image';
+import Link from 'next/link';
 
-export default function About() {
-  console.log("About page loaded");
-  const [isVisible, setIsVisible] = useState(false);
+export default function About () {
+  console.log ('About page loaded');
+  const [isVisible, setIsVisible] = useState (false);
 
-  useEffect(() => {
-    setIsVisible(true);
+  useEffect (() => {
+    setIsVisible (true);
   }, []);
 
   return (
     <div className={styles.container}>
-      <h1 className={`${styles.title} ${isVisible ? styles.visible : ""}`}>
-        About Me
-      </h1>
 
-      <div className={`${styles.content} ${isVisible ? styles.visible : ""}`}>
+      <div className={`${styles.content} ${isVisible ? styles.visible : ''}`}>
         <Image
           src="/images/me.jpeg"
-          width={400}
+          width={800}
           priority
-          height={400}
+          height={800}
           alt="Carlos Marten"
           className={styles.profilePic}
         />
+        <br />
 
         <p>
           Hi, I am Carlos Marten. Welcome to my personal blog! I am a technology
@@ -46,32 +44,19 @@ export default function About() {
         <br />
         <h2>My Background</h2>
         <p>
-          I have 10+ of experience in technolgy & business consulting services.
-          My passion for new technologies has led me to start this blog in 2024.
-          When I am not writing or providing consulting services, you can find
-          me playing tennis or golf.
+          I am a digital transformation leader with over 10 years of experience delivering large-scale IT and business change across financial services, healthcare, automotive, and the public sector. Since 2023, I have headed the Digital Transformation unit at Seidor S.A., driving end-to-end consulting and architecture-led delivery with Salesforce, MuleSoft, Azure, AWS, and AI/LLM solutions.
         </p>
 
         <p>
-          I am an experienced business consultant and project manager with a
-          strong background in financial services and digital transformation.
-          Currently, I lead the Business Consulting and Functional Processes
-          unit at a big and reputed consulting firm, specializing in financial
-          services.
+          Previously, I was Team Lead at GetNet/PagoNxt (Santander Group) in Munich, where I led international digitalization projects, rolled out CRM platforms, and acted as Product Owner for digital onboarding. I worked closely with senior management to improve customer experience and drive adoption of new technologies.
         </p>
 
         <p>
-          I hold an Executive MBA from TUM School of Management, and prior to my
-          current position, I gained extensive experience at Banco Santander
-          group company: PagoNxt, where I managed digitalization projects and
-          customer onboarding processes using Salesforce and other technologies.
+          Earlier in my career, I was a Senior Consultant at Deloitte Luxembourg, focusing on IT strategy, core system transformations, and financial product design. I also contributed to Deloitte publications on open banking and PSD2, and supported major European banks with operating model and risk projects.
         </p>
 
         <p>
-          My experience also includes working as a Senior Consultant at
-          Deloitte, where I focused on IT transformation and financial product
-          implementation. I am fluent in four languages and hold certifications
-          in agile methodologies and blockchain technologies.
+          I hold an Executive MBA from TUM, a business degree from Harvard, and a Master’s in Computer Engineering from CEU. Certified in Salesforce, Blockchain, PRINCE2, and Agile, I speak six languages and thrive in leading cross-cultural teams to deliver impactful digital transformation.
         </p>
 
         <div className={styles.cta}>

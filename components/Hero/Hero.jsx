@@ -25,22 +25,9 @@ const Hero = () => {
     <div
       className={`${styles.heroSection} ${theme === "dark" ? styles.dark : ""}`}
     >
-      {/* Left Image
-      <motion.div
-        className={styles.imageContainer}
-        initial={{ opacity: 0, x: -100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-      >*/}
+
       <div className={styles.imageContainer}>
-        {/* <Image
-          src="/images/me.jpeg"
-          alt="Hero Image"
-          priority
-          width={200}
-          height={200}
-          className={styles.roundedImage}
-        /> */}
+   
         <OptimizedImage
           src="/images/me.jpeg"
           alt="Hero Image"
@@ -50,15 +37,8 @@ const Hero = () => {
           className={styles.roundedImage}
         />
       </div>
-      {/*</motion.div>*/}
+      <br />
 
-      {/* Right Text 
-      <motion.div
-        className={styles.textContainer}
-        initial={{ opacity: 0, x: 100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-      >*/}
       <div className={styles.textContainer}>
         <h3 className={styles.title}>
           Interested in Business Technology, Design, Projects and News?

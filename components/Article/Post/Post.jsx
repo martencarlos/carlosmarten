@@ -1,3 +1,4 @@
+// components/Article/Post/Post.jsx
 "use client";
 
 import styles from "./post.module.css";
@@ -24,9 +25,18 @@ export default function Post({ post }) {
   const [time, setTime] = useState(0);
   const [mounted, setMounted] = useState(false);
 
-  // Handle mounting
+  // Handle mounting and ensure scroll is at top
   useEffect(() => {
+    // Force scroll to top on mount
+    window.scrollTo(0, 0);
     setMounted(true);
+
+    // Additional scroll reset after a short delay to handle any race conditions
+    const scrollTimeout = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+
+    return () => clearTimeout(scrollTimeout);
   }, []);
 
   useEffect(() => {
@@ -133,7 +143,7 @@ export default function Post({ post }) {
               <div className={styles.dateInfo}>
                 <span className={styles.metaLabel}>
                   <FaCalendar aria-hidden="true" className={styles.icon} />
-                  {post.last_modified.toLocaleDateString("es-ES")}
+                  {post.create_date.toLocaleDateString("es-ES")}
                 </span>
               </div>
             </div>
