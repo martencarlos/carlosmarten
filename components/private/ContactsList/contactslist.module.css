@@ -1,4 +1,4 @@
-/* ContactsList.module.css */
+/* components/private/ContactsList/contactslist.module.css */
 .container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -11,12 +11,19 @@
   background-color: white;
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .card:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.card:focus {
+  outline: 2px solid var(--third-color);
+  outline-offset: 2px;
 }
 
 .cardContent {
@@ -94,6 +101,177 @@
   100% { transform: rotate(360deg); }
 }
 
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.modalContent {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease-out;
+}
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.modalTitle {
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  color: var(--third-color);
+  font-weight: 600;
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modalSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modalLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modalIcon {
+  font-size: 1rem;
+  color: var(--third-color);
+}
+
+.modalValue {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  border-left: 3px solid var(--third-color);
+}
+
+.modalValue a {
+  color: var(--third-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.modalValue a:hover {
+  color: var(--fourth-color);
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Dark mode support */
+:global(.dark) .card {
+  background-color: #2a2a2a;
+}
+
+:global(.dark) .infoText {
+  color: #e0e0e0;
+}
+
+:global(.dark) .messageContainer {
+  background-color: #1a1a1a;
+}
+
+:global(.dark) .message {
+  color: #d0d0d0;
+}
+
+:global(.dark) .modalContent {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+:global(.dark) .modalTitle {
+  color: var(--second-color);
+}
+
+:global(.dark) .modalLabel {
+  color: #e0e0e0;
+}
+
+:global(.dark) .modalValue {
+  background-color: #1a1a1a;
+  color: #d0d0d0;
+}
+
+:global(.dark) .closeButton {
+  color: #e0e0e0;
+}
+
+:global(.dark) .closeButton:hover {
+  background-color: #3a3a3a;
+}
+
 /* Responsive Design */
 @media (max-width: 640px) {
   .container {
@@ -109,5 +287,19 @@
   .messageContainer {
     padding: 0.5rem;
   }
-}
 
+  .modalContent {
+    padding: 1.5rem;
+    width: 95%;
+  }
+
+  .modalTitle {
+    font-size: 1.5rem;
+    padding-right: 2rem;
+  }
+
+  .closeButton {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+}
