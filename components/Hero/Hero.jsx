@@ -45,7 +45,7 @@ const Hero = () => {
         </h3>
         <br />
         <p className={styles.subtitle}>
-          As an IT Business Consultant, I am passionate about new technologies
+          As Head of Digital Transformation, I am passionate about new technologies
           and their impact on businesses. Here, you will find exciting blog
           posts on business and technology topics.
         </p>

@@ -2,7 +2,7 @@
 
 .container {
     max-width: 800px;
-    min-width: 600px;
+    width: 100%;
     margin: 0 auto;
     padding: 20px;
     animation: fadeIn 0.3s ease-in;
@@ -169,7 +169,7 @@
     }
 }
 
-/* Mobile Responsive */
+/* Mobile Responsive - Match the actual Post component */
 @media (max-width: 600px) {
     .container {
         padding: 0px;
@@ -182,15 +182,16 @@
 
     .titleSkeleton {
         height: 48px;
-        margin: 20px 20px 15px 20px;
+        margin: 20px 20px 0px 20px;
     }
 
     .metaSkeleton {
-        margin: 0 20px 20px 20px;
+        margin: 15px 20px 20px 20px;
     }
 
     .contentSkeleton {
         padding: 20px;
+        padding-bottom: 80px;
     }
 
     .contentLine {
