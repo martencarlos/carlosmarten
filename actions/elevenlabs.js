@@ -49,15 +49,19 @@ async function uploadAudioToWordPress(audioBuffer, title, postId) {
   form.append("title", `${title} Audio`);
   form.append("post", postId);
 
+  // Convert the form to a Buffer to ensure the body is sent correctly.
+  const requestBody = form.getBuffer();
+  
+  // Get the headers from the form, which includes the critical Content-Type boundary.
+  const headers = {
+    Authorization: `Basic ${Buffer.from(`${wpUser}:${wpPassword}`).toString('base64')}`,
+    ...form.getHeaders(),
+  };
+
   const response = await fetch(wpUrl, {
     method: "POST",
-    headers: {
-      Authorization: `Basic ${Buffer.from(`${wpUser}:${wpPassword}`).toString('base64')}`,
-      // This is the crucial fix: The form-data library generates the
-      // necessary Content-Type header with the multipart boundary.
-      ...form.getHeaders(),
-    },
-    body: form,
+    headers: headers,
+    body: requestBody, // Send the pre-compiled buffer.
   });
 
   if (!response.ok) {
