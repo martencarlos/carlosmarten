@@ -1,20 +1,20 @@
-'use server';
+"use server";
 
-import {sql} from '@vercel/postgres';
-import FormData from 'form-data';
+import { sql } from "@vercel/postgres";
+import FormData from "form-data";
 
-async function generateAudio (text) {
-  const response = await fetch (
+async function generateAudio(text) {
+  const response = await fetch(
     `https://api.elevenlabs.io/v1/text-to-speech/${process.env.ELEVENLABS_VOICE_ID}`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'xi-api-key': process.env.ELEVENLABS_API_KEY,
+        "Content-Type": "application/json",
+        "xi-api-key": process.env.ELEVENLABS_API_KEY,
       },
-      body: JSON.stringify ({
+      body: JSON.stringify({
         text,
-        model_id: `${process.env.ELEVENLABS_MODEL_ID}`,
+        model_id: "eleven_multilingual_v2",
         voice_settings: {
           stability: 0.5,
           similarity_boost: 0.75,
@@ -24,64 +24,74 @@ async function generateAudio (text) {
   );
 
   if (!response.ok) {
-    const errorData = await response.json ();
-    console.error ('ElevenLabs API error:', errorData);
-    throw new Error ('Failed to generate audio');
+    const errorData = await response.json();
+    console.error("ElevenLabs API error:", errorData);
+    throw new Error("Failed to generate audio");
   }
 
-  return response.body;
+  // Convert the response body (a ReadableStream) into a Buffer
+  const arrayBuffer = await response.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+  return buffer;
 }
 
-async function uploadAudioToWordPress (audioStream, title, postId) {
+async function uploadAudioToWordPress(audioBuffer, title, postId) {
   const wpUrl = `https://${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/media`;
   const wpUser = process.env.WP_USER;
   const wpPassword = process.env.WP_PASSWORD;
 
-  const form = new FormData ();
-  form.append ('file', audioStream, {
-    filename: `${title}.mp3`,
-    contentType: 'audio/mpeg',
-  });
-  form.append ('title', `${title} Audio`);
-  form.append ('post', postId);
+  // Sanitize the filename to be URL-friendly
+  const sanitizedTitle = title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
 
-  const response = await fetch (wpUrl, {
-    method: 'POST',
+  const form = new FormData();
+  form.append("file", audioBuffer, {
+    filename: `${sanitizedTitle}.mp3`,
+    contentType: "audio/mpeg",
+  });
+  form.append("title", `${title} Audio`);
+  form.append("post", postId);
+
+  const response = await fetch(wpUrl, {
+    method: "POST",
     headers: {
-      Authorization: `Basic ${btoa (`${wpUser}:${wpPassword}`)}`,
-      ...form.getHeaders (),
+      // Use Buffer for base64 encoding in Node.js server environments
+      Authorization: `Basic ${Buffer.from(`${wpUser}:${wpPassword}`).toString('base64')}`,
     },
-    body: form,
+    body: form, // Let fetch automatically set the 'Content-Type' with the boundary
   });
 
   if (!response.ok) {
-    const errorData = await response.json ();
-    console.error ('WordPress API error:', errorData);
-    throw new Error ('Failed to upload audio to WordPress');
+    const errorData = await response.json();
+    console.error("WordPress API error:", errorData);
+    throw new Error("Failed to upload audio to WordPress");
   }
 
-  return response.json ();
+  return response.json();
 }
 
-export async function generateAndUploadAudio (postId, title, content) {
+export async function generateAndUploadAudio(postId, title, content) {
   try {
-    const audioStream = await generateAudio (content);
-    const wordpressMedia = await uploadAudioToWordPress (
-      audioStream,
+    const audioBuffer = await generateAudio(content);
+    const wordpressMedia = await uploadAudioToWordPress(
+      audioBuffer,
       title,
       postId
     );
 
-    // Store the audio URL in your database
+    // Upsert the audio URL into the posts table.
+    // This will insert a new row if the post ID doesn't exist,
+    // or update the existing one if it does.
+    // This assumes your 'posts' table has a primary key or unique constraint on the 'id' column.
     await sql`
-      UPDATE posts
-      SET audio_url = ${wordpressMedia.source_url}
-      WHERE id = ${postId}
+      INSERT INTO posts (id, audio_url)
+      VALUES (${postId}, ${wordpressMedia.source_url})
+      ON CONFLICT (id)
+      DO UPDATE SET audio_url = ${wordpressMedia.source_url};
     `;
 
-    return {success: true, audioUrl: wordpressMedia.source_url};
+    return { success: true, audioUrl: wordpressMedia.source_url };
   } catch (error) {
-    console.error ('Error in generateAndUploadAudio:', error);
-    return {success: false, error: error.message};
+    console.error("Error in generateAndUploadAudio:", error.message);
+    return { success: false, error: error.message };
   }
 }
