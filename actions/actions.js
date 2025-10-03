@@ -9,7 +9,7 @@ import {generateAndUploadAudio} from './elevenlabs';
 //CONTACT PAGE - ADD CONTACT
 export async function addContact (formData) {
   const {name, email, message} = Object.fromEntries (formData.entries ());
-
+ 
   await sql`
       INSERT INTO contacts (name, email, message)
       VALUES (${name}, ${email}, ${message})
