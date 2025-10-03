@@ -5,8 +5,6 @@ import styles from "./page.module.css";
 import { Suspense } from "react";
 import PostSkeleton from "components/Article/Post/PostSkeleton";
 import { sql } from "@vercel/postgres";
-import { AudioProvider } from "@context/AudioContext";
-import GlobalAudioPlayer from "@components/Article/AudioPlayer/GlobalAudioPlayer";
 
 async function getPost(slug) {
   console.log("fetching post loaded");
@@ -72,13 +70,10 @@ export default async function BlogPost({ params }) {
   }
 
   return (
-    <AudioProvider>
-      <div className={styles.container}>
-        <Suspense fallback={<PostSkeleton />}>
-          <Post post={post} />
-        </Suspense>
-        <GlobalAudioPlayer />
-      </div>
-    </AudioProvider>
+    <div className={styles.container}>
+      <Suspense fallback={<PostSkeleton />}>
+        <Post post={post} />
+      </Suspense>
+    </div>
   );
 }
