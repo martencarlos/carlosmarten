@@ -29,7 +29,6 @@ async function generateAudio(text) {
     throw new Error("Failed to generate audio");
   }
 
-  // Convert the response body (a ReadableStream) into a Buffer
   const arrayBuffer = await response.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
   return buffer;
@@ -40,7 +39,6 @@ async function uploadAudioToWordPress(audioBuffer, title, postId) {
   const wpUser = process.env.WP_USER;
   const wpPassword = process.env.WP_PASSWORD;
 
-  // Sanitize the filename to be URL-friendly
   const sanitizedTitle = title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
 
   const form = new FormData();
@@ -54,10 +52,12 @@ async function uploadAudioToWordPress(audioBuffer, title, postId) {
   const response = await fetch(wpUrl, {
     method: "POST",
     headers: {
-      // Use Buffer for base64 encoding in Node.js server environments
       Authorization: `Basic ${Buffer.from(`${wpUser}:${wpPassword}`).toString('base64')}`,
+      // This is the crucial fix: The form-data library generates the
+      // necessary Content-Type header with the multipart boundary.
+      ...form.getHeaders(),
     },
-    body: form, // Let fetch automatically set the 'Content-Type' with the boundary
+    body: form,
   });
 
   if (!response.ok) {
@@ -78,10 +78,6 @@ export async function generateAndUploadAudio(postId, title, content) {
       postId
     );
 
-    // Upsert the audio URL into the posts table.
-    // This will insert a new row if the post ID doesn't exist,
-    // or update the existing one if it does.
-    // This assumes your 'posts' table has a primary key or unique constraint on the 'id' column.
     await sql`
       INSERT INTO posts (id, audio_url)
       VALUES (${postId}, ${wordpressMedia.source_url})
