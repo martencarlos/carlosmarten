@@ -1,3 +1,4 @@
+/* components/Navbar/MobileMenu/mobilemenu.module.css */
 .mobileMenu {
   display: none;
 }
@@ -11,8 +12,16 @@
   align-items: center;
 }
 
+.navList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
 .navItem {
   position: relative;
+  width: 100%;
 }
 
 .navLink {
@@ -21,27 +30,42 @@
   padding: 0.5rem 1rem;
   border-radius: 4px;
   transition: background-color 0.3s, color 0.3s;
+  display: block;
+  width: 100%;
+  text-align: center;
 }
 
 .navLink:hover {
   background-color: rgba(236, 236, 236, 0.9);
 }
 
+.navLink.active {
+  color: var(--third-color);
+  font-weight: 600;
+}
+
 .themeToggle {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   color: inherit;
   transition: background-color 0.3s, color 0.3s;
-  border-radius: 50%;
+  border-radius: 4px;
+  width: 100%;
+  font-size: 1rem;
 }
 
 .themeToggle:hover {
   background-color: rgba(236, 236, 236, 0.9);
+}
+
+.themeToggleText {
+  font-size: 1rem;
 }
 
 .hamburger {
@@ -54,29 +78,35 @@
   border: none;
   cursor: pointer;
   padding: 0;
-  z-index: 30;
+  z-index: 1001;
+  position: relative;
 }
 
 .hamburgerLine {
   width: 2rem;
   height: 0.25rem;
   background-color: var(--foreground);
-  transition: all 0.3s linear;
+  transition: all 0.3s ease;
   position: relative;
-  transform-origin: 1px;
+  transform-origin: center;
+  border-radius: 2px;
 }
 
 .hamburger.open .hamburgerLine:nth-child(1) {
-  transform: rotate(45deg);
+  transform: translateY(0.5rem) rotate(45deg);
 }
 
 .hamburger.open .hamburgerLine:nth-child(2) {
   opacity: 0;
-  transform: translateX(20px);
+  transform: translateX(-20px);
 }
 
 .hamburger.open .hamburgerLine:nth-child(3) {
-  transform: rotate(-45deg);
+  transform: translateY(-0.5rem) rotate(-45deg);
+}
+
+.backdrop {
+  display: none;
 }
 
 @media (max-width: 768px) {
@@ -88,6 +118,18 @@
     display: flex;
   }
 
+  .backdrop {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    animation: fadeIn 0.3s ease-out;
+  }
+
   .navList {
     flex-direction: column;
     align-items: center;
@@ -95,34 +137,102 @@
     top: 0;
     right: 0;
     height: 100vh;
-    width: 300px;
-    z-index: 20;
-    gap: 1rem;
-    padding-top: 5.5rem;
-    transition: transform 0.3s ease-in-out;
+    width: min(300px, 80vw);
+    z-index: 1000;
+    gap: 0;
+    padding: 5rem 1.5rem 2rem;
     background-color: var(--background);
+    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1);
     transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
   }
 
   .navList.open {
     transform: translateX(0);
   }
 
+  .navList ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
   .navItem {
-    margin: 0.5rem 0;
+    margin: 0;
+    width: 100%;
+    opacity: 0;
+    transform: translateX(20px);
+    animation: slideIn 0.3s ease-out forwards;
+  }
+
+  .navList.open .navItem:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  .navList.open .navItem:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .navList.open .navItem:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+
+  .navList.open .navItem:nth-child(4) {
+    animation-delay: 0.25s;
   }
 
   .navLink {
-    padding: 0.75rem 1.5rem;
+    padding: 1rem 1.5rem;
     width: 100%;
     text-align: center;
+    font-size: 1.1rem;
+    border-radius: 8px;
   }
 
   .mobileMenu.dark .navLink:hover {
-    background-color: rgb(54, 54, 54);
+    background-color: rgba(70, 70, 70, 0.6);
   }
 
   .mobileMenu.dark .themeToggle:hover {
-    background-color: rgb(54, 54, 54);
+    background-color: rgba(70, 70, 70, 0.6);
   }
+
+  .mobileMenu.dark .navList {
+    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Focus visible styles for accessibility */
+.hamburger:focus-visible {
+  outline: 2px solid var(--third-color);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.navLink:focus-visible,
+.themeToggle:focus-visible {
+  outline: 2px solid var(--third-color);
+  outline-offset: 2px;
 }

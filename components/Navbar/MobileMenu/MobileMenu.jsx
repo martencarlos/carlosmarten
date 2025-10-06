@@ -1,23 +1,83 @@
+// components/Navbar/MobileMenu/MobileMenu.jsx
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./mobilemenu.module.css";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const menuRef = useRef(null);
+  const buttonRef = useRef(null);
+  const pathname = usePathname();
 
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
 
+  // Check if we're on mobile
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        isOpen &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [isOpen]);
+
+  // Close menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (isOpen && isMobile) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen, isMobile]);
+
+  // Handle escape key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+        buttonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isOpen]);
 
   const handleLinkClick = () => {
     if (isMobile) {
@@ -30,6 +90,16 @@ const MobileMenu = () => {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const navItems = [
+    { href: "/projects", label: "Projects" },
+    { href: "/blog", label: "Blog" },
+    { href: "/about", label: "About" },
+  ];
+
   return (
     <div
       className={`${styles.mobileMenu} ${
@@ -37,50 +107,70 @@ const MobileMenu = () => {
       }`}
     >
       <button
-        aria-label="Toggle menu"
+        ref={buttonRef}
+        aria-label={isOpen ? "Close menu" : "Open menu"}
+        aria-expanded={isOpen}
+        aria-controls="mobile-nav-menu"
         className={`${styles.hamburger} ${isOpen ? styles.open : ""}`}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleMenu}
       >
         <span className={styles.hamburgerLine}></span>
         <span className={styles.hamburgerLine}></span>
         <span className={styles.hamburgerLine}></span>
       </button>
+
+      {/* Backdrop overlay */}
       {isOpen && (
-        <ul className={`${styles.navList} ${styles.open}`}>
+        <div 
+          className={styles.backdrop}
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Navigation menu */}
+      <nav
+        ref={menuRef}
+        id="mobile-nav-menu"
+        className={`${styles.navList} ${isOpen ? styles.open : ""}`}
+        aria-label="Mobile navigation"
+      >
+        <ul role="list">
+          {navItems.map((item, index) => (
+            <li key={item.href} className={styles.navItem}>
+              <Link
+                href={item.href}
+                className={`${styles.navLink} ${
+                  pathname === item.href ? styles.active : ""
+                }`}
+                onClick={handleLinkClick}
+                tabIndex={isOpen ? 0 : -1}
+              >
+                {item.label}
+              </Link>
+            </li>
+          ))}
           <li className={styles.navItem}>
-            <Link
-              href="/projects"
-              className={styles.navLink}
-              onClick={handleLinkClick}
+            <button
+              onClick={toggleTheme}
+              className={styles.themeToggle}
+              aria-label={`Switch to ${
+                resolvedTheme === "dark" ? "light" : "dark"
+              } mode`}
+              tabIndex={isOpen ? 0 : -1}
             >
-              Projects
-            </Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link
-              href="/blog"
-              className={styles.navLink}
-              onClick={handleLinkClick}
-            >
-              Blog
-            </Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link
-              href="/about"
-              className={styles.navLink}
-              onClick={handleLinkClick}
-            >
-              About
-            </Link>
-          </li>
-          <li className={styles.navItem}>
-            <button onClick={toggleTheme} className={styles.themeToggle}>
-              {theme === "dark" ? <FaSun size={20} /> : <FaMoon size={20} />}
+              {resolvedTheme === "dark" ? (
+                <FaSun size={20} aria-hidden="true" />
+              ) : (
+                <FaMoon size={20} aria-hidden="true" />
+              )}
+              <span className={styles.themeToggleText}>
+                {resolvedTheme === "dark" ? "Light" : "Dark"} Mode
+              </span>
             </button>
           </li>
         </ul>
-      )}
+      </nav>
     </div>
   );
 };
