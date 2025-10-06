@@ -1,13 +1,33 @@
+/* components/Article/AudioPlayer/AudioPlayer.module.css */
 .initialButton {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
+  padding: 12px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 2px solid var(--third-color);
+  min-width: 48px;
+  min-height: 48px;
 }
 
 .initialButton:hover {
   color: var(--third-color);
+  background-color: rgba(63, 114, 175, 0.1);
+  transform: scale(1.05);
+}
+
+.iconOnly {
+  font-size: 2rem;
+  color: var(--third-color);
+}
+
+.text {
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .playerCard {
@@ -146,11 +166,6 @@
 
 .optionItem:hover {
   background-color: #f3f4f6;
-}
-
-.text {
-  font-size: 0.875rem;
-  font-weight: 500;
 }
 
 @media (min-width: 768px) {

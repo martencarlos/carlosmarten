@@ -1,3 +1,4 @@
+// components/Article/AudioPlayer/AudioPlayer.jsx
 "use client";
 
 import { FaHeadphones } from "react-icons/fa";
@@ -23,11 +24,13 @@ const AudioPlayer = ({ audioUrl }) => {
   if (!audioUrl) return null;
 
   return (
-    <div className={styles.initialButton} onClick={togglePlay}>
-      <FaHeadphones className={styles.icon} />
-      <span className={styles.text}>
-        {isThisAudioPlaying ? "Listening" : "Listen to the article"}
-      </span>
+    <div 
+      className={styles.initialButton} 
+      onClick={togglePlay}
+      title={isThisAudioPlaying ? "Listening" : "Listen to the article"}
+      aria-label={isThisAudioPlaying ? "Listening" : "Listen to the article"}
+    >
+      <FaHeadphones className={styles.iconOnly} />
     </div>
   );
 };

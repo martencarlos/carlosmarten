@@ -122,7 +122,14 @@ export default function Post({post}) {
               </div>
             </div>}
 
-          <h1 className={styles.title}>{decodedTitle}</h1>
+          <div className={styles.titleContainer}>
+            <h1 className={styles.title}>{decodedTitle}</h1>
+            {post.audioUrl && (
+              <div className={styles.audioPlayerIcon}>
+                <AudioPlayer audioUrl={post.audioUrl} />
+              </div>
+            )}
+          </div>
 
           <div className={styles.postMeta}>
             <div className={styles.categories}>
@@ -158,9 +165,6 @@ export default function Post({post}) {
                   {post.create_date.toLocaleDateString ('es-ES')}
                 </span>
               </div>
-            </div>
-            <div className={styles.audioPlayer}>
-              <AudioPlayer audioUrl={post.audioUrl} />
             </div>
 
             {post.pinned && <p className={styles.pinnedPost}>Pinned Post</p>}
