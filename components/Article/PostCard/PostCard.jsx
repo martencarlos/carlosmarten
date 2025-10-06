@@ -1,3 +1,4 @@
+// components/Article/PostCard/PostCard.jsx
 "use client";
 
 import Link from "next/link";
@@ -15,13 +16,6 @@ export default function PostCard({ post }) {
   const categories =
     post._embedded?.["wp:term"]?.[0]?.map((category) => category.name) || [];
 
-  // const tags = post._embedded["wp:term"]
-  //   .flat()
-  //   .filter((term) => term.taxonomy === "post_tag")
-  //   .map((tag) => tag.name);
-
-  // const author = post._embedded["author"][0].name;
-
   const featuredMediaLink =
     post._embedded?.["wp:featuredmedia"]?.[0]?.link || "";
 
@@ -32,14 +26,16 @@ export default function PostCard({ post }) {
       }`}
     >
       {post._embedded && featuredMediaLink && (
-        <OptimizedImage
-          src={featuredMediaLink}
-          alt={post.title.rendered}
-          width={100}
-          height={100}
-          priority
-          className={styles.card_image}
-        />
+        <div className={styles.card_image_wrapper}>
+          <OptimizedImage
+            src={featuredMediaLink}
+            alt={post.title.rendered}
+            fill
+            priority
+            className={styles.card_image}
+            style={{ objectFit: 'cover' }}
+          />
+        </div>
       )}
       <div className={styles.card_info}>
         <Link href={`/posts/${post.slug}`}>
