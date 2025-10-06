@@ -1,95 +1,31 @@
 "use server";
 
-import { sql } from "@vercel/postgres";
-import FormData from "form-data";
-
-async function generateAudio(text) {
-  const response = await fetch(
-    `https://api.elevenlabs.io/v1/text-to-speech/${process.env.ELEVENLABS_VOICE_ID}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "xi-api-key": process.env.ELEVENLABS_API_KEY,
-      },
-      body: JSON.stringify({
-        text,
-        model_id: "eleven_multilingual_v2",
-        voice_settings: {
-          stability: 0.5,
-          similarity_boost: 0.75,
-        },
-      }),
-    }
-  );
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    console.error("ElevenLabs API error:", errorData);
-    throw new Error("Failed to generate audio");
-  }
-
-  const arrayBuffer = await response.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
-  return buffer;
-}
-
-async function uploadAudioToWordPress(audioBuffer, title, postId) {
-  const wpUrl = `https://${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/media`;
-  const wpUser = process.env.WP_USER;
-  const wpPassword = process.env.WP_PASSWORD;
-
-  const sanitizedTitle = title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-
-  const form = new FormData();
-  form.append("file", audioBuffer, {
-    filename: `${sanitizedTitle}.mp3`,
-    contentType: "audio/mpeg",
-  });
-  form.append("title", `${title} Audio`);
-  form.append("post", postId);
-
-  // Convert the form to a Buffer to ensure the body is sent correctly.
-  const requestBody = form.getBuffer();
-  
-  // Get the headers from the form, which includes the critical Content-Type boundary.
-  const headers = {
-    Authorization: `Basic ${Buffer.from(`${wpUser}:${wpPassword}`).toString('base64')}`,
-    ...form.getHeaders(),
-  };
-
-  const response = await fetch(wpUrl, {
-    method: "POST",
-    headers: headers,
-    body: requestBody, // Send the pre-compiled buffer.
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    console.error("WordPress API error:", errorData);
-    throw new Error("Failed to upload audio to WordPress");
-  }
-
-  return response.json();
-}
-
+// This function now calls your external Express server
 export async function generateAndUploadAudio(postId, title, content) {
+  const expressServerUrl = process.env.EXPRESS_SERVER_URL;
+
+  if (!expressServerUrl) {
+    console.error("EXPRESS_SERVER_URL environment variable is not set.");
+    return { success: false, error: "Audio processing service is not configured." };
+  }
+
   try {
-    const audioBuffer = await generateAudio(content);
-    const wordpressMedia = await uploadAudioToWordPress(
-      audioBuffer,
-      title,
-      postId
-    );
+    const response = await fetch(`${expressServerUrl}/generate-and-upload-audio`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ postId, title, content }),
+    });
 
-    await sql`
-      INSERT INTO posts (id, audio_url)
-      VALUES (${postId}, ${wordpressMedia.source_url})
-      ON CONFLICT (id)
-      DO UPDATE SET audio_url = ${wordpressMedia.source_url};
-    `;
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to offload audio processing.");
+    }
 
-    return { success: true, audioUrl: wordpressMedia.source_url };
+    const result = await response.json();
+    return { success: true, audioUrl: result.audioUrl };
+
   } catch (error) {
     console.error("Error in generateAndUploadAudio:", error.message);
     return { success: false, error: error.message };

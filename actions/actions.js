@@ -19,8 +19,7 @@ export async function addContact (formData) {
 
 const dynamic = 'force-dynamic';
 
-//WORDPRESS PAGE PROJECT - FETCH WORDPRESS PAGE
-// Update the fetchWordPressPage function in actions/actions.js
+//FETCH WORDPRESS PAGE
 export async function fetchWordPressPage (slug) {
   const wpUrl = `https://${process.env.NEXT_PUBLIC_WP_URL}/${slug}`;
 
