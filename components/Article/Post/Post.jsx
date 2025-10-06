@@ -20,17 +20,29 @@ const scrollToTop = () => {
   window.scrollTo ({top: 0, behavior: 'smooth'});
 };
 
+// Helper function to decode HTML entities
+function decodeHTMLEntities(text) {
+  if (typeof window === 'undefined') return text;
+  const textArea = document.createElement('textarea');
+  textArea.innerHTML = text;
+  return textArea.value;
+}
+
 export default function Post({post}) {
   const {resolvedTheme} = useTheme ();
   const [scrollProgress, setScrollProgress] = useState (0);
   const [time, setTime] = useState (0);
   const [mounted, setMounted] = useState (false);
+  const [decodedTitle, setDecodedTitle] = useState(post.title);
 
   // Handle mounting and ensure scroll is at top
   useEffect (() => {
     // Force scroll to top on mount
     window.scrollTo (0, 0);
     setMounted (true);
+    
+    // Decode the title
+    setDecodedTitle(decodeHTMLEntities(post.title));
 
     // Additional scroll reset after a short delay to handle any race conditions
     const scrollTimeout = setTimeout (() => {
@@ -38,7 +50,7 @@ export default function Post({post}) {
     }, 100);
 
     return () => clearTimeout (scrollTimeout);
-  }, []);
+  }, [post.title]);
 
   useEffect (() => {
     const handleScroll = () => {
@@ -83,7 +95,7 @@ export default function Post({post}) {
             <div className={styles.featuredImageContainer}>
               <OptimizedImage
                 src={post.featuredImage}
-                alt={post.title}
+                alt={decodedTitle}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 quality={75}
@@ -110,7 +122,7 @@ export default function Post({post}) {
               </div>
             </div>}
 
-          <h1 className={styles.title}>{post.title}</h1>
+          <h1 className={styles.title}>{decodedTitle}</h1>
 
           <div className={styles.postMeta}>
             <div className={styles.categories}>
