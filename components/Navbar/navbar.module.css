@@ -71,30 +71,10 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
 }
 
 .navLink.loading {
   opacity: 0.6;
-}
-
-.loadingDot {
-  width: 6px;
-  height: 6px;
-  background-color: var(--third-color);
-  border-radius: 50%;
-  animation: pulse 1s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.5;
-    transform: scale(0.8);
-  }
 }
 
 .active {

@@ -72,9 +72,6 @@ export default function Navbar() {
                 onClick={(e) => handleNavClick(e, href)}
               >
                 {label}
-                {isPending && pendingPath === href && (
-                  <span className={styles.loadingDot}></span>
-                )}
               </Link>
             </li>
           ))}

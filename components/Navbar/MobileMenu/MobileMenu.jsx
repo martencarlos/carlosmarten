@@ -164,9 +164,6 @@ const MobileMenu = () => {
                 tabIndex={isOpen ? 0 : -1}
               >
                 {item.label}
-                {isPending && pendingPath === item.href && (
-                  <span className={styles.loadingDot}></span>
-                )}
               </Link>
             </li>
           ))}
