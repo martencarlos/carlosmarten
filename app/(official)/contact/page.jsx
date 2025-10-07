@@ -2,7 +2,7 @@
 import ContactForm from "components/Contact/ContactForm/ContactForm";
 import styles from "./page.module.css";
 import { Suspense } from "react";
-import LoadingComponent from "@components/(aux)/LoadingComponent/LoadingComponent";
+import ContactFormSkeleton from "@components/Contact/ContactForm/ContactFormSkeleton";
 
 // Static page - no revalidation needed
 export const metadata = {
@@ -15,11 +15,7 @@ export default function ContactPage() {
   
   return (
     <div className={styles.contactPage}>
-      <Suspense fallback={
-        <div className={styles.loadingContainer}>
-          <LoadingComponent />
-        </div>
-      }>
+      <Suspense fallback={<ContactFormSkeleton />}>
         <ContactForm />
       </Suspense>
     </div>

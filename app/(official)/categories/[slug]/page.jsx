@@ -1,8 +1,9 @@
+// Path: app/(official)/categories/[slug]/page.jsx
 "use client";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import Card from "components/Article/PostCard/PostCard";
-import LoadingComponent from "@components/(aux)/LoadingComponent/LoadingComponent";
+import PostListSkeleton from "@components/Article/PostList/PostListSkeleton";
 const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
 import { useParams } from "next/navigation";
 
@@ -18,13 +19,12 @@ async function getCategories() {
   return res.json();
 }
 
-
 // Function to get the ID by category name
 const getCategoryIdByName = async (categoriesArray, categoryName) => {
   const category = categoriesArray.find(
     (cat) => cat.name.toLowerCase() === categoryName.toLowerCase()
   );
-  return category ? category.id : null; // Return ID or null if not found
+  return category ? category.id : null;
 };
 
 async function getCategoryPosts(categoryId) {
@@ -63,8 +63,12 @@ export default function Categories() {
 
   if (loading) {
     return (
-      <div className={styles.loadingContainer}>
-        <LoadingComponent />
+      <div className={styles.one_column}>
+        <div className={styles.blogHeader}>
+          <h1 className={styles.h1}>Category: </h1>
+          <h2 className={styles.pill}>{category}</h2>
+        </div>
+        <PostListSkeleton count={3} />
       </div>
     );
   }

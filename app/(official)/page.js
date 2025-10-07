@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 import PostList from "components/Article/PostList/PostList";
 import Hero from "components/Hero/Hero";
 import { Suspense } from "react";
-import LoadingComponent from "@components/(aux)/LoadingComponent/LoadingComponent";
+import PostListSkeleton from "@components/Article/PostList/PostListSkeleton";
 
 // Enable streaming and ISR
 export const dynamic = 'force-dynamic';
@@ -48,11 +48,7 @@ export default async function Home() {
   return (
     <main className={styles.main}>
       <Hero />
-      <Suspense fallback={
-        <div className={styles.loadingContainer}>
-          <LoadingComponent />
-        </div>
-      }>
+      <Suspense fallback={<PostListSkeleton />}>
         <PostsData />
       </Suspense>
     </main>

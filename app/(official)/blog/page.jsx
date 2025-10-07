@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 import BlogContent from "components/Blog/BlogContent/BlogContent";
 import PushNotification from "@components/PushNotification/PushNotification";
 import { Suspense } from "react";
-import LoadingComponent from "@components/(aux)/LoadingComponent/LoadingComponent";
+import PostListSkeleton from "@components/Article/PostList/PostListSkeleton";
 
 // Enable streaming and ISR
 export const dynamic = 'force-dynamic';
@@ -85,11 +85,7 @@ export default async function Blog() {
         <PushNotification />
       </div>
       
-      <Suspense fallback={
-        <div className={styles.loadingContainer}>
-          <LoadingComponent />
-        </div>
-      }>
+      <Suspense fallback={<PostListSkeleton />}>
         <BlogData />
       </Suspense>
     </div>
