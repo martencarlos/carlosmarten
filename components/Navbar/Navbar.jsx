@@ -1,20 +1,48 @@
+// Path: components/Navbar/Navbar.jsx
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import styles from "./navbar.module.css";
 import ThemeToggle from "./ThemeToggle/ThemeToggle";
 import MobileMenu from "./MobileMenu/MobileMenu";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const [pendingPath, setPendingPath] = useState(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Prefetch pages on mount for instant navigation
+  useEffect(() => {
+    if (mounted) {
+      router.prefetch('/projects');
+      router.prefetch('/blog');
+      router.prefetch('/about');
+      router.prefetch('/contact');
+    }
+  }, [mounted, router]);
+
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
+    setPendingPath(href);
+    startTransition(() => {
+      router.push(href);
+    });
+  };
+
+  const navItems = [
+    { href: '/projects', label: 'Projects' },
+    { href: '/blog', label: 'Blog' },
+    { href: '/about', label: 'About' },
+  ];
 
   return (
     <div
@@ -23,44 +51,33 @@ export default function Navbar() {
       }`}
     >
       <nav className={styles.navbar}>
-        <Link href="/" className={styles.logo}>
+        <Link 
+          href="/" 
+          className={styles.logo}
+          onClick={(e) => handleNavClick(e, '/')}
+        >
           <span className={styles.logoText}>Carlos Marten</span>
         </Link>
 
-        {/* Mobile menu is always rendered but might be hidden via CSS */}
         <MobileMenu />
 
         <ul className={styles.navList}>
-          <li className={styles.navItem}>
-            <Link
-              href="/projects"
-              className={`${styles.navLink} ${
-                pathname === "/projects" ? styles.active : ""
-              }`}
-            >
-              Projects
-            </Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link
-              href="/blog"
-              className={`${styles.navLink} ${
-                pathname === "/blog" ? styles.active : ""
-              }`}
-            >
-              Blog
-            </Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link
-              href="/about"
-              className={`${styles.navLink} ${
-                pathname === "/about" ? styles.active : ""
-              }`}
-            >
-              About
-            </Link>
-          </li>
+          {navItems.map(({ href, label }) => (
+            <li key={href} className={styles.navItem}>
+              <Link
+                href={href}
+                className={`${styles.navLink} ${
+                  pathname === href ? styles.active : ""
+                } ${isPending && pendingPath === href ? styles.loading : ""}`}
+                onClick={(e) => handleNavClick(e, href)}
+              >
+                {label}
+                {isPending && pendingPath === href && (
+                  <span className={styles.loadingDot}></span>
+                )}
+              </Link>
+            </li>
+          ))}
           <li className={styles.navItem}>
             <ThemeToggle />
           </li>

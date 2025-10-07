@@ -1,5 +1,4 @@
-/* navbar.module.css */
-
+/* Path: components/Navbar/navbar.module.css */
 
 .navbar {
   background-color: transparent;
@@ -30,10 +29,6 @@
 
 .logo:hover .logoText {
   transform: scale(1.02);
-  /* background: linear-gradient(45deg, var(--second-color), var(--fourth-color)); */
-  /* background: var(--foreground); */
-  /* -webkit-background-clip: text; */
-  /* -webkit-text-fill-color: transparent; */
 }
 
 .logo::after {
@@ -63,7 +58,6 @@
   align-items: center;
 }
 
-
 .navItem {
   position: relative;
 }
@@ -73,16 +67,40 @@
   color: var(--foreground);
   padding: 0.5rem 1rem;
   border-radius: 4px;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s, color 0.3s, opacity 0.3s;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
+.navLink.loading {
+  opacity: 0.6;
+}
 
+.loadingDot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--third-color);
+  border-radius: 50%;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+}
 
 .active {
-  color: var(--third-color) !important; /* Active link color */
-  font-weight: bold; /* Example styling */
+  color: var(--third-color) !important;
+  font-weight: bold;
 }
-
 
 .navLink:hover {
   background-color: rgba(236, 236, 236, 0.9);
@@ -105,7 +123,6 @@
   transition: background-color 0.3s, color 0.3s;
   border-radius: 50%;
 }
-
 
 .hamburger {
   display: none;
@@ -184,8 +201,6 @@
 :global(.dark) .navbar {
   color: #ffffff;
 }
-
-
 
 :global(.dark) .hamburgerLine {
   background-color: #ffffff;

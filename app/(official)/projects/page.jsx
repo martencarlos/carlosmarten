@@ -1,5 +1,9 @@
-import Link from "next/link";
+// Path: app/(official)/projects/page.jsx
+"use client";
 
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
 import styles from "./page.module.css";
 import OptimizedImage from "@components/OptimizedImage/OptimizedImage";
 
@@ -10,7 +14,7 @@ const projects = [
     image: "/images/feature_holiday.png",
     url: "https://tadelfia.carlosmarten.com/",
   },
-    {
+  {
     id: 2,
     name: "Ophthalmology website",
     image: "/images/ofthalmology_featureimage.png",
@@ -58,24 +62,48 @@ const projects = [
   },
 ];
 
-const ProjectCard = ({ project }) => (
-  <Link href={project.url} passHref>
-    <div className={styles.projectCard}>
-      <OptimizedImage
-        priority
-        src={project.image}
-        width={200}
-        height={200}
-        alt={project.name}
-        className={styles.projectImage}
-      />
-      <h2 className={styles.projectName}>{project.name}</h2>
-    </div>
-  </Link>
-);
+const ProjectCard = ({ project, onNavigate }) => {
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+
+  const handleClick = (e) => {
+    // If it's an external URL, let it navigate normally
+    if (project.url.startsWith('http') && !project.url.includes(process.env.NEXT_PUBLIC_SITE_URL)) {
+      return;
+    }
+
+    // For internal links, use transition
+    e.preventDefault();
+    startTransition(() => {
+      router.push(project.url);
+    });
+  };
+
+  return (
+    <Link href={project.url} passHref onClick={handleClick}>
+      <div className={`${styles.projectCard} ${isPending ? styles.loading : ""}`}>
+        <OptimizedImage
+          priority={project.id <= 4}
+          src={project.image}
+          width={200}
+          height={200}
+          alt={project.name}
+          className={styles.projectImage}
+        />
+        <h2 className={styles.projectName}>{project.name}</h2>
+        {isPending && (
+          <div className={styles.loadingOverlay}>
+            <div className={styles.spinner}></div>
+          </div>
+        )}
+      </div>
+    </Link>
+  );
+};
 
 export default function ProjectsPage() {
   console.log("Projects page loaded");
+  
   return (
     <div className={styles.projectsContainer}>
       <h1 className={styles.pageTitle}>Web Projects</h1>

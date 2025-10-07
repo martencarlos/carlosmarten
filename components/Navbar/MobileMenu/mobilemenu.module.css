@@ -1,4 +1,5 @@
-/* components/Navbar/MobileMenu/mobilemenu.module.css */
+/* Path: components/Navbar/MobileMenu/mobilemenu.module.css */
+
 .mobileMenu {
   display: none;
 }
@@ -29,10 +30,36 @@
   color: inherit;
   padding: 0.5rem 1rem;
   border-radius: 4px;
-  transition: background-color 0.3s, color 0.3s;
-  display: block;
+  transition: background-color 0.3s, color 0.3s, opacity 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   width: 100%;
   text-align: center;
+}
+
+.navLink.loading {
+  opacity: 0.6;
+}
+
+.loadingDot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--third-color);
+  border-radius: 50%;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
 }
 
 .navLink:hover {

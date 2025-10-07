@@ -1,21 +1,31 @@
-// components/Navbar/MobileMenu/MobileMenu.jsx
+// Path: components/Navbar/MobileMenu/MobileMenu.jsx
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useTransition } from "react";
 import styles from "./mobilemenu.module.css";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const [pendingPath, setPendingPath] = useState(null);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
   const pathname = usePathname();
+  const router = useRouter();
 
   const { setTheme, resolvedTheme } = useTheme();
+
+  // Prefetch pages on mount
+  useEffect(() => {
+    router.prefetch('/projects');
+    router.prefetch('/blog');
+    router.prefetch('/about');
+  }, [router]);
 
   // Check if we're on mobile
   useEffect(() => {
@@ -79,14 +89,21 @@ const MobileMenu = () => {
     return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen]);
 
-  const handleLinkClick = () => {
+  const handleLinkClick = (e, href) => {
+    e.preventDefault();
     if (isMobile) {
       setIsOpen(false);
     }
+    setPendingPath(href);
+    startTransition(() => {
+      router.push(href);
+    });
   };
 
   const toggleTheme = () => {
-    handleLinkClick();
+    if (isMobile) {
+      setIsOpen(false);
+    }
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
@@ -136,17 +153,20 @@ const MobileMenu = () => {
         aria-label="Mobile navigation"
       >
         <ul role="list">
-          {navItems.map((item, index) => (
+          {navItems.map((item) => (
             <li key={item.href} className={styles.navItem}>
               <Link
                 href={item.href}
                 className={`${styles.navLink} ${
                   pathname === item.href ? styles.active : ""
-                }`}
-                onClick={handleLinkClick}
+                } ${isPending && pendingPath === item.href ? styles.loading : ""}`}
+                onClick={(e) => handleLinkClick(e, item.href)}
                 tabIndex={isOpen ? 0 : -1}
               >
                 {item.label}
+                {isPending && pendingPath === item.href && (
+                  <span className={styles.loadingDot}></span>
+                )}
               </Link>
             </li>
           ))}

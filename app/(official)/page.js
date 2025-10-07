@@ -1,20 +1,21 @@
-// app/(official)/page.js
+// Path: app/(official)/page.js
 import styles from "./page.module.css";
 import PostList from "components/Article/PostList/PostList";
 import Hero from "components/Hero/Hero";
+import { Suspense } from "react";
+import LoadingComponent from "@components/(aux)/LoadingComponent/LoadingComponent";
 
-// Force dynamic rendering
+// Enable streaming and ISR
 export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 async function getPosts() {
   try {
     const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
     const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/posts?_embed`, {
-      cache: 'no-store',
+      next: { revalidate: 60 },
       headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0'
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
       }
     });
     
@@ -25,22 +26,35 @@ async function getPosts() {
     return res.json();
   } catch (error) {
     console.error("Error fetching posts:", error);
-    // Return an empty array instead of letting the error propagate
-    // This way, the page will still render even if the fetch fails
     return [];
   }
+}
+
+// Metadata for SEO
+export const metadata = {
+  title: 'Carlos Marten - Technology meets Business',
+  description: 'Digital transformation leader specializing in IT consulting, business technology, and web development',
+};
+
+// Separate component for async post data
+async function PostsData() {
+  const posts = await getPosts();
+  return <PostList posts={posts} selectedCategory={null} searchQuery={null} />;
 }
 
 export default async function Home() {
   console.log("Home page loaded");
   
-  // Fetch posts and handle any errors
-  const posts = await getPosts();
-  
   return (
     <main className={styles.main}>
       <Hero />
-      <PostList posts={posts} selectedCategory={null} searchQuery={null} />
+      <Suspense fallback={
+        <div className={styles.loadingContainer}>
+          <LoadingComponent />
+        </div>
+      }>
+        <PostsData />
+      </Suspense>
     </main>
   );
 }

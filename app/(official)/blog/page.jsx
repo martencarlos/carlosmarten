@@ -1,48 +1,73 @@
+// Path: app/(official)/blog/page.jsx
 import styles from "./page.module.css";
 import BlogContent from "components/Blog/BlogContent/BlogContent";
-
 import PushNotification from "@components/PushNotification/PushNotification";
-// import NotificationSubscriber from "@components/NotificationSubscriber";
+import { Suspense } from "react";
+import LoadingComponent from "@components/(aux)/LoadingComponent/LoadingComponent";
 
-// Add this export to disable caching for the entire page
+// Enable streaming and ISR
 export const dynamic = 'force-dynamic';
-export const revalidate = 0; // This is equivalent to force-dynamic for fetch
+export const revalidate = 30; // Revalidate every 30 seconds
 
 async function getPosts() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
-  const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/posts?_embed`, {
-    cache: 'no-store', // Ensure fresh data
-    headers: {
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': '0'
+  
+  try {
+    const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/posts?_embed`, {
+      next: { revalidate: 30 },
+      headers: {
+        'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=60',
+      }
+    });
+    
+    if (!res.ok) {
+      throw new Error("Failed to fetch posts");
     }
-  });
-  if (!res.ok) {
-    throw new Error("Failed to fetch posts");
+    
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return [];
   }
-  return res.json();
 }
+
 async function getCategories() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
-  const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`, {
-    cache: 'no-store', // Ensure fresh data
-    headers: {
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': '0'
+  
+  try {
+    const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`, {
+      next: { revalidate: 300 }, // Categories change less frequently
+      headers: {
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+      }
+    });
+    
+    if (!res.ok) {
+      throw new Error("Failed to fetch categories");
     }
-  });
-  if (!res.ok) {
-    throw new Error("Failed to fetch categories");
+    
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return [];
   }
-  return res.json();
+}
+
+// Generate metadata for better SEO
+export const metadata = {
+  title: 'Blog - Carlos Marten',
+  description: 'Insights on Technology, Consulting, and Digital Transformation',
+};
+
+// Separate component for async data
+async function BlogData() {
+  const [posts, categories] = await Promise.all([getPosts(), getCategories()]);
+  
+  return <BlogContent posts={posts} categories={categories} />;
 }
 
 export default async function Blog() {
   console.log("Blog page loaded");
-
-  const [posts, categories] = await Promise.all([getPosts(), getCategories()]);
 
   return (
     <div className={styles.blogMain}>
@@ -50,7 +75,6 @@ export default async function Blog() {
         <h2 className={styles.blogTitle}>
           Insights on Technology, Consulting, and Digital Transformation.
         </h2>
-        {/* <p className={styles.subTitle}>x</p> */}
         <p className={styles.blogDescription}>
           Explore in-depth articles on the latest in IT consulting, cutting-edge
           technologies, and digital strategies that drive business success. From
@@ -60,7 +84,14 @@ export default async function Blog() {
         </p>
         <PushNotification />
       </div>
-      <BlogContent posts={posts} categories={categories} />
+      
+      <Suspense fallback={
+        <div className={styles.loadingContainer}>
+          <LoadingComponent />
+        </div>
+      }>
+        <BlogData />
+      </Suspense>
     </div>
   );
 }

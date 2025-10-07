@@ -1,22 +1,43 @@
-// pages/about.js
-
+// Path: app/(official)/about/page.jsx
 'use client';
-import {useEffect, useState} from 'react';
+
+import { useEffect, useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function About () {
-  console.log ('About page loaded');
-  const [isVisible, setIsVisible] = useState (false);
+export default function About() {
+  console.log('About page loaded');
+  const [isVisible, setIsVisible] = useState(false);
+  const [isPendingBlog, startBlogTransition] = useTransition();
+  const [isPendingProjects, startProjectsTransition] = useTransition();
+  const router = useRouter();
 
-  useEffect (() => {
-    setIsVisible (true);
-  }, []);
+  useEffect(() => {
+    setIsVisible(true);
+    
+    // Prefetch linked pages
+    router.prefetch('/blog');
+    router.prefetch('/projects');
+  }, [router]);
+
+  const handleBlogClick = (e) => {
+    e.preventDefault();
+    startBlogTransition(() => {
+      router.push('/blog');
+    });
+  };
+
+  const handleProjectsClick = (e) => {
+    e.preventDefault();
+    startProjectsTransition(() => {
+      router.push('/projects');
+    });
+  };
 
   return (
     <div className={styles.container}>
-
       <div className={`${styles.content} ${isVisible ? styles.visible : ''}`}>
         <Image
           src="/images/me.jpeg"
@@ -39,9 +60,10 @@ export default function About () {
         <ul className={styles.list}>
           <li>Write blog posts about new technologies</li>
           <li>Work on projects related to web/app development</li>
-          <li>Share my journey in buisness consulting services</li>
+          <li>Share my journey in business consulting services</li>
         </ul>
         <br />
+        
         <h2>My Background</h2>
         <p>
           I am a digital transformation leader with over 10 years of experience delivering large-scale IT and business change across financial services, healthcare, automotive, and the public sector. Since 2023, I have headed the Digital Transformation unit at Seidor S.A., driving end-to-end consulting and architecture-led delivery with Salesforce, MuleSoft, Azure, AWS, and AI/LLM solutions.
@@ -56,15 +78,23 @@ export default function About () {
         </p>
 
         <p>
-          I hold an Executive MBA from TUM, a business degree from Harvard, and a Master’s in Computer Engineering from CEU. Certified in Salesforce, Blockchain, PRINCE2, and Agile, I speak six languages and thrive in leading cross-cultural teams to deliver impactful digital transformation.
+          I hold an Executive MBA from TUM, a business degree from Harvard, and a Master's in Computer Engineering from CEU. Certified in Salesforce, Blockchain, PRINCE2, and Agile, I speak six languages and thrive in leading cross-cultural teams to deliver impactful digital transformation.
         </p>
 
         <div className={styles.cta}>
-          <Link href="/blog" className={styles.button}>
-            Read My Blog
+          <Link 
+            href="/blog" 
+            className={`${styles.button} ${isPendingBlog ? styles.loading : ''}`}
+            onClick={handleBlogClick}
+          >
+            {isPendingBlog ? 'Loading...' : 'Read My Blog'}
           </Link>
-          <Link href="/projects" className={styles.button}>
-            View My Projects
+          <Link 
+            href="/projects" 
+            className={`${styles.button} ${isPendingProjects ? styles.loading : ''}`}
+            onClick={handleProjectsClick}
+          >
+            {isPendingProjects ? 'Loading...' : 'View My Projects'}
           </Link>
         </div>
       </div>
