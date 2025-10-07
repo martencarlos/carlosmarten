@@ -15,9 +15,20 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [pendingPath, setPendingPath] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Prefetch pages on mount for instant navigation
@@ -48,7 +59,7 @@ export default function Navbar() {
     <div
       className={`${styles.navbar_container} ${
         mounted && resolvedTheme === "dark" ? styles.dark : ""
-      }`}
+      } ${scrolled ? styles.scrolled : ""}`}
     >
       <nav className={styles.navbar}>
         <Link 
