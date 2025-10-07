@@ -15,7 +15,7 @@
   "files.autoSave": "onFocusChange", // optional but recommended
     
   "[javascript]": {
-    "editor.defaultFormatter": "schroeter.prettier-vscode-space-parenthesis"
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

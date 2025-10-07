@@ -176,3 +176,9 @@ hr {
     @apply bg-background text-foreground;
   }
 }
+
+@media (max-width: 768px) {
+  .dashboard-active footer {
+    display: none;
+  }
+}
