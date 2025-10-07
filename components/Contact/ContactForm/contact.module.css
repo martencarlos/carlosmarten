@@ -26,7 +26,7 @@
 
 .formHeader {
   background: linear-gradient(135deg, var(--third-color), var(--fourth-color));
-  padding: 3rem 2rem;
+  padding: 2rem 2rem;
   text-align: center;
   color: white;
 }
@@ -323,7 +323,7 @@
   }
 
   .formHeader {
-    padding: 2.5rem 1.5rem;
+    padding: 1rem 1.5rem;
   }
 
   .title {
@@ -360,7 +360,7 @@
   }
 
   .formHeader {
-    padding: 2rem 1.25rem;
+    padding: 1rem 1.25rem;
   }
 
   .title {
@@ -412,7 +412,7 @@
 /* Extra Small Devices */
 @media (max-width: 360px) {
   .formHeader {
-    padding: 1.75rem 1rem;
+    padding: 1rem 1rem;
   }
 
   .title {
