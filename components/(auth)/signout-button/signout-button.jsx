@@ -1,14 +1,14 @@
-"use client"; // This is a client component
+"use client";
 import { signOut } from "next-auth/react";
-import styles from "@components/private/Sidebar/sidebar.module.css";
 
-export default function SignOutButton() {
+// Allow the button to accept a className and children for more flexible styling and content
+export default function SignOutButton({ className, children }) {
   return (
     <button
-      className={styles.logout}
+      className={className}
       onClick={() => signOut({ callbackUrl: "/login" })}
     >
-      Sign Out
+      {children ? children : "Sign Out"}
     </button>
   );
 }

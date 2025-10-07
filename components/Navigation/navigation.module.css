@@ -161,11 +161,20 @@
     }
 }
 
-/* Dark mode enhancements
-:global(.dark) .sidebarLink:hover {
-    background-color: color-mix(in srgb, var(--foreground) 7%, transparent);
+.logoutButton {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: var(--logout-bg-color, #e63946); /* Destructive action color */
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-:global(.dark) .sidebarLink.active {
-    background-color: color-mix(in srgb, var(--foreground) 12%, transparent);
-} */
+.logoutButton:hover {
+  background-color: var(--logout-hover-color, #d62839);
+  transform: translateY(-1px);
+}

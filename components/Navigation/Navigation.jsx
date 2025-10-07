@@ -50,7 +50,7 @@ const DesktopSidebar = () => {
       </nav>
 
       <footer className={styles.sidebarFooter}>
-        <SignOutButton />
+        <SignOutButton className={styles.logoutButton} />
       </footer>
     </aside>
   );
