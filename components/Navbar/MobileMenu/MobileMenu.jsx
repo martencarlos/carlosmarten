@@ -10,6 +10,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isRendered, setIsRendered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [pendingPath, setPendingPath] = useState(null);
@@ -89,6 +90,20 @@ const MobileMenu = () => {
     return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen]);
 
+  // Delayed unmount for backdrop and navlist exit animations
+  useEffect(() => {
+    let timeoutId;
+    if (isOpen) {
+      setIsRendered(true);
+    } else {
+      timeoutId = setTimeout(() => {
+        setIsRendered(false);
+      }, 400); // This duration must match the CSS transition
+    }
+
+    return () => clearTimeout(timeoutId);
+  }, [isOpen]);
+
   const handleLinkClick = (e, href) => {
     e.preventDefault();
     if (isMobile) {
@@ -119,9 +134,8 @@ const MobileMenu = () => {
 
   return (
     <div
-      className={`${styles.mobileMenu} ${
-        resolvedTheme === "dark" ? styles.dark : ""
-      }`}
+      className={`${styles.mobileMenu} ${resolvedTheme === "dark" ? styles.dark : ""
+        }`}
     >
       <button
         ref={buttonRef}
@@ -137,57 +151,58 @@ const MobileMenu = () => {
       </button>
 
       {/* Backdrop overlay */}
-      {isOpen && (
-        <div 
-          className={styles.backdrop}
+      {isRendered && (
+        <div
+          className={`${styles.backdrop} ${isOpen ? styles.open : ""}`}
           onClick={() => setIsOpen(false)}
           aria-hidden="true"
         />
       )}
 
       {/* Navigation menu */}
-      <nav
-        ref={menuRef}
-        id="mobile-nav-menu"
-        className={`${styles.navList} ${isOpen ? styles.open : ""}`}
-        aria-label="Mobile navigation"
-      >
-        <ul role="list">
-          {navItems.map((item) => (
-            <li key={item.href} className={styles.navItem}>
-              <Link
-                href={item.href}
-                className={`${styles.navLink} ${
-                  pathname === item.href ? styles.active : ""
-                } ${isPending && pendingPath === item.href ? styles.loading : ""}`}
-                onClick={(e) => handleLinkClick(e, item.href)}
+      {isRendered && (
+        <nav
+          ref={menuRef}
+          id="mobile-nav-menu"
+          className={`${styles.navList} ${isOpen ? styles.open : ""}`}
+          aria-label="Mobile navigation"
+        >
+          <ul role="list">
+            {navItems.map((item) => (
+              <li key={item.href} className={styles.navItem}>
+                <Link
+                  href={item.href}
+                  className={`${styles.navLink} ${pathname === item.href ? styles.active : ""
+                    } ${isPending && pendingPath === item.href ? styles.loading : ""
+                    }`}
+                  onClick={(e) => handleLinkClick(e, item.href)}
+                  tabIndex={isOpen ? 0 : -1}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+            <li className={styles.navItem}>
+              <button
+                onClick={toggleTheme}
+                className={styles.themeToggle}
+                aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"
+                  } mode`}
                 tabIndex={isOpen ? 0 : -1}
               >
-                {item.label}
-              </Link>
+                {resolvedTheme === "dark" ? (
+                  <FaSun size={20} aria-hidden="true" />
+                ) : (
+                  <FaMoon size={20} aria-hidden="true" />
+                )}
+                <span className={styles.themeToggleText}>
+                  {resolvedTheme === "dark" ? "Light" : "Dark"} Mode
+                </span>
+              </button>
             </li>
-          ))}
-          <li className={styles.navItem}>
-            <button
-              onClick={toggleTheme}
-              className={styles.themeToggle}
-              aria-label={`Switch to ${
-                resolvedTheme === "dark" ? "light" : "dark"
-              } mode`}
-              tabIndex={isOpen ? 0 : -1}
-            >
-              {resolvedTheme === "dark" ? (
-                <FaSun size={20} aria-hidden="true" />
-              ) : (
-                <FaMoon size={20} aria-hidden="true" />
-              )}
-              <span className={styles.themeToggleText}>
-                {resolvedTheme === "dark" ? "Light" : "Dark"} Mode
-              </span>
-            </button>
-          </li>
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      )}
     </div>
   );
 };
