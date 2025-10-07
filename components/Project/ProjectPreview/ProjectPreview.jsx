@@ -14,25 +14,23 @@ export default function ProjectPreview({ projectUrl, projectName }) {
   const timeoutRef = useRef(null);
 
   useEffect(() => {
-    // Reset states when project changes
+    console.log(`[ProjectPreview] Mounting with URL: ${projectUrl}`);
     setIsLoading(true);
     setError(false);
 
     // Set a timeout to detect if iframe fails to load
     timeoutRef.current = setTimeout(() => {
-      if (isLoading) {
-        console.log("Iframe loading timeout - likely blocked by X-Frame-Options");
-        setIsLoading(false);
-        setError(true);
-      }
-    }, 5000); // 5 second timeout
+      console.log("[ProjectPreview] Timeout reached - iframe may be blocked");
+      setIsLoading(false);
+      setError(true);
+    }, 8000); // 8 second timeout to give more time
 
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [projectUrl, isLoading]);
+  }, [projectUrl]);
 
   const handleBack = () => {
     router.push("/projects");
@@ -43,7 +41,7 @@ export default function ProjectPreview({ projectUrl, projectName }) {
   };
 
   const handleIframeLoad = () => {
-    console.log("Iframe loaded successfully");
+    console.log("[ProjectPreview] Iframe onLoad fired - SUCCESS!");
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -52,7 +50,7 @@ export default function ProjectPreview({ projectUrl, projectName }) {
   };
 
   const handleIframeError = () => {
-    console.log("Iframe error event triggered");
+    console.log("[ProjectPreview] Iframe onError fired");
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -91,7 +89,7 @@ export default function ProjectPreview({ projectUrl, projectName }) {
           <div className={styles.spinner}></div>
           <p>Loading {projectName}...</p>
           <p className={styles.loadingHint}>
-            This may take a few seconds. If it doesn't load, the site may not allow embedding.
+            This may take a few seconds. If it doesn&apos;t load, the site may not allow embedding.
           </p>
         </div>
       )}
@@ -105,7 +103,7 @@ export default function ProjectPreview({ projectUrl, projectName }) {
             restrictions set by the external site (X-Frame-Options or CSP headers).
           </p>
           <p className={styles.errorSubtext}>
-            Don't worry! You can still view the full project by opening it directly.
+            Don&apos;t worry! You can still view the full project by opening it directly.
           </p>
           <button onClick={handleOpenExternal} className={styles.errorButton}>
             <FaExternalLinkAlt className={styles.icon} />
@@ -119,17 +117,22 @@ export default function ProjectPreview({ projectUrl, projectName }) {
       )}
 
       {/* Iframe */}
-      <iframe
-        ref={iframeRef}
-        src={projectUrl}
-        className={styles.iframe}
-        title={projectName}
-        onLoad={handleIframeLoad}
-        onError={handleIframeError}
-        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation"
-        loading="eager"
-        style={{ display: isLoading || error ? "none" : "block" }}
-      />
+      {!error && (
+        <iframe
+          ref={iframeRef}
+          src={projectUrl}
+          className={styles.iframe}
+          title={projectName}
+          onLoad={handleIframeLoad}
+          onError={handleIframeError}
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation"
+          style={{ 
+            display: isLoading ? "none" : "block",
+            opacity: isLoading ? 0 : 1,
+            transition: "opacity 0.3s ease"
+          }}
+        />
+      )}
     </div>
   );
 }
