@@ -171,11 +171,7 @@
   transform: translateY(-7.5px) rotate(-45deg);
 }
 
-/* Backdrop - positioned outside navbar to prevent layout shift */
-.backdrop {
-  display: none;
-  /* Hidden by default on all screens */
-}
+
 
 /* Mobile styles */
 @media (max-width: 768px) {

@@ -5,8 +5,6 @@
   top: 0;
   z-index: 100;
   background: var(--background);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   transition: all 0.3s ease;
   border-bottom: 1px solid transparent;
 }
