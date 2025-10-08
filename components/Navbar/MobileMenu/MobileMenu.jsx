@@ -150,13 +150,25 @@ const MobileMenu = () => {
         </button>
       </div>
 
-      {/* Backdrop overlay - covers entire viewport */}
-      <div
-        className={`${styles.backdrop} ${isOpen ? styles.backdropOpen : ""} ${resolvedTheme === "dark" ? styles.dark : ""
-          }`}
-        onClick={() => setIsOpen(false)}
-        aria-hidden="true"
-      />
+      {/* Portal for backdrop - render at root level */}
+      {isMobile && (
+        <div
+          className={`${styles.backdrop} ${isOpen ? styles.backdropOpen : ""} ${resolvedTheme === "dark" ? styles.dark : ""
+            }`}
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+          style={isOpen ? {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: '100%',
+            height: '100%',
+            zIndex: 998
+          } : {}}
+        />
+      )}
 
       {/* Navigation menu - rendered outside to prevent layout shift */}
       <nav
