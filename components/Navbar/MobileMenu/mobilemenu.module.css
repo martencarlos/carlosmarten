@@ -212,7 +212,7 @@
     pointer-events: auto;
   }
 
-  /* Navigation menu - positioned outside navbar, optimized spacing */
+  /* FIXED: Navigation menu - properly hidden when closed */
   .navList {
     display: flex;
     /* Only show on mobile */
@@ -220,7 +220,8 @@
     align-items: stretch;
     position: fixed;
     top: 0;
-    right: 0;
+    /* CRITICAL FIX: Position the menu completely off-screen when closed */
+    right: -100%;
     height: 100vh;
     height: 100dvh;
     /* Better mobile support */
@@ -232,18 +233,23 @@
     /* Reduced top padding from 5rem */
     background: var(--background);
     box-shadow: -8px 0 32px rgba(0, 0, 0, 0.2);
-    transform: translateX(100%);
-    visibility: hidden;
-    /* Hide the element from the layout */
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    /* REMOVED transform to use positioning instead */
+    /* CRITICAL: Use opacity and pointer-events to ensure it's truly hidden */
+    opacity: 0;
+    pointer-events: none;
+    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: auto;
+    /* Prevent horizontal scrolling */
+    overflow-x: hidden;
     border-left: 1px solid rgba(63, 114, 175, 0.1);
   }
 
+  /* FIXED: When open, bring the menu into view */
   .navList.navListOpen {
-    transform: translateX(0);
-    visibility: visible;
-    /* Make it visible when open */
+    right: 0;
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .navList ul {
