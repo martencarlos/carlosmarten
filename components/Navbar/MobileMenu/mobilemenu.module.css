@@ -5,7 +5,8 @@
 }
 
 .navList {
-  display: none; /* Hidden by default on desktop */
+  display: none;
+  /* Hidden by default on desktop */
   list-style: none;
   padding: 0;
   margin: 0;
@@ -51,12 +52,10 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent);
   animation: shimmer 1.5s infinite;
 }
 
@@ -128,7 +127,8 @@
   gap: 5px;
   width: 2.5rem;
   height: 2.5rem;
-  min-width: 2.5rem; /* Prevent shrinking */
+  min-width: 2.5rem;
+  /* Prevent shrinking */
   background: transparent;
   border: none;
   cursor: pointer;
@@ -173,7 +173,8 @@
 
 /* Backdrop - positioned outside navbar to prevent layout shift */
 .backdrop {
-  display: none; /* Hidden by default on all screens */
+  display: none;
+  /* Hidden by default on all screens */
 }
 
 /* Mobile styles */
@@ -187,7 +188,8 @@
   }
 
   .backdrop {
-    display: block; /* Only show on mobile */
+    display: block;
+    /* Only show on mobile */
     position: fixed;
     top: 0;
     left: 0;
@@ -200,7 +202,7 @@
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                visibility 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      visibility 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
   }
 
@@ -212,37 +214,48 @@
 
   /* Navigation menu - positioned outside navbar, optimized spacing */
   .navList {
-    display: flex; /* Only show on mobile */
+    display: flex;
+    /* Only show on mobile */
     flex-direction: column;
     align-items: stretch;
     position: fixed;
     top: 0;
     right: 0;
     height: 100vh;
-    height: 100dvh; /* Better mobile support */
-    width: min(280px, 80vw); /* Reduced from 320px */
+    height: 100dvh;
+    /* Better mobile support */
+    width: min(280px, 80vw);
+    /* Reduced from 320px */
     z-index: 1000;
     gap: 0;
-    padding: 4rem 1.25rem 1.5rem; /* Reduced top padding from 5rem */
+    padding: 4rem 1.25rem 1.5rem;
+    /* Reduced top padding from 5rem */
     background: var(--background);
     box-shadow: -8px 0 32px rgba(0, 0, 0, 0.2);
     transform: translateX(100%);
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    visibility: hidden;
+    /* Hide the element from the layout */
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: auto;
     border-left: 1px solid rgba(63, 114, 175, 0.1);
   }
 
   .navList.navListOpen {
     transform: translateX(0);
+    visibility: visible;
+    /* Make it visible when open */
   }
 
   .navList ul {
     display: flex;
     flex-direction: column;
-    gap: 0.375rem; /* Reduced from 0.5rem */
+    gap: 0.375rem;
+    /* Reduced from 0.5rem */
     width: 100%;
-    margin-bottom: 0.75rem; /* Reduced from 1rem */
-    padding-bottom: 0.75rem; /* Reduced from 1rem */
+    margin-bottom: 0.75rem;
+    /* Reduced from 1rem */
+    padding-bottom: 0.75rem;
+    /* Reduced from 1rem */
     border-bottom: 1px solid rgba(63, 114, 175, 0.1);
   }
 
@@ -253,7 +266,7 @@
     opacity: 0;
     transform: translateX(20px);
     transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transition-delay: calc(var(--item-index) * 0.05s);
   }
 
@@ -263,7 +276,8 @@
   }
 
   .navLink {
-    padding: 0.75rem 1rem; /* Reduced from 0.875rem 1.25rem */
+    padding: 0.75rem 1rem;
+    /* Reduced from 0.875rem 1.25rem */
     width: 100%;
     text-align: left;
     font-size: 1rem;
@@ -272,9 +286,11 @@
   }
 
   .themeToggle {
-    padding: 0.75rem 1rem; /* Reduced padding */
+    padding: 0.75rem 1rem;
+    /* Reduced padding */
     border-radius: 12px;
-    margin-top: 0.25rem; /* Reduced from 0.5rem */
+    margin-top: 0.25rem;
+    /* Reduced from 0.5rem */
     justify-content: center;
   }
 
