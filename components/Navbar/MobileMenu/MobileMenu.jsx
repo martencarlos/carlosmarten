@@ -67,12 +67,25 @@ const MobileMenu = () => {
   useEffect(() => {
     if (isOpen && isMobile) {
       document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+      document.body.style.top = `-${window.scrollY}px`;
     } else {
-      document.body.style.overflow = "unset";
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.top = "";
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+      }
     }
 
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.top = "";
     };
   }, [isOpen, isMobile]);
 
@@ -137,10 +150,10 @@ const MobileMenu = () => {
         </button>
       </div>
 
-
-      {/* Backdrop overlay - rendered outside to prevent layout shift */}
+      {/* Backdrop overlay - covers entire viewport */}
       <div
-        className={`${styles.backdrop} ${isOpen ? styles.backdropOpen : ""}`}
+        className={`${styles.backdrop} ${isOpen ? styles.backdropOpen : ""} ${resolvedTheme === "dark" ? styles.dark : ""
+          }`}
         onClick={() => setIsOpen(false)}
         aria-hidden="true"
       />
