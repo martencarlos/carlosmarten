@@ -1,7 +1,6 @@
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "@providers/theme-provider";
-import ServiceWorkerUpdatePrompt from "@components/ServiceWorkerUpdatePrompt/ServiceWorkerUpdatePrompt";
 import "./globals.css";
 
 export const metadata = {
@@ -34,7 +33,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <ThemeProvider>
-          <ServiceWorkerUpdatePrompt />
+          
           {children}
         </ThemeProvider>
         <Analytics />

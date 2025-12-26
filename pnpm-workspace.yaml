@@ -1,0 +1,5 @@
+onlyBuiltDependencies:
+  - '@vercel/speed-insights'
+  - bufferutil
+  - sharp
+  - unrs-resolver
