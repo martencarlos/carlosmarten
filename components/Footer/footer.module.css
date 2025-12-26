@@ -2,26 +2,20 @@
 
 .footer {
   width: 100%;
-  background: linear-gradient(135deg, var(--third-color), var(--fourth-color));
-  color: white;
+  /* Use theme background instead of gradient */
+  background: hsl(var(--background));
+  /* Use theme foreground (text) color */
+  color: hsl(var(--foreground));
   margin-top: auto;
   position: relative;
   overflow: hidden;
+  /* Add a subtle top border like standard sections */
+  border-top: 1px solid hsl(var(--border));
 }
 
+/* Remove the gradient top border */
 .footer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
+  display: none;
 }
 
 .container {
@@ -54,7 +48,8 @@
   font-weight: 700;
   margin: 0;
   letter-spacing: -0.5px;
-  background: linear-gradient(135deg, #ffffff, rgba(255, 255, 255, 0.8));
+  /* Match Header Logo Gradient */
+  background: linear-gradient(135deg, var(--third-color), var(--fourth-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -65,12 +60,14 @@
   margin: 0;
   opacity: 0.9;
   font-weight: 400;
+  color: hsl(var(--muted-foreground));
 }
 
 .copyright {
   font-size: 1rem;
   opacity: 0.9;
   margin: 0;
+  color: hsl(var(--muted-foreground));
 }
 
 .navigation {
@@ -98,7 +95,7 @@
 }
 
 .navLink {
-  color: white;
+  color: hsl(var(--foreground));
   text-decoration: none;
   font-size: 0.9rem;
   opacity: 0.85;
@@ -115,7 +112,7 @@
   bottom: 0;
   width: 0;
   height: 2px;
-  background: white;
+  background: hsl(var(--foreground));
   transition: width 0.3s ease;
 }
 
@@ -141,12 +138,12 @@
   padding: 0 0.75rem;
   height: 36px;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  /* backdrop-filter: blur(10px); */
+  /* -webkit-backdrop-filter: blur(10px); */
+  border: 1px solid hsl(var(--border));
   border-radius: 8px;
-  color: white;
+  color: hsl(var(--foreground));
   text-decoration: none;
   font-size: 0.9rem;
   transition: all 0.3s ease;
@@ -166,18 +163,21 @@
 }
 
 .socialLink:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
   transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .socialLink:active {
   transform: translateY(-1px);
 }
 
-/* Dark mode adjustments */
+/* Dark mode adjustments - standard background handles it now */
 :global(.dark) .footer {
-  background: linear-gradient(135deg, #1a2332, #0f1923);
+  /* background: linear-gradient(135deg, #1a2332, #0f1923); */
+  background: hsl(var(--background));
+  border-top-color: hsl(var(--border));
 }
 
 /* Tablet Responsive */
