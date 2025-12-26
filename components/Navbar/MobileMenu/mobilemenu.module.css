@@ -150,7 +150,8 @@
 .hamburgerLine {
   width: 20px;
   height: 2.5px;
-  background-color: var(--foreground);
+  /* FIX: Wrap in hsl() because variable contains raw HSL values */
+  background-color: hsl(var(--foreground));
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   transform-origin: center;
@@ -237,7 +238,8 @@
     gap: 0;
     padding: 4rem 1.25rem 1.5rem;
     /* Reduced top padding from 5rem */
-    background: var(--background);
+    /* FIX: Wrap in hsl() because variable contains raw HSL values */
+    background: hsl(var(--background));
     box-shadow: -8px 0 32px rgba(0, 0, 0, 0.2);
     /* REMOVED transform to use positioning instead */
     /* CRITICAL: Use opacity and pointer-events to ensure it's truly hidden */
@@ -268,7 +270,7 @@
     /* Reduced from 1rem */
     padding-bottom: 0.75rem;
     /* Reduced from 1rem */
-    border-bottom: 1px solid rgba(63, 114, 175, 0.1);
+    /* border-bottom: 1px solid rgba(63, 114, 175, 0.1); */
   }
 
   /* Staggered fade-in animation for menu items */
@@ -321,7 +323,7 @@
   }
 
   .navList.dark ul {
-    border-bottom: 1px solid rgba(63, 114, 175, 0.2);
+    /* border-bottom: 1px solid rgba(63, 114, 175, 0.2); */
   }
 
   /* Dark mode backdrop adjustment */
