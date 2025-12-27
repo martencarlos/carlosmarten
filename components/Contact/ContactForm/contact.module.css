@@ -4,69 +4,71 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Further reduced min-height for even more vertical compactness */
-  min-height: calc(100vh - 120px); 
-  padding: 15px; /* Slightly less padding around the form */
+  /* Reduced min-height slightly to help centering on smaller vertical screens */
+  min-height: calc(100vh - 160px);
+  padding: 20px;
   width: 100%;
 }
 
 .form {
   padding: 0;
   width: 100%;
-  max-width: 400px; /* Slightly narrower for a more "card-like" feel */
+  /* Slightly narrower for a cleaner vertical rhythm */
+  max-width: 450px;
   background: var(--background);
-  border-radius: 10px; /* Smaller border radius */
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07); /* Lighter shadow */
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   transition: all 0.3s ease;
 }
 
 .form:hover {
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1); /* Lighter hover shadow */
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
 }
 
 .formHeader {
   background: linear-gradient(135deg, var(--third-color), var(--fourth-color));
   /* Significantly reduced padding */
-  padding: 1rem 1.25rem; 
+  padding: 1.25rem 1.5rem;
   text-align: center;
   color: white;
 }
 
 .title {
-  font-size: 1.4rem; /* Smaller title */
-  margin: 0 0 0.2rem 0; /* Reduced bottom margin */
+  /* Smaller title */
+  font-size: 1.5rem;
+  margin: 0 0 0.25rem 0;
   font-weight: 700;
   letter-spacing: -0.5px;
 }
 
 .subtitle {
-  font-size: 0.85rem; /* Smaller subtitle font */
+  font-size: 0.9rem;
   margin: 0;
   opacity: 0.95;
   font-weight: 400;
-  line-height: 1.3; /* Tighter line height */
+  line-height: 1.4;
 }
 
 .formBody {
-  /* Much tighter body padding */
-  padding: 1.25rem; 
+  /* Tighter body padding */
+  padding: 1.25rem 1.5rem;
 }
 
 .row {
   display: grid;
   grid-template-columns: 1fr;
   /* Reduced gap between stacked items */
-  gap: 0.6rem; 
-  margin-bottom: 0.6rem; /* Reduced margin bottom for the row */
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .formGroup {
   display: flex;
   flex-direction: column;
-  /* Even tighter gap between label and input */
-  gap: 0.2rem; 
-  margin-bottom: 0.4rem; /* Reduced bottom margin for form groups */
+  /* Tighter gap between label and input */
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .row .formGroup {
@@ -76,8 +78,8 @@
 .label {
   display: flex;
   align-items: center;
-  gap: 0.3rem; /* Tighter gap */
-  font-size: 0.8rem; /* Smaller label font */
+  gap: 0.4rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--foreground);
   margin-bottom: 0;
@@ -85,17 +87,18 @@
 
 .labelIcon {
   color: var(--third-color);
-  font-size: 0.8rem; /* Matches label font size */
+  font-size: 0.85rem;
 }
 
 .input,
 .textarea {
   width: 100%;
-  /* Minimal vertical padding for inputs */
-  padding: 0.4rem 0.6rem; 
+  /* Reduced vertical padding for slimmer inputs */
+  padding: 0.5rem 0.75rem;
   border: 1px solid #e5e7eb;
-  border-radius: 5px; /* Smaller border radius */
-  font-size: 0.85rem; /* Smaller input font */
+  /* Thinner border */
+  border-radius: 6px;
+  font-size: 0.9rem;
   font-family: inherit;
   background: var(--background);
   color: var(--foreground);
@@ -113,6 +116,7 @@
   border-color: var(--third-color);
   box-shadow: 0 0 0 2px rgba(63, 114, 175, 0.1);
   transform: translateY(0);
+  /* Removed lift effect for compactness */
 }
 
 .input:disabled,
@@ -132,59 +136,59 @@
 
 .errorText {
   color: #ef4444;
-  font-size: 0.7rem; /* Smaller error text */
+  font-size: 0.75rem;
   font-weight: 500;
-  margin-top: 0.1rem; /* Reduced margin top */
+  margin-top: 0.15rem;
   display: flex;
   align-items: center;
-  gap: 0.2rem; /* Tighter gap */
+  gap: 0.25rem;
 }
 
 .textarea {
-  /* Smallest default height */
-  min-height: 70px; 
-  max-height: 150px;
+  /* Much smaller default height */
+  min-height: 80px;
+  max-height: 180px;
   resize: vertical;
-  line-height: 1.3;
+  line-height: 1.4;
 }
 
 .errorAlert {
   background: #fee2e2;
   color: #dc2626;
-  padding: 0.4rem 0.6rem; /* Reduced padding */
-  border-radius: 5px;
-  margin-bottom: 0.6rem; /* Reduced margin bottom */
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
   font-weight: 500;
-  font-size: 0.8rem; /* Smaller alert font */
+  font-size: 0.85rem;
   border: 1px solid #fecaca;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
 }
 
 .button {
   width: 100%;
   /* Reduced padding */
-  padding: 0.5rem 1rem; 
+  padding: 0.6rem 1.5rem;
   margin-top: 0.5rem;
   background: linear-gradient(135deg, var(--third-color), var(--fourth-color));
   color: white;
-  font-size: 0.85rem; /* Smaller button font */
+  font-size: 0.9rem;
   font-weight: 600;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem; /* Tighter gap */
-  box-shadow: 0 2px 6px rgba(63, 114, 175, 0.2); /* Lighter shadow */
+  gap: 0.5rem;
+  box-shadow: 0 2px 8px rgba(63, 114, 175, 0.25);
 }
 
 .button:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 3px 10px rgba(63, 114, 175, 0.3); /* Lighter hover shadow */
+  box-shadow: 0 4px 12px rgba(63, 114, 175, 0.35);
 }
 
 .button:active:not(:disabled) {
@@ -198,12 +202,12 @@
 }
 
 .buttonIcon {
-  font-size: 0.8rem; /* Smaller icon */
+  font-size: 0.85rem;
 }
 
 .spinner {
-  width: 14px; /* Smaller spinner */
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: white;
   border-radius: 50%;
@@ -219,11 +223,11 @@
 /* Success Card Styles */
 .successCard {
   text-align: center;
-  padding: 1.5rem; /* Reduced padding */
+  padding: 2rem 1.5rem;
   background: var(--background);
-  border-radius: 10px; /* Smaller border radius */
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
-  max-width: 380px; /* Match form width, slightly smaller */
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  max-width: 400px;
   width: 100%;
   animation: slideUp 0.5s ease;
 }
@@ -233,6 +237,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -240,16 +245,16 @@
 }
 
 .successIcon {
-  width: 45px; /* Smaller icon */
-  height: 45px;
-  margin: 0 auto 0.8rem; /* Reduced margin */
+  width: 50px;
+  height: 50px;
+  margin: 0 auto 1rem;
   background: linear-gradient(135deg, var(--third-color), var(--fourth-color));
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 1.1rem; /* Smaller icon font */
+  font-size: 1.25rem;
   animation: scaleIn 0.5s ease 0.2s both;
 }
 
@@ -257,15 +262,16 @@
   from {
     transform: scale(0);
   }
+
   to {
     transform: scale(1);
   }
 }
 
 .successTitle {
-  font-size: 1.4rem; /* Smaller title */
+  font-size: 1.5rem;
   font-weight: 700;
-  margin: 0 0 0.4rem 0; /* Reduced margin */
+  margin: 0 0 0.5rem 0;
   background: linear-gradient(135deg, var(--third-color), var(--fourth-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -273,38 +279,38 @@
 }
 
 .successText {
-  font-size: 0.9rem; /* Smaller text */
+  font-size: 0.95rem;
   color: var(--foreground);
   opacity: 0.8;
-  margin: 0 0 1rem 0; /* Reduced margin */
-  line-height: 1.3;
+  margin: 0 0 1.25rem 0;
+  line-height: 1.4;
 }
 
 .resetButton {
-  padding: 0.5rem 1rem; /* Reduced padding */
+  padding: 0.6rem 1.25rem;
   background: linear-gradient(135deg, var(--third-color), var(--fourth-color));
   color: white;
-  font-size: 0.85rem; /* Smaller button font */
+  font-size: 0.9rem;
   font-weight: 600;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(63, 114, 175, 0.2);
+  box-shadow: 0 2px 8px rgba(63, 114, 175, 0.25);
 }
 
 .resetButton:hover {
   transform: translateY(-1px);
-  box-shadow: 0 3px 10px rgba(63, 114, 175, 0.3);
+  box-shadow: 0 4px 12px rgba(63, 114, 175, 0.35);
 }
 
 /* Dark Mode Support */
 :global(.dark) .form {
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
 :global(.dark) .form:hover {
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
 }
 
 :global(.dark) .input,
@@ -324,43 +330,29 @@
 }
 
 :global(.dark) .successCard {
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
 
 /* Tablet Responsive */
 @media (max-width: 768px) {
   .container {
-    padding: 10px; /* Reduced padding for container */
-    min-height: calc(100vh - 160px);
+    padding: 15px;
+    min-height: calc(100vh - 180px);
   }
 
   .form {
     max-width: 100%;
-    border-radius: 8px;
   }
 
   .formHeader {
-    padding: 0.8rem 1rem; /* Reduced padding */
+    padding: 1rem 1.25rem;
   }
 
   .title {
-    font-size: 1.25rem;
-  }
-
-  .subtitle {
-    font-size: 0.8rem;
+    font-size: 1.35rem;
   }
 
   .formBody {
-    padding: 1rem; /* Reduced padding */
-  }
-
-  .button {
-      padding: 0.6rem;
-  }
-  
-  .successCard {
-    max-width: 100%;
     padding: 1.25rem;
   }
 }
@@ -368,51 +360,30 @@
 /* Mobile Responsive */
 @media (max-width: 480px) {
   .container {
-    padding: 5px; /* Even less padding */
+    padding: 10px;
   }
 
   .form {
-    border-radius: 8px;
+    border-radius: 10px;
   }
 
   .title {
-    font-size: 1.15rem;
+    font-size: 1.25rem;
   }
-  
+
   .subtitle {
-    font-size: 0.75rem;
+    font-size: 0.85rem;
   }
 
   .input,
   .textarea {
-    padding: 0.5rem 0.6rem; /* Slightly larger vertical padding for touch targets */
-    font-size: 15px; /* Prevents zoom on iOS */
+    /* Slightly larger padding on mobile for touch targets */
+    padding: 0.6rem 0.75rem;
+    font-size: 16px;
+    /* Prevents zoom on iOS */
   }
-  
-  .label {
-      font-size: 0.75rem;
-  }
-  
-  .errorText {
-      font-size: 0.65rem;
-  }
-  
+
   .button {
-      padding: 0.6rem;
-      font-size: 0.8rem;
-  }
-  
-  .successIcon {
-      width: 40px;
-      height: 40px;
-      font-size: 1rem;
-  }
-  
-  .successTitle {
-      font-size: 1.15rem;
-  }
-  
-  .successText {
-      font-size: 0.8rem;
+    padding: 0.75rem;
   }
 }
