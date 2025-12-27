@@ -1,13 +1,67 @@
 /* Path: components/private/ContactsList/contactslist.module.css */
 
-.container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
-  padding: 1.5rem;
+.wrapper {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+  padding: 1rem 1.5rem;
+}
+
+/* Controls Header */
+.controlsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0 0.5rem;
+}
+
+.stats {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.viewToggle {
+  display: flex;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.toggleBtn {
+  border: none;
+  background: transparent;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.toggleBtn:hover {
+  color: #333;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.toggleBtn.active {
+  background-color: white;
+  color: var(--third-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* --- GRID VIEW (Card) STYLES --- */
+
+.gridContainer {
+  display: grid;
+  /* Optimized grid for better responsiveness */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
 }
 
 .card {
@@ -26,11 +80,6 @@
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
   transform: translateY(-4px);
   border-color: var(--third-color);
-}
-
-.card:focus {
-  outline: 2px solid var(--third-color);
-  outline-offset: 2px;
 }
 
 .cardHeader {
@@ -121,6 +170,107 @@
   background-color: #fafafa;
   gap: 0.75rem;
 }
+
+/* --- LIST VIEW STYLES --- */
+
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.listHeaderRow {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 2fr 0.8fr;
+  /* Name, Email, Msg, Date */
+  padding: 0 1rem 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.listRow {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 2fr 0.8fr;
+  /* Same grid as header */
+  align-items: center;
+  background-color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  gap: 1rem;
+}
+
+.listRow:hover {
+  background-color: #fafafa;
+  border-color: var(--third-color);
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.colName {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.listAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--third-color), var(--fourth-color));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.listNameText {
+  font-weight: 600;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #1a1a1a;
+}
+
+.colEmail {
+  color: #666;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.colMessage {
+  min-width: 0;
+}
+
+.listMessageText {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.colDate {
+  text-align: right;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* --- SHARED & MODAL STYLES --- */
 
 .contactId {
   font-size: 0.8rem;
@@ -426,14 +576,55 @@
 }
 
 /* Dark mode support */
-:global(.dark) .card {
+:global(.dark) .viewToggle {
+  background-color: #2a2a2a;
+}
+
+:global(.dark) .toggleBtn {
+  color: #888;
+}
+
+:global(.dark) .toggleBtn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+:global(.dark) .toggleBtn.active {
+  background-color: #3a3a3a;
+  color: var(--third-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+:global(.dark) .stats {
+  color: #888;
+}
+
+:global(.dark) .card,
+:global(.dark) .listRow {
   background-color: #2a2a2a;
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-:global(.dark) .card:hover {
+:global(.dark) .card:hover,
+:global(.dark) .listRow:hover {
   border-color: var(--third-color);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  background-color: #303030;
+}
+
+:global(.dark) .listNameText {
+  color: #f0f0f0;
+}
+
+:global(.dark) .colEmail {
+  color: #bbb;
+}
+
+:global(.dark) .listMessageText {
+  color: #bbb;
+}
+
+:global(.dark) .listHeaderRow {
+  color: #777;
 }
 
 :global(.dark) .contactName {
@@ -512,13 +703,80 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+
+  .listHeaderRow,
+  .listRow {
+    grid-template-columns: 2fr 3fr 1fr;
+    /* Hide Email or Date? */
+    grid-template-columns: 1.5fr 2fr 0.8fr;
+    /* Name, Message, Date */
+  }
+
+  .colEmail {
+    display: none;
+  }
+
+  /* Hide email on tablet list view to save space */
+
+  /* If Card View */
+  .gridContainer {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
-  .container {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  .wrapper {
     padding: 1rem;
   }
 
+  .gridContainer {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  /* List view mobile adjustments */
+  .listHeaderRow {
+    display: none;
+  }
+
+  /* Hide header on mobile */
+
+  .listRow {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .colName,
+  .colEmail,
+  .colMessage,
+  .colDate {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+  }
+
+  .colEmail {
+    display: flex;
+    font-size: 0.85rem;
+  }
+
+  .colDate {
+    font-size: 0.75rem;
+    color: #999;
+    justify-content: flex-end;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding-top: 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  :global(.dark) .colDate {
+    border-top-color: rgba(255, 255, 255, 0.05);
+  }
+
+  /* Modal responsive (keep existing) */
   .modalContent {
     border-radius: 20px;
     max-height: 95vh;
@@ -556,6 +814,12 @@
 }
 
 @media (max-width: 480px) {
+
+  /* On very small screens, force card grid to 1 column */
+  .gridContainer {
+    grid-template-columns: 1fr;
+  }
+
   .card {
     border-radius: 12px;
   }
@@ -603,6 +867,7 @@
     text-align: left;
   }
 
+  /* Modal tiny screens */
   .modalHeader {
     flex-direction: column;
     align-items: flex-start;
