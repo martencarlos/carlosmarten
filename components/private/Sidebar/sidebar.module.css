@@ -10,7 +10,7 @@
   flex-direction: column;
   transition: all 0.2s ease-in-out;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 100;
+  z-index: 100000;
 }
 
 /* Dark mode compatibility */
@@ -25,7 +25,7 @@
   position: fixed;
   top: 1rem;
   left: 1rem;
-  z-index: 101;
+  z-index: 100001;
   background: var(--background);
   border: none;
   border-radius: 50%;
