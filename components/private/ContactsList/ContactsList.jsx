@@ -1,20 +1,89 @@
 // Path: components/private/ContactsList/ContactsList.jsx
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   FaUser,
   FaEnvelope,
   FaComment,
   FaTimes,
   FaClock,
-  FaThLarge, // Icon for Grid/Card view
-  FaList     // Icon for List view
+  FaThLarge,
+  FaList,
+  FaSort,
+  FaSortUp,
+  FaSortDown
 } from "react-icons/fa";
 import styles from "./contactslist.module.css";
 
 export default function ContactsList({ contacts }) {
   const [selectedContact, setSelectedContact] = useState(null);
-  const [viewMode, setViewMode] = useState("card"); // 'card' or 'list'
+  const [viewMode, setViewMode] = useState("card");
+  // Sorting state: default to newest first
+  const [sortConfig, setSortConfig] = useState({ key: 'created_at', direction: 'desc' });
+  const [mounted, setMounted] = useState(false);
+
+  // Initialize view mode from localStorage on client side
+  useEffect(() => {
+    setMounted(true);
+    const savedView = localStorage.getItem('contactsViewMode');
+    if (savedView) {
+      setViewMode(savedView);
+    }
+  }, []);
+
+  const handleViewChange = (mode) => {
+    setViewMode(mode);
+    localStorage.setItem('contactsViewMode', mode);
+  };
+
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  // Sort Logic
+  const sortedContacts = useMemo(() => {
+    if (!contacts) return [];
+
+    let sortableItems = [...contacts];
+    if (sortConfig.key !== null) {
+      sortableItems.sort((a, b) => {
+        let aValue = a[sortConfig.key];
+        let bValue = b[sortConfig.key];
+
+        // Handle Date sorting specifically
+        if (sortConfig.key === 'created_at') {
+          aValue = new Date(aValue).getTime();
+          bValue = new Date(bValue).getTime();
+        }
+        // Handle String sorting (case insensitive)
+        else if (typeof aValue === 'string') {
+          aValue = aValue.toLowerCase();
+          bValue = bValue.toLowerCase();
+        }
+
+        if (aValue < bValue) {
+          return sortConfig.direction === 'asc' ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === 'asc' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableItems;
+  }, [contacts, sortConfig]);
+
+  // Helper to render sort icon
+  const getSortIcon = (columnKey) => {
+    if (sortConfig.key !== columnKey) return <FaSort className={styles.sortIconIdle} />;
+    return sortConfig.direction === 'asc'
+      ? <FaSortUp className={styles.sortIconActive} />
+      : <FaSortDown className={styles.sortIconActive} />;
+  };
 
   if (!contacts) {
     return (
@@ -24,13 +93,11 @@ export default function ContactsList({ contacts }) {
     );
   }
 
-  const openModal = (contact) => {
-    setSelectedContact(contact);
-  };
+  // Prevent hydration mismatch for viewMode
+  if (!mounted) return null;
 
-  const closeModal = () => {
-    setSelectedContact(null);
-  };
+  const openModal = (contact) => setSelectedContact(contact);
+  const closeModal = () => setSelectedContact(null);
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
@@ -63,14 +130,14 @@ export default function ContactsList({ contacts }) {
         <div className={styles.viewToggle}>
           <button
             className={`${styles.toggleBtn} ${viewMode === 'card' ? styles.active : ''}`}
-            onClick={() => setViewMode('card')}
+            onClick={() => handleViewChange('card')}
             aria-label="Card View"
           >
             <FaThLarge />
           </button>
           <button
             className={`${styles.toggleBtn} ${viewMode === 'list' ? styles.active : ''}`}
-            onClick={() => setViewMode('list')}
+            onClick={() => handleViewChange('list')}
             aria-label="List View"
           >
             <FaList />
@@ -78,20 +145,28 @@ export default function ContactsList({ contacts }) {
         </div>
       </div>
 
-      {/* Main Content Container - conditional class based on viewMode */}
+      {/* Main Content Container */}
       <div className={viewMode === 'card' ? styles.gridContainer : styles.listContainer}>
 
-        {/* List Header - Only visible in List Mode */}
+        {/* List Header - Sortable */}
         {viewMode === 'list' && (
           <div className={styles.listHeaderRow}>
-            <div className={styles.colName}>Name</div>
-            <div className={styles.colEmail}>Email</div>
-            <div className={styles.colMessage}>Message Preview</div>
-            <div className={styles.colDate}>Date</div>
+            <div className={`${styles.colName} ${styles.sortableHeader}`} onClick={() => handleSort('name')}>
+              Name {getSortIcon('name')}
+            </div>
+            <div className={`${styles.colEmail} ${styles.sortableHeader}`} onClick={() => handleSort('email')}>
+              Email {getSortIcon('email')}
+            </div>
+            <div className={`${styles.colMessage} ${styles.sortableHeader}`} onClick={() => handleSort('message')}>
+              Message Preview {getSortIcon('message')}
+            </div>
+            <div className={`${styles.colDate} ${styles.sortableHeader}`} onClick={() => handleSort('created_at')}>
+              Date {getSortIcon('created_at')}
+            </div>
           </div>
         )}
 
-        {contacts.map((contact) => (
+        {sortedContacts.map((contact) => (
           <div
             key={contact.id}
             className={viewMode === 'card' ? styles.card : styles.listRow}
@@ -104,7 +179,7 @@ export default function ContactsList({ contacts }) {
               }
             }}
           >
-            {/* --- Render logic for Card View --- */}
+            {/* --- CARD VIEW --- */}
             {viewMode === 'card' ? (
               <>
                 <div className={styles.cardHeader}>
@@ -134,7 +209,7 @@ export default function ContactsList({ contacts }) {
                 </div>
               </>
             ) : (
-              /* --- Render logic for List View --- */
+              /* --- LIST VIEW --- */
               <>
                 <div className={styles.colName}>
                   <div className={styles.listAvatar}>{getInitials(contact.name)}</div>
@@ -156,56 +231,35 @@ export default function ContactsList({ contacts }) {
       {/* Modal (Unchanged) */}
       {selectedContact && (
         <div className={styles.modalOverlay} onClick={closeModal}>
-          <div
-            className={styles.modalContent}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className={styles.closeButton}
-              onClick={closeModal}
-              aria-label="Close modal"
-            >
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.closeButton} onClick={closeModal} aria-label="Close modal">
               <FaTimes />
             </button>
-
             <div className={styles.modalHeader}>
-              <div className={styles.modalAvatar}>
-                {getInitials(selectedContact.name)}
-              </div>
+              <div className={styles.modalAvatar}>{getInitials(selectedContact.name)}</div>
               <div className={styles.modalHeaderInfo}>
                 <h2 className={styles.modalTitle}>{selectedContact.name}</h2>
-                <a
-                  href={`mailto:${selectedContact.email}`}
-                  className={styles.modalEmail}
-                >
-                  <FaEnvelope />
-                  {selectedContact.email}
+                <a href={`mailto:${selectedContact.email}`} className={styles.modalEmail}>
+                  <FaEnvelope /> {selectedContact.email}
                 </a>
               </div>
             </div>
-
             <div className={styles.modalBody}>
               <div className={styles.messageSection}>
                 <div className={styles.sectionHeader}>
                   <FaComment className={styles.sectionIcon} />
                   <h3>Message</h3>
                 </div>
-                <div className={styles.messageContent}>
-                  {selectedContact.message}
-                </div>
+                <div className={styles.messageContent}>{selectedContact.message}</div>
               </div>
-
               <div className={styles.metaInfo}>
                 <div className={styles.metaItem}>
                   <FaClock className={styles.metaIcon} />
                   <div className={styles.metaText}>
                     <span className={styles.metaLabel}>Submitted</span>
-                    <span className={styles.metaValue}>
-                      {formatDate(selectedContact.created_at)}
-                    </span>
+                    <span className={styles.metaValue}>{formatDate(selectedContact.created_at)}</span>
                   </div>
                 </div>
-
                 <div className={styles.metaItem}>
                   <div className={styles.metaIcon}>#</div>
                   <div className={styles.metaText}>
@@ -215,14 +269,9 @@ export default function ContactsList({ contacts }) {
                 </div>
               </div>
             </div>
-
             <div className={styles.modalFooter}>
-              <button
-                className={styles.actionButton}
-                onClick={() => window.location.href = `mailto:${selectedContact.email}`}
-              >
-                <FaEnvelope />
-                Reply via Email
+              <button className={styles.actionButton} onClick={() => window.location.href = `mailto:${selectedContact.email}`}>
+                <FaEnvelope /> Reply via Email
               </button>
             </div>
           </div>
