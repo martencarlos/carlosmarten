@@ -1,21 +1,99 @@
 /* components/Navigation/navigation.module.css */
-.desktopSidebar {
-    display: none;
+
+/* --- Base Sidebar Styles (Desktop Default) --- */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 16rem;
+    background-color: var(--background);
+    padding: 1.25rem 0.75rem;
+    border-right: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+    transition: width 0.3s ease, transform 0.3s ease;
+    height: 100%;
+    /* Fill parent flex container */
+    min-height: calc(100vh - 80px);
+    /* Fallback */
+    z-index: 50;
+    flex-shrink: 0;
 }
 
+/* Collapsed State (Desktop) */
+.sidebar.collapsed {
+    width: 4.5rem;
+    padding: 1.25rem 0.5rem;
+}
+
+/* --- Header & Toggle --- */
 .sidebarHeader {
     margin-bottom: 2rem;
-    padding: 0 0.75rem;
+    padding: 0 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 2rem;
 }
 
 .sidebarTitle {
     font-size: 1.25rem;
     font-weight: 600;
     color: var(--foreground);
+    white-space: nowrap;
+    overflow: hidden;
 }
 
+.toggleBtn {
+    background: transparent;
+    border: none;
+    color: var(--foreground);
+    cursor: pointer;
+    font-size: 1.25rem;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.toggleBtn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Mobile Header (Hidden on Desktop) */
+.mobileHeader {
+    display: none;
+    position: fixed;
+    top: 60px;
+    /* Adjust based on your main Navbar height */
+    left: 0;
+    right: 0;
+    height: 50px;
+    background-color: var(--background);
+    border-bottom: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+    align-items: center;
+    padding: 0 1rem;
+    z-index: 40;
+}
+
+.mobileToggleBtn {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--foreground);
+    cursor: pointer;
+    margin-right: 1rem;
+    display: flex;
+}
+
+.mobileTitle {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* --- Navigation Items --- */
 .sidebarNav {
     flex-grow: 1;
+    overflow-x: hidden;
 }
 
 .sidebarList {
@@ -27,21 +105,17 @@
     gap: 0.25rem;
 }
 
-.sidebarItem {
-    margin: 0;
-    padding: 0;
-}
-
 .sidebarLink {
     position: relative;
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 0.5rem 0.75rem;
+    padding: 0.75rem;
     text-decoration: none;
     border-radius: 0.5rem;
     color: var(--foreground);
     transition: all 0.2s ease;
+    white-space: nowrap;
 }
 
 .linkContent {
@@ -49,6 +123,7 @@
     align-items: center;
     gap: 0.75rem;
     z-index: 1;
+    width: 100%;
 }
 
 .sidebarLink:hover {
@@ -73,6 +148,7 @@
 .icon {
     width: 1.25rem;
     height: 1.25rem;
+    flex-shrink: 0;
     color: color-mix(in srgb, var(--foreground) 70%, transparent);
     transition: color 0.2s ease;
 }
@@ -83,96 +159,110 @@
 
 .label {
     font-size: 0.9375rem;
+    transition: opacity 0.2s;
 }
 
+.hiddenLabel {
+    display: none;
+    opacity: 0;
+}
+
+/* Center icons when collapsed */
+.collapsed .sidebarLink {
+    justify-content: center;
+    padding: 0.75rem 0;
+}
+
+.collapsed .linkContent {
+    justify-content: center;
+    gap: 0;
+}
+
+/* --- Footer --- */
 .sidebarFooter {
     margin-top: auto;
-    padding: 1rem 0.75rem;
-}
-
-/* Mobile Navigation */
-.mobileNav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: var(--background);
-    border-top: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
-    z-index: 50;
-}
-
-.mobileList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 4rem;
-
-}
-
-.mobileItem {
-    flex: 1;
-}
-
-.mobileLink {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.25rem;
-    padding: 0.5rem;
-    text-decoration: none;
-    color: color-mix(in srgb, var(--foreground) 70%, transparent);
-    transition: color 0.2s ease;
-}
-
-.mobileLink.active {
-    color: var(--third-color);
-}
-
-.mobileIcon {
-    width: 1.5rem;
-    height: 1.5rem;
-}
-
-.mobileLabel {
-    font-size: 0.75rem;
-    font-weight: 500;
-}
-
-/* Desktop Styles */
-@media (min-width: 768px) {
-    .desktopSidebar {
-        display: flex;
-        flex-direction: column;
-        width: 16rem;
-        /* height: calc(100vh - 200px); */
-        background-color: var(--background);
-        padding: 1.25rem 0.75rem;
-        border-right: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
-    }
-
-    .mobileNav {
-        display: none;
-    }
+    padding: 1rem 0;
+    overflow: hidden;
 }
 
 .logoutButton {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  background-color: var(--logout-bg-color, #e63946); /* Destructive action color */
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-  text-align: center;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--logout-bg-color, #e63946);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .logoutButton:hover {
-  background-color: var(--logout-hover-color, #d62839);
-  transform: translateY(-1px);
+    background-color: var(--logout-hover-color, #d62839);
+}
+
+.collapsedLogout {
+    padding: 0.75rem 0.25rem;
+    font-size: 0.75rem;
+}
+
+/* --- Responsive (Mobile) --- */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 16rem;
+        transform: translateX(-100%);
+        /* Hidden by default */
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        border-right: none;
+    }
+
+    .sidebar.mobileOpen {
+        transform: translateX(0);
+        /* Slide in */
+    }
+
+    .mobileHeader {
+        display: flex;
+        /* Adjust top if you have a main navbar */
+        top: 0;
+        position: sticky;
+    }
+
+    /* Hide desktop toggle on mobile if you prefer, or reuse it to close */
+    .sidebarHeader .toggleBtn {
+        margin-left: auto;
+    }
+
+    /* Overlay */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 45;
+        backdrop-filter: blur(2px);
+    }
+}
+
+/* Dark Mode Tweaks */
+:global(.dark) .sidebar {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global(.dark) .mobileHeader {
+    border-color: rgba(255, 255, 255, 0.1);
+    background-color: #1a1a1a;
+}
+
+:global(.dark) .toggleBtn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
