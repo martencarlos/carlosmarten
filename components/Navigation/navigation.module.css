@@ -198,15 +198,26 @@
     transition: background-color 0.2s ease, transform 0.2s ease;
     white-space: nowrap;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .logoutButton:hover {
     background-color: var(--logout-hover-color, #d62839);
 }
 
+/* Style for the logout button when collapsed */
 .collapsedLogout {
-    padding: 0.75rem 0.25rem;
-    font-size: 0.75rem;
+    padding: 0.75rem;
+    width: 100%;
+    /* Ensure it fills the collapsed width */
+    justify-content: center;
+}
+
+.logoutIcon {
+    font-size: 1.25rem;
+    /* Match size of nav icons */
 }
 
 /* --- Responsive (Mobile) --- */

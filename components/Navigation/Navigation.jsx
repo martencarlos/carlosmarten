@@ -10,6 +10,7 @@ import {
   RiMenuFoldLine,
   RiMenuUnfoldLine,
   RiMenuLine,
+  RiLogoutBoxLine, // Import the logout icon
 } from "react-icons/ri";
 import SignOutButton from "@components/(auth)/signout-button/signout-button";
 import styles from "./navigation.module.css";
@@ -126,8 +127,15 @@ const Navigation = () => {
         </nav>
 
         <footer className={styles.sidebarFooter}>
-          <SignOutButton className={`${styles.logoutButton} ${isCollapsed ? styles.collapsedLogout : ""}`}>
-            {isCollapsed ? "Log out" : "Sign Out"}
+          <SignOutButton
+            className={`${styles.logoutButton} ${isCollapsed ? styles.collapsedLogout : ""}`}
+            title="Sign Out"
+          >
+            {isCollapsed ? (
+              <RiLogoutBoxLine className={styles.logoutIcon} />
+            ) : (
+              "Sign Out"
+            )}
           </SignOutButton>
         </footer>
       </aside>
