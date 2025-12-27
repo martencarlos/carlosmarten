@@ -9,75 +9,24 @@ import OptimizedImage from "@components/OptimizedImage/OptimizedImage";
 const projects = [
   {
     id: 1,
-    slug: "holiday-booking",
-    name: "Holiday booking platform",
-    image: "/images/feature_holiday.png",
-    url: "https://tadelfia.carlosmarten.com/",
-    external: true, // Mark as external for iframe preview
+    slug: "ophthalmology",
+    name: "[2025] Ophthalmology website",
+    image: "/images/ofthalmology_featureimage.png",
+    url: "https://www.clinicaoftalmologicamendivil.com/",
+    external: true,
   },
   {
     id: 2,
-    slug: "ophthalmology",
-    name: "Ophthalmology website",
-    image: "/images/ofthalmology_featureimage.png",
-    url: "https://bookingengine.carlosmarten.com/",
-    external: true,
-  },
-  {
-    id: 3,
-    slug: "ecommerce",
-    name: "E-commerce site",
-    image: "/images/feature_webframe.png",
-    url: "https://webframe.carlosmarten.com/",
-    external: true,
-  },
-  {
-    id: 4,
-    slug: "blog",
-    name: "Blog website",
-    image: "/images/feature_blog.png",
-    url: "https://project-blog.carlosmarten.com/",
-    external: true,
-  },
-  {
-    id: 5,
-    slug: "wordpress",
-    name: "Wordpress pages",
-    image:
-      "https://rocketmedia.b-cdn.net/wp-content/uploads/2021/11/wordpress-ventajas-banner.png",
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/wordpress/`,
-    external: false, // Internal route
-  },
-  {
-    id: 6,
-    slug: "cloud-storage",
-    name: "Cloud Storage",
-    image:
-      "https://www.hkcert.org/f/guideline/218189/1200c630/hkcert-Cloud%20Storage%20Security%20banner-1860x1046.jpg",
-    url: `https://storage.carlosmarten.com/`,
-    external: true,
-  },
-  {
-    id: 7,
-    slug: "tetris",
-    name: "Tetris",
-    image:
-      "https://www.jotdown.es/wp-content/uploads/2018/05/oie_16163755ZTTU8YqCPO.jpg",
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/games/tetris/`,
-    external: false, // Internal route
-  },
-  {
-    id: 8,
-    slug: "project-timeline",
-    name: "Project Management",
-    image:
-      "https://wdp.carlosmarten.com/wp-content/uploads/2025/04/project-management.jpeg",
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/business/project-timeline/`,
-    external: false, // Internal route
-  },
+    slug: "holiday-booking",
+    name: "[2024] Holiday booking platform",
+    image: "/images/feature_holiday.png",
+    url: "https://tadelfia.carlosmarten.com/",
+    external: true, // Mark as external for iframe preview
+  }
+
 ];
 
-const ProjectCard = ({ project, onNavigate }) => {
+const ProjectCard = ({ project }) => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
