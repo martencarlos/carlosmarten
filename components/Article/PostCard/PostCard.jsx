@@ -1,4 +1,4 @@
-// Path: components/Article/PostCard/PostCard.jsx
+// components/Article/PostCard/PostCard.jsx
 "use client";
 
 import Link from "next/link";
@@ -50,9 +50,8 @@ export default function PostCard({ post }) {
 
   return (
     <div
-      className={`${styles.card} ${
-        resolvedTheme === "dark" ? styles.dark : ""
-      } ${isPending ? styles.loading : ""}`}
+      className={`${styles.card} ${resolvedTheme === "dark" ? styles.dark : ""
+        } ${isPending ? styles.loading : ""}`}
     >
       {post._embedded && featuredMediaLink && (
         <div className={styles.card_image_wrapper}>
@@ -93,7 +92,37 @@ export default function PostCard({ post }) {
       </div>
       {isPending && (
         <div className={styles.loadingOverlay}>
-          <div className={styles.spinner}></div>
+          {/* Animated ocean waves */}
+          <div className={styles.oceanWaves}>
+            <div className={styles.wave} data-wave="1"></div>
+            <div className={styles.wave} data-wave="2"></div>
+            <div className={styles.wave} data-wave="3"></div>
+            <div className={styles.wave} data-wave="4"></div>
+            <div className={styles.wave} data-wave="5"></div>
+          </div>
+
+          {/* Water droplets */}
+          <div className={styles.dropletsContainer}>
+            <div className={styles.droplet}></div>
+            <div className={styles.droplet}></div>
+            <div className={styles.droplet}></div>
+            <div className={styles.droplet}></div>
+            <div className={styles.droplet}></div>
+            <div className={styles.droplet}></div>
+          </div>
+
+          {/* Center content */}
+          <div className={styles.centerContent}>
+            <div className={styles.loadingTextWrapper}>
+              <span className={styles.loadingChar}>L</span>
+              <span className={styles.loadingChar}>o</span>
+              <span className={styles.loadingChar}>a</span>
+              <span className={styles.loadingChar}>d</span>
+              <span className={styles.loadingChar}>i</span>
+              <span className={styles.loadingChar}>n</span>
+              <span className={styles.loadingChar}>g</span>
+            </div>
+          </div>
         </div>
       )}
     </div>
