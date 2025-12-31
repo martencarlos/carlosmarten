@@ -1,7 +1,7 @@
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "@providers/theme-provider";
-import { GoogleAnalytics } from "@next/third-parties/google"; 
+import CookieConsent from "@components/CookieConsent/CookieConsent";
 import "./globals.css";
 
 export const metadata = {
@@ -37,7 +37,7 @@ export default function RootLayout({ children }) {
           {children}
         </ThemeProvider>
         <SpeedInsights />
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
+        <CookieConsent gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
         <Analytics />
       </body>
     </html>
