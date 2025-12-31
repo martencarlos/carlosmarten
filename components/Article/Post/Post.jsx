@@ -4,20 +4,21 @@
 import styles from './post.module.css';
 
 import Link from 'next/link';
-import {FaClock, FaUser, FaCalendar, FaChevronUp} from 'react-icons/fa';
-import {useTheme} from 'next-themes';
-import {useEffect, useState} from 'react';
+import { FaClock, FaUser, FaCalendar, FaChevronUp, FaEye } from 'react-icons/fa';
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 import OptimizedImage from '@components/OptimizedImage/OptimizedImage';
 import AudioPlayer from '@components/Article/AudioPlayer/AudioPlayer';
+import { incrementView } from '@actions/viewCounter';
 
-function calculateReadingTime (text) {
+function calculateReadingTime(text) {
   const wordsPerMinute = 200;
-  const wordCount = text.split (/\s+/).length;
-  return Math.ceil (wordCount / wordsPerMinute);
+  const wordCount = text.split(/\s+/).length;
+  return Math.ceil(wordCount / wordsPerMinute);
 }
 
 const scrollToTop = () => {
-  window.scrollTo ({top: 0, behavior: 'smooth'});
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 // Helper function to decode HTML entities
@@ -28,46 +29,65 @@ function decodeHTMLEntities(text) {
   return textArea.value;
 }
 
-export default function Post({post}) {
-  const {resolvedTheme} = useTheme ();
-  const [scrollProgress, setScrollProgress] = useState (0);
-  const [time, setTime] = useState (0);
-  const [mounted, setMounted] = useState (false);
+export default function Post({ post, initialViews = 0, slug }) {
+  const { resolvedTheme } = useTheme();
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [time, setTime] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const [decodedTitle, setDecodedTitle] = useState(post.title);
+  const [viewCount, setViewCount] = useState(initialViews);
+
+  // Handle view increment
+  useEffect(() => {
+    // We put this in a timeout to ensure it's a real client mount and not just a crawler glance
+    const timer = setTimeout(async () => {
+      try {
+        if (slug) {
+          await incrementView(slug);
+          // Optimistically update the UI
+          setViewCount(prev => parseInt(prev) + 1);
+        }
+      } catch (err) {
+        console.error("Failed to increment view count", err);
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [slug]);
 
   // Handle mounting and ensure scroll is at top
-  useEffect (() => {
+  useEffect(() => {
     // Force scroll to top on mount
-    window.scrollTo (0, 0);
-    setMounted (true);
-    
+    window.scrollTo(0, 0);
+    setMounted(true);
+
     // Decode the title
     setDecodedTitle(decodeHTMLEntities(post.title));
 
     // Additional scroll reset after a short delay to handle any race conditions
-    const scrollTimeout = setTimeout (() => {
-      window.scrollTo (0, 0);
+    const scrollTimeout = setTimeout(() => {
+      window.scrollTo(0, 0);
     }, 100);
 
-    return () => clearTimeout (scrollTimeout);
+    return () => clearTimeout(scrollTimeout);
   }, [post.title]);
 
-  useEffect (() => {
+  useEffect(() => {
     const handleScroll = () => {
       const totalHeight =
         document.documentElement.scrollHeight - window.innerHeight;
       const progress = window.scrollY / totalHeight * 100;
-      setScrollProgress (progress);
+      setScrollProgress(progress);
     };
 
-    window.addEventListener ('scroll', handleScroll);
-    return () => window.removeEventListener ('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect (
+  useEffect(
     () => {
-      const time = calculateReadingTime (post.content);
-      setTime (time);
+      const time = calculateReadingTime(post.content);
+      setTime(time);
     },
     [post.content]
   );
@@ -88,7 +108,7 @@ export default function Post({post}) {
       >
         <div
           className={styles.progressBar}
-          style={{width: `${scrollProgress}%`}}
+          style={{ width: `${scrollProgress}%` }}
         />
         <article className={styles.article}>
           {post.featuredImage &&
@@ -103,13 +123,13 @@ export default function Post({post}) {
                 className={styles.featuredImage}
                 placeholder="blur"
                 blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx0fHRsdHSIeHx8dIigjJCUmJSQkIistLjIyLS4rNTs7OjU+QUJBQkFCQUFBQUFBQUH/2wBDABUXFx4ZHiMeHiNBLSUtQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUH/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-                style={{objectFit: 'cover'}}
+                style={{ objectFit: 'cover' }}
               />
               <div className={styles.backButtonOverlay}>
                 <button
                   onClick={() => {
                     if (window.history.length > 1) {
-                      window.history.back ();
+                      window.history.back();
                     } else {
                       window.location.href = '/blog';
                     }
@@ -135,7 +155,7 @@ export default function Post({post}) {
             <div className={styles.categories}>
               <span className={styles.categoryname}>Categories</span>
               <div className={styles.pillContainer}>
-                {post.categories.map ((category, index) => (
+                {post.categories.map((category, index) => (
                   <Link
                     key={index}
                     href={`/categories/${category}`}
@@ -153,6 +173,14 @@ export default function Post({post}) {
                   {post.author}
                 </span>
               </div>
+
+              <div className={styles.timeInfo} style={{ marginRight: '15px' }}>
+                <span className={styles.metaLabel}>
+                  <FaEye aria-hidden="true" className={styles.icon} />
+                  {viewCount} views
+                </span>
+              </div>
+
               <div className={styles.timeInfo}>
                 <span className={styles.metaLabel}>
                   <FaClock aria-hidden="true" className={styles.icon} />
@@ -162,7 +190,7 @@ export default function Post({post}) {
               <div className={styles.dateInfo}>
                 <span className={styles.metaLabel}>
                   <FaCalendar aria-hidden="true" className={styles.icon} />
-                  {post.create_date.toLocaleDateString ('es-ES')}
+                  {post.create_date.toLocaleDateString('es-ES')}
                 </span>
               </div>
             </div>
@@ -172,7 +200,7 @@ export default function Post({post}) {
 
           <div
             className={styles.content}
-            dangerouslySetInnerHTML={{__html: post.content}}
+            dangerouslySetInnerHTML={{ __html: post.content }}
           />
           <button
             className={styles.scrollToTopButton}

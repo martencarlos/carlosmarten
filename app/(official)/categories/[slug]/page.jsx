@@ -6,6 +6,7 @@ import Card from "components/Article/PostCard/PostCard";
 import PostListSkeleton from "@components/Article/PostList/PostListSkeleton";
 const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
 import { useParams } from "next/navigation";
+import { getViewsCount } from "@actions/viewCounter";
 
 async function getCategories() {
   const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`, {
@@ -47,6 +48,7 @@ export default function Categories() {
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [viewCounts, setViewCounts] = useState({});
 
   const category = decodeURIComponent(params.slug);
 
@@ -54,8 +56,15 @@ export default function Categories() {
     async function fetchData() {
       const categoriesArray = await getCategories();
       const categoryId = await getCategoryIdByName(categoriesArray, category);
-      const posts = await getCategoryPosts(categoryId);
-      setPosts(posts);
+
+      // Fetch posts and views in parallel
+      const [postsData, viewsData] = await Promise.all([
+        getCategoryPosts(categoryId),
+        getViewsCount() // Server action called from client
+      ]);
+
+      setPosts(postsData);
+      setViewCounts(viewsData);
       setLoading(false);
     }
     fetchData();
@@ -83,7 +92,7 @@ export default function Categories() {
         {posts &&
           posts.map((post) => (
             <li className={styles.li} key={post.id}>
-              <Card post={post} />
+              <Card post={post} views={viewCounts[post.slug] || 0} />
             </li>
           ))}
       </ul>

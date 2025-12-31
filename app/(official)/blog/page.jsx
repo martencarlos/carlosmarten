@@ -4,6 +4,7 @@ import BlogContent from "components/Blog/BlogContent/BlogContent";
 import PushNotification from "@components/PushNotification/PushNotification";
 import { Suspense } from "react";
 import PostListSkeleton from "@components/Article/PostList/PostListSkeleton";
+import { getViewsCount } from "@actions/viewCounter";
 
 // Enable streaming and ISR
 export const dynamic = 'force-dynamic';
@@ -11,7 +12,7 @@ export const revalidate = 30; // Revalidate every 30 seconds
 
 async function getPosts() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
-  
+
   try {
     const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/posts?_embed`, {
       next: { revalidate: 30 },
@@ -19,11 +20,11 @@ async function getPosts() {
         'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=60',
       }
     });
-    
+
     if (!res.ok) {
       throw new Error("Failed to fetch posts");
     }
-    
+
     return res.json();
   } catch (error) {
     console.error("Error fetching posts:", error);
@@ -33,7 +34,7 @@ async function getPosts() {
 
 async function getCategories() {
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
-  
+
   try {
     const res = await fetch(`https://${siteUrl}/wp-json/wp/v2/categories`, {
       next: { revalidate: 300 }, // Categories change less frequently
@@ -41,11 +42,11 @@ async function getCategories() {
         'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
       }
     });
-    
+
     if (!res.ok) {
       throw new Error("Failed to fetch categories");
     }
-    
+
     return res.json();
   } catch (error) {
     console.error("Error fetching categories:", error);
@@ -61,9 +62,13 @@ export const metadata = {
 
 // Separate component for async data
 async function BlogData() {
-  const [posts, categories] = await Promise.all([getPosts(), getCategories()]);
-  
-  return <BlogContent posts={posts} categories={categories} />;
+  const [posts, categories, viewCounts] = await Promise.all([
+    getPosts(),
+    getCategories(),
+    getViewsCount()
+  ]);
+
+  return <BlogContent posts={posts} categories={categories} viewCounts={viewCounts} />;
 }
 
 export default async function Blog() {
@@ -84,7 +89,7 @@ export default async function Blog() {
         </p>
         <PushNotification />
       </div>
-      
+
       <Suspense fallback={<PostListSkeleton />}>
         <BlogData />
       </Suspense>

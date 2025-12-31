@@ -4,6 +4,7 @@ import PostList from "components/Article/PostList/PostList";
 import Hero from "components/Hero/Hero";
 import { Suspense } from "react";
 import PostListSkeleton from "@components/Article/PostList/PostListSkeleton";
+import { getViewsCount } from "@actions/viewCounter";
 
 // Enable streaming and ISR
 export const dynamic = 'force-dynamic';
@@ -18,11 +19,11 @@ async function getPosts() {
         'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
       }
     });
-    
+
     if (!res.ok) {
       throw new Error(`Failed to fetch posts. Status: ${res.status}`);
     }
-    
+
     return res.json();
   } catch (error) {
     console.error("Error fetching posts:", error);
@@ -38,13 +39,17 @@ export const metadata = {
 
 // Separate component for async post data
 async function PostsData() {
-  const posts = await getPosts();
-  return <PostList posts={posts} selectedCategory={null} searchQuery={null} />;
+  const [posts, viewCounts] = await Promise.all([
+    getPosts(),
+    getViewsCount()
+  ]);
+
+  return <PostList posts={posts} viewCounts={viewCounts} selectedCategory={null} searchQuery={null} />;
 }
 
 export default async function Home() {
   console.log("Home page loaded");
-  
+
   return (
     <main className={styles.main}>
       <Hero />

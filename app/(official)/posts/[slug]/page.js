@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import { Suspense } from "react";
 import PostSkeleton from "components/Article/Post/PostSkeleton";
 import { sql } from "@vercel/postgres";
+import { getSinglePostViewCount } from "@actions/viewCounter";
 
 // Enable streaming and ISR
 export const dynamic = 'force-dynamic';
@@ -13,7 +14,7 @@ export const revalidate = 60; // Revalidate every 60 seconds
 async function getPost(slug) {
   console.log("fetching post loaded");
   const siteUrl = process.env.NEXT_PUBLIC_WP_URL;
-  
+
   try {
     const res = await fetch(
       `https://${siteUrl}/wp-json/wp/v2/posts?slug=${slug}&_embed`,
@@ -70,7 +71,7 @@ async function getPost(slug) {
 // Add metadata generation for better SEO and loading
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  
+
   try {
     const post = await getPost(slug);
     return {
@@ -88,7 +89,12 @@ export default async function BlogPost({ params }) {
   console.log("BlogPost loaded");
 
   const { slug } = await params;
-  const post = await getPost(slug);
+
+  // Fetch post and views in parallel
+  const [post, initialViews] = await Promise.all([
+    getPost(slug),
+    getSinglePostViewCount(slug)
+  ]);
 
   if (!post) {
     return <div>Post not found</div>;
@@ -97,7 +103,7 @@ export default async function BlogPost({ params }) {
   return (
     <div className={styles.container}>
       <Suspense fallback={<PostSkeleton />}>
-        <Post post={post} />
+        <Post post={post} initialViews={initialViews} slug={slug} />
       </Suspense>
     </div>
   );

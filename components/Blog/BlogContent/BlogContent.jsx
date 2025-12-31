@@ -5,7 +5,7 @@ import PostList from "components/Article/PostList/PostList";
 import CategoryList from "components/Blog/CategoryList/CategoryList";
 import SearchBar from "components/Blog/SearchBar/SearchBar";
 
-export default function Blog({ posts, categories }) {
+export default function BlogContent({ posts, categories, viewCounts }) {
   console.log("Blog Content loaded");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,6 +22,7 @@ export default function Blog({ posts, categories }) {
         posts={posts}
         selectedCategory={selectedCategory}
         searchQuery={searchQuery}
+        viewCounts={viewCounts}
       />
     </>
   );

@@ -6,7 +6,7 @@ import styles from "./postlist.module.css";
 
 const POSTS_PER_PAGE = 6; // Adjust this number as needed
 
-export default function PostList({ posts, selectedCategory, searchQuery }) {
+export default function PostList({ posts, selectedCategory, searchQuery, viewCounts = {} }) {
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -108,7 +108,7 @@ export default function PostList({ posts, selectedCategory, searchQuery }) {
           <ul className={styles.ul}>
             {currentPosts.map((post) => (
               <li className={styles.li} key={post.id}>
-                <Card post={post} />
+                <Card post={post} views={viewCounts[post.slug] || 0} />
               </li>
             ))}
           </ul>
@@ -116,9 +116,8 @@ export default function PostList({ posts, selectedCategory, searchQuery }) {
           {totalPages > 1 && (
             <div className={styles.pagination}>
               <button
-                className={`${styles.pageButton} ${
-                  currentPage === 1 ? styles.disabled : ""
-                }`}
+                className={`${styles.pageButton} ${currentPage === 1 ? styles.disabled : ""
+                  }`}
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
               >
@@ -128,9 +127,8 @@ export default function PostList({ posts, selectedCategory, searchQuery }) {
               {getPageNumbers().map((number) => (
                 <button
                   key={number}
-                  className={`${styles.pageButton} ${
-                    currentPage === number ? styles.active : ""
-                  }`}
+                  className={`${styles.pageButton} ${currentPage === number ? styles.active : ""
+                    }`}
                   onClick={() => handlePageChange(number)}
                 >
                   {number}
@@ -138,9 +136,8 @@ export default function PostList({ posts, selectedCategory, searchQuery }) {
               ))}
 
               <button
-                className={`${styles.pageButton} ${
-                  currentPage === totalPages ? styles.disabled : ""
-                }`}
+                className={`${styles.pageButton} ${currentPage === totalPages ? styles.disabled : ""
+                  }`}
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
               >

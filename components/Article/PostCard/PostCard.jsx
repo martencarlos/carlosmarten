@@ -7,6 +7,7 @@ import styles from "./postcard.module.css";
 import { useTheme } from "next-themes";
 import OptimizedImage from "@components/OptimizedImage/OptimizedImage";
 import { useEffect, useState, useTransition } from "react";
+import { FaEye } from "react-icons/fa";
 
 // Helper function to decode HTML entities
 function decodeHTMLEntities(text) {
@@ -16,7 +17,7 @@ function decodeHTMLEntities(text) {
   return textArea.value;
 }
 
-export default function PostCard({ post }) {
+export default function PostCard({ post, views = 0 }) {
   console.log("Post Card loaded");
   const { resolvedTheme } = useTheme();
   const router = useRouter();
@@ -84,9 +85,14 @@ export default function PostCard({ post }) {
             ))}
           </div>
           <div className={styles.card_meta}>
-            <p className={styles.card_date} suppressHydrationWarning>
-              Created on {createDate}
-            </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px', justifyContent: 'flex-end', width: '100%' }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: '#888' }} title={`${views} views`}>
+                <FaEye /> {views}
+              </span>
+              <p className={styles.card_date} suppressHydrationWarning>
+                Created on {createDate}
+              </p>
+            </div>
           </div>
         </div>
       </div>
