@@ -405,11 +405,15 @@
 .card_tag:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: var(--third-color);
-  color: var(--background);
+  color: white;
 }
 
 .card.dark .card_tag {
   background-color: var(--third-color);
+}
+
+.card.dark .card_tag:hover {
+  background-color: #1c4c87;
 }
 
 /* Hover effect for the card */
