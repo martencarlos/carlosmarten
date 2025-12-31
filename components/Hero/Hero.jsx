@@ -1,7 +1,6 @@
 "use client";
 
-// import { motion } from "framer-motion";
-import Image from "next/image";
+import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 import styles from "./hero.module.css";
 import { useState, useEffect } from "react";
@@ -9,8 +8,6 @@ import OptimizedImage from "@components/OptimizedImage/OptimizedImage";
 
 const Hero = () => {
   const { theme } = useTheme();
-  console.log("Hero component loaded");
-
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -25,21 +22,43 @@ const Hero = () => {
     <div
       className={`${styles.heroSection} ${theme === "dark" ? styles.dark : ""}`}
     >
+      <motion.div
+        className={styles.imageContainer}
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        {/* The floating animation logic using framer-motion */}
+        <motion.div
+          animate={{ y: [-15, 5, -15] }} // Subtle vertical float
+          transition={{
+            repeat: Infinity,
+            duration: 6,
+            ease: "easeInOut"
+          }}
+          className={styles.imageWrapper}
+        >
+          {/* The blurred gradient blob behind */}
+          <div className={styles.imageBackdrop} />
 
-      <div className={styles.imageContainer}>
-   
-        <OptimizedImage
-          src="/images/me.jpeg"
-          alt="Hero Image"
-          priority
-          width={400}
-          height={400}
-          className={styles.roundedImage}
-        />
-      </div>
-      <br />
+          {/* The image itself, styled as a blob via CSS */}
+          <OptimizedImage
+            src="/images/me.jpeg"
+            alt="Carlos Marten"
+            priority
+            width={340}
+            height={340}
+            className={styles.heroImage}
+          />
+        </motion.div>
+      </motion.div>
 
-      <div className={styles.textContainer}>
+      <motion.div
+        className={styles.textContainer}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+      >
         <h3 className={styles.title}>
           Interested in Business Technology, Design, Projects and News?
         </h3>
@@ -60,8 +79,7 @@ const Hero = () => {
           technology. Join me as we explore new ideas and bring innovative
           concepts to life!
         </p>
-      </div>
-      {/*  </motion.div>*/}
+      </motion.div>
     </div>
   );
 };
