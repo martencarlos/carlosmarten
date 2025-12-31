@@ -1,0 +1,101 @@
+/* components/Hero/HeroSkeleton.module.css  */
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    position: relative;
+    min-height: 467px;
+    gap: 60px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.imageWrapper {
+    width: 340px;
+    height: 340px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.imageSkeleton {
+    width: 100%;
+    height: 100%;
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.textContainer {
+    max-width: 550px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.titleSkeleton {
+    height: 60px;
+    width: 90%;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.paragraphSkeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.line {
+    height: 16px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Dark mode support using global class selector */
+:global(.dark) .imageSkeleton,
+:global(.dark) .titleSkeleton,
+:global(.dark) .line {
+    background: linear-gradient(90deg, #2a2a2a 25%, #333 50%, #2a2a2a 75%);
+    background-size: 200% 100%;
+}
+
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+        padding: 40px 20px;
+        gap: 30px;
+    }
+
+    .imageWrapper {
+        width: 280px;
+        height: 280px;
+    }
+
+    .textContainer {
+        align-items: center;
+    }
+
+    .titleSkeleton {
+        width: 100%;
+    }
+}

@@ -1,3 +1,4 @@
+// components / Hero / Hero.jsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -5,6 +6,7 @@ import { useTheme } from "next-themes";
 import styles from "./hero.module.css";
 import { useState, useEffect } from "react";
 import OptimizedImage from "@components/OptimizedImage/OptimizedImage";
+import HeroSkeleton from "./HeroSkeleton";
 
 const Hero = () => {
   const { theme } = useTheme();
@@ -15,7 +17,7 @@ const Hero = () => {
   }, []);
 
   if (!mounted) {
-    return null;
+    return <HeroSkeleton />;
   }
 
   return (

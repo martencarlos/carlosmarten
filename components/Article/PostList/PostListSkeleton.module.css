@@ -1,4 +1,4 @@
-/* Path: components/Article/PostList/PostListSkeleton.module.css */
+/* components/Article/PostList/PostListSkeleton.module.css .container { */
 
 .container {
   display: flex;
@@ -24,7 +24,7 @@
   animation: cardPulse 1.5s ease-in-out infinite;
 }
 
-.container.dark .skeletonCard {
+:global(.dark) .skeletonCard {
   background-color: #1a1a1a;
   box-shadow: 0 3px 5px rgba(255, 255, 255, 0.3);
 }
@@ -39,7 +39,7 @@
   flex-shrink: 0;
 }
 
-.container.dark .imageSkeleton {
+:global(.dark) .imageSkeleton {
   background: linear-gradient(90deg, #2a2a2a 25%, #333 50%, #2a2a2a 75%);
   background-size: 200% 100%;
 }
@@ -67,7 +67,7 @@
   border-radius: 4px;
 }
 
-.container.dark .titleLine {
+:global(.dark) .titleLine {
   background: linear-gradient(90deg, #2a2a2a 25%, #333 50%, #2a2a2a 75%);
   background-size: 200% 100%;
 }
@@ -88,7 +88,7 @@
   border-radius: 4px;
 }
 
-.container.dark .excerptLine {
+:global(.dark) .excerptLine {
   background: linear-gradient(90deg, #2a2a2a 25%, #333 50%, #2a2a2a 75%);
   background-size: 200% 100%;
 }
@@ -116,7 +116,7 @@
   border-radius: 12px;
 }
 
-.container.dark .categoryPill {
+:global(.dark) .categoryPill {
   background: linear-gradient(90deg, #2a2a2a 25%, #333 50%, #2a2a2a 75%);
   background-size: 200% 100%;
 }
@@ -130,7 +130,7 @@
   border-radius: 4px;
 }
 
-.container.dark .dateSkeleton {
+:global(.dark) .dateSkeleton {
   background: linear-gradient(90deg, #2a2a2a 25%, #333 50%, #2a2a2a 75%);
   background-size: 200% 100%;
 }
@@ -139,15 +139,19 @@
   0% {
     background-position: -200% 0;
   }
+
   100% {
     background-position: 200% 0;
   }
 }
 
 @keyframes cardPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.9;
   }

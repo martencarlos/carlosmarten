@@ -1,34 +1,9 @@
-// Path: components/Article/PostList/PostListSkeleton.jsx
-"use client";
-
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+//components / Article / PostList / PostListSkeleton.jsx
 import styles from "./PostListSkeleton.module.css";
 
 export default function PostListSkeleton({ count = 6 }) {
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return (
-      <div className={styles.container}>
-        {Array.from({ length: count }).map((_, index) => (
-          <div key={index} className={styles.skeletonCard}></div>
-        ))}
-      </div>
-    );
-  }
-
   return (
-    <div
-      className={`${styles.container} ${
-        resolvedTheme === "dark" ? styles.dark : ""
-      }`}
-    >
+    <div className={styles.container}>
       {Array.from({ length: count }).map((_, index) => (
         <div key={index} className={styles.skeletonCard}>
           {/* Image skeleton */}
