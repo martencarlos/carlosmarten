@@ -1,5 +1,5 @@
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+
+
 import { ThemeProvider } from "@providers/theme-provider";
 import CookieConsent from "@components/CookieConsent/CookieConsent";
 import "./globals.css";
@@ -36,9 +36,7 @@ export default function RootLayout({ children }) {
         <ThemeProvider>
           {children}
         </ThemeProvider>
-        <SpeedInsights />
         <CookieConsent gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
-        <Analytics />
       </body>
     </html>
   );
