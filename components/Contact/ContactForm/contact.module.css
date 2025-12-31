@@ -4,7 +4,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Reduced min-height slightly to help centering on smaller vertical screens */
   min-height: calc(100vh - 160px);
   padding: 20px;
   width: 100%;
@@ -13,12 +12,14 @@
 .form {
   padding: 0;
   width: 100%;
-  /* Slightly narrower for a cleaner vertical rhythm */
   max-width: 450px;
   background: var(--background);
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  /* Be careful with overflow: hidden if tooltips go outside boundaries, but here they are inside container */
+  /* If tooltip gets cut off, remove overflow: hidden or increase padding top of container */
+  overflow: visible;
   transition: all 0.3s ease;
 }
 
@@ -28,14 +29,14 @@
 
 .formHeader {
   background: linear-gradient(135deg, var(--third-color), var(--fourth-color));
-  /* Significantly reduced padding */
   padding: 1.25rem 1.5rem;
   text-align: center;
   color: white;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
 .title {
-  /* Smaller title */
   font-size: 1.5rem;
   margin: 0 0 0.25rem 0;
   font-weight: 700;
@@ -51,14 +52,12 @@
 }
 
 .formBody {
-  /* Tighter body padding */
   padding: 1.25rem 1.5rem;
 }
 
 .row {
   display: grid;
   grid-template-columns: 1fr;
-  /* Reduced gap between stacked items */
   gap: 0.75rem;
   margin-bottom: 0.75rem;
 }
@@ -66,9 +65,10 @@
 .formGroup {
   display: flex;
   flex-direction: column;
-  /* Tighter gap between label and input */
   gap: 0.25rem;
   margin-bottom: 0.5rem;
+  position: relative;
+  /* Context for z-index */
 }
 
 .row .formGroup {
@@ -90,13 +90,19 @@
   font-size: 0.85rem;
 }
 
+/* Wrapper to position the icon and tooltip relative to the input */
+.inputWrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
 .input,
 .textarea {
   width: 100%;
-  /* Reduced vertical padding for slimmer inputs */
   padding: 0.5rem 0.75rem;
   border: 1px solid #e5e7eb;
-  /* Thinner border */
   border-radius: 6px;
   font-size: 0.9rem;
   font-family: inherit;
@@ -116,7 +122,6 @@
   border-color: var(--third-color);
   box-shadow: 0 0 0 2px rgba(63, 114, 175, 0.1);
   transform: translateY(0);
-  /* Removed lift effect for compactness */
 }
 
 .input:disabled,
@@ -128,28 +133,68 @@
 
 .inputError {
   border-color: #ef4444 !important;
+  padding-right: 2.5rem;
+  /* Make space for the icon */
 }
 
 .inputError:focus {
   box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1) !important;
 }
 
-.errorText {
+/* Error Icon inside the input */
+.errorIcon {
+  position: absolute;
+  right: 12px;
   color: #ef4444;
+  font-size: 1rem;
+  pointer-events: none;
+  animation: fadeIn 0.2s ease;
+}
+
+/* Tooltip styles */
+.tooltip {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  background-color: #ef4444;
+  color: white;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
   font-size: 0.75rem;
-  font-weight: 500;
-  margin-top: 0.15rem;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  margin-bottom: 8px;
+  z-index: 20;
+  animation: slideUpFade 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+  /* Prevents tooltip from blocking clicks if overlapping */
+}
+
+/* Tooltip Arrow */
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 12px;
+  /* Aligned with the icon */
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #ef4444;
 }
 
 .textarea {
-  /* Much smaller default height */
   min-height: 80px;
   max-height: 180px;
   resize: vertical;
   line-height: 1.4;
+}
+
+/* Adjust icon position for textarea to be at top right */
+.textarea+.errorIcon {
+  top: 12px;
 }
 
 .errorAlert {
@@ -168,7 +213,6 @@
 
 .button {
   width: 100%;
-  /* Reduced padding */
   padding: 0.6rem 1.5rem;
   margin-top: 0.5rem;
   background: linear-gradient(135deg, var(--third-color), var(--fourth-color));
@@ -214,12 +258,6 @@
   animation: spin 0.8s linear infinite;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* Success Card Styles */
 .successCard {
   text-align: center;
@@ -230,18 +268,6 @@
   max-width: 400px;
   width: 100%;
   animation: slideUp 0.5s ease;
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .successIcon {
@@ -256,16 +282,6 @@
   color: white;
   font-size: 1.25rem;
   animation: scaleIn 0.5s ease 0.2s both;
-}
-
-@keyframes scaleIn {
-  from {
-    transform: scale(0);
-  }
-
-  to {
-    transform: scale(1);
-  }
 }
 
 .successTitle {
@@ -302,6 +318,57 @@
 .resetButton:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(63, 114, 175, 0.35);
+}
+
+/* Animations */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Dark Mode Support */
@@ -377,10 +444,8 @@
 
   .input,
   .textarea {
-    /* Slightly larger padding on mobile for touch targets */
     padding: 0.6rem 0.75rem;
     font-size: 16px;
-    /* Prevents zoom on iOS */
   }
 
   .button {

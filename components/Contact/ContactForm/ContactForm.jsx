@@ -2,7 +2,7 @@
 "use client";
 import { useState } from "react";
 import styles from "./contact.module.css";
-import { FaUser, FaEnvelope, FaCommentDots, FaPaperPlane } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaCommentDots, FaPaperPlane, FaExclamationCircle } from "react-icons/fa";
 import { addContact } from "@actions/actions";
 import confetti from "canvas-confetti";
 
@@ -36,7 +36,7 @@ export default function ContactForm() {
 
   const getFieldError = (field) => {
     if (!touched[field]) return null;
-    
+
     if (field === "email" && formData.email && !validateEmail(formData.email)) {
       return "Please enter a valid email address";
     }
@@ -58,11 +58,11 @@ export default function ContactForm() {
       await addContact(formDataObj);
       setSubmitted(true);
       setLoading(false);
-      
+
       // Reset form
       setFormData({ name: "", email: "", message: "" });
       setTouched({ name: false, email: false, message: false });
-      
+
       // Trigger confetti
       confetti({
         particleCount: 150,
@@ -100,7 +100,7 @@ export default function ContactForm() {
           <p className={styles.successText}>
             Thank you for reaching out. I'll get back to you as soon as possible.
           </p>
-          <button 
+          <button
             className={styles.resetButton}
             onClick={() => setSubmitted(false)}
           >
@@ -128,21 +128,26 @@ export default function ContactForm() {
                 <FaUser className={styles.labelIcon} />
                 Name
               </label>
-              <input
-                id="name"
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                onBlur={() => handleBlur("name")}
-                placeholder="John Doe"
-                required
-                className={`${styles.input} ${getFieldError("name") ? styles.inputError : ""}`}
-                disabled={loading}
-              />
-              {getFieldError("name") && (
-                <span className={styles.errorText}>{getFieldError("name")}</span>
-              )}
+              <div className={styles.inputWrapper}>
+                <input
+                  id="name"
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  onBlur={() => handleBlur("name")}
+                  placeholder="John Doe"
+                  required
+                  className={`${styles.input} ${getFieldError("name") ? styles.inputError : ""}`}
+                  disabled={loading}
+                />
+                {getFieldError("name") && (
+                  <>
+                    <FaExclamationCircle className={styles.errorIcon} />
+                    <div className={styles.tooltip}>{getFieldError("name")}</div>
+                  </>
+                )}
+              </div>
             </div>
 
             <div className={styles.formGroup}>
@@ -150,21 +155,26 @@ export default function ContactForm() {
                 <FaEnvelope className={styles.labelIcon} />
                 Email
               </label>
-              <input
-                id="email"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                onBlur={() => handleBlur("email")}
-                placeholder="john@example.com"
-                required
-                className={`${styles.input} ${getFieldError("email") ? styles.inputError : ""}`}
-                disabled={loading}
-              />
-              {getFieldError("email") && (
-                <span className={styles.errorText}>{getFieldError("email")}</span>
-              )}
+              <div className={styles.inputWrapper}>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  onBlur={() => handleBlur("email")}
+                  placeholder="john@example.com"
+                  required
+                  className={`${styles.input} ${getFieldError("email") ? styles.inputError : ""}`}
+                  disabled={loading}
+                />
+                {getFieldError("email") && (
+                  <>
+                    <FaExclamationCircle className={styles.errorIcon} />
+                    <div className={styles.tooltip}>{getFieldError("email")}</div>
+                  </>
+                )}
+              </div>
             </div>
           </div>
 
@@ -173,21 +183,26 @@ export default function ContactForm() {
               <FaCommentDots className={styles.labelIcon} />
               Message
             </label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleInputChange}
-              onBlur={() => handleBlur("message")}
-              placeholder="Tell me about your project or question..."
-              required
-              className={`${styles.textarea} ${getFieldError("message") ? styles.inputError : ""}`}
-              disabled={loading}
-              rows="5"
-            />
-            {getFieldError("message") && (
-              <span className={styles.errorText}>{getFieldError("message")}</span>
-            )}
+            <div className={styles.inputWrapper}>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleInputChange}
+                onBlur={() => handleBlur("message")}
+                placeholder="Tell me about your project or question..."
+                required
+                className={`${styles.textarea} ${getFieldError("message") ? styles.inputError : ""}`}
+                disabled={loading}
+                rows="5"
+              />
+              {getFieldError("message") && (
+                <>
+                  <FaExclamationCircle className={styles.errorIcon} />
+                  <div className={styles.tooltip}>{getFieldError("message")}</div>
+                </>
+              )}
+            </div>
           </div>
 
           {error && (
@@ -196,9 +211,9 @@ export default function ContactForm() {
             </div>
           )}
 
-          <button 
-            type="submit" 
-            className={styles.button} 
+          <button
+            type="submit"
+            className={styles.button}
             disabled={loading || !isFormValid()}
           >
             {loading ? (
