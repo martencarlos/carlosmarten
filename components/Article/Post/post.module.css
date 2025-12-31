@@ -345,6 +345,26 @@
     gap: 5px;
   }
 
+        .authorDateInfo {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+    
+        .authorInfo,
+        .timeInfo,
+        .dateInfo {
+          flex: unset;
+          width: auto;
+          justify-content: flex-start;
+        }
+    
+        .dateInfo {
+          gap: 5px;
+          /* Reset justify-content from desktop styles */
+          justify-content: flex-start;
+        }
+
   .scrollToTopButton {
     display: flex;
     bottom: 30px;
