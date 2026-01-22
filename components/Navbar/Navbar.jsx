@@ -57,13 +57,12 @@ export default function Navbar() {
 
   return (
     <div
-      className={`${styles.navbar_container} ${
-        mounted && resolvedTheme === "dark" ? styles.dark : ""
-      } ${scrolled ? styles.scrolled : ""}`}
+      className={`${styles.navbar_container} ${mounted && resolvedTheme === "dark" ? styles.dark : ""
+        } ${scrolled ? styles.scrolled : ""}`}
     >
       <nav className={styles.navbar}>
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           className={styles.logo}
           onClick={(e) => handleNavClick(e, '/')}
         >
@@ -77,9 +76,9 @@ export default function Navbar() {
             <li key={href} className={styles.navItem}>
               <Link
                 href={href}
-                className={`${styles.navLink} ${
-                  pathname === href ? styles.active : ""
-                } ${isPending && pendingPath === href ? styles.loading : ""}`}
+                data-text={label}
+                className={`${styles.navLink} ${pathname === href ? styles.active : ""
+                  } ${isPending && pendingPath === href ? styles.loading : ""}`}
                 onClick={(e) => handleNavClick(e, href)}
               >
                 {label}

@@ -79,9 +79,7 @@ export async function sendNotifications(postData) {
         const options = {
           TTL: 10,
         };
-        console.log("sending notifications:")
-        console.log(pushSubscription)
-        console.log(payload)
+
         await webpush.sendNotification(pushSubscription, payload);
       } catch (error) {
         if (error.statusCode === 410) {

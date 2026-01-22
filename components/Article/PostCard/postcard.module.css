@@ -21,7 +21,7 @@
   pointer-events: none;
 }
 
-/* Full-Card Loading Overlay with Logo Gradient */
+/* Modern Glass Morphism Loading Overlay */
 .loadingOverlay {
   position: absolute;
   top: 0;
@@ -31,99 +31,62 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--third-color), var(--fourth-color));
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 8px;
   z-index: 10;
-  animation: overlaySlideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  animation: overlayFadeIn 0.3s ease-out;
   overflow: hidden;
 }
 
 .card.dark .loadingOverlay {
-  background: linear-gradient(135deg, var(--first-color), var(--third-color));
+  background: rgba(20, 20, 30, 0.85);
 }
 
-@keyframes overlaySlideIn {
+@keyframes overlayFadeIn {
   from {
-    transform: scale(0.8);
     opacity: 0;
   }
 
   to {
-    transform: scale(1);
     opacity: 1;
   }
 }
 
-/* Ocean Wave Animation */
-.oceanWaves {
+/* Animated Grid Background */
+.gridBackground {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  background-image:
+    linear-gradient(rgba(100, 100, 100, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100, 100, 100, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: gridScroll 20s linear infinite;
+  opacity: 0.5;
 }
 
-.wave {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 200%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 1000px 1000px 0 0;
-  animation: waveMotion 3s ease-in-out infinite;
+.card.dark .gridBackground {
+  background-image:
+    linear-gradient(rgba(200, 200, 200, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 200, 200, 0.08) 1px, transparent 1px);
 }
 
-.wave[data-wave="1"] {
-  animation-delay: 0s;
-  opacity: 0.4;
-  height: 30%;
-}
-
-.wave[data-wave="2"] {
-  animation-delay: 0.5s;
-  opacity: 0.3;
-  height: 40%;
-  animation-duration: 3.5s;
-}
-
-.wave[data-wave="3"] {
-  animation-delay: 1s;
-  opacity: 0.25;
-  height: 50%;
-  animation-duration: 4s;
-}
-
-.wave[data-wave="4"] {
-  animation-delay: 1.5s;
-  opacity: 0.2;
-  height: 60%;
-  animation-duration: 4.5s;
-}
-
-.wave[data-wave="5"] {
-  animation-delay: 2s;
-  opacity: 0.15;
-  height: 70%;
-  animation-duration: 5s;
-}
-
-@keyframes waveMotion {
+@keyframes gridScroll {
   0% {
-    transform: translateX(0) translateY(0);
-  }
-
-  50% {
-    transform: translateX(-25%) translateY(-10px);
+    transform: translate(0, 0);
   }
 
   100% {
-    transform: translateX(-50%) translateY(0);
+    transform: translate(20px, 20px);
   }
 }
 
-/* Water Droplets */
-.dropletsContainer {
+/* Floating Particles */
+.particlesContainer {
   position: absolute;
   top: 0;
   left: 0;
@@ -132,63 +95,107 @@
   pointer-events: none;
 }
 
-.droplet {
+.particle {
   position: absolute;
-  width: 8px;
-  height: 8px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3));
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
-  animation: dropletFall 3s ease-in infinite;
+  width: 4px;
+  height: 4px;
+  background: var(--third-color);
+  border-radius: 50%;
   opacity: 0;
+  animation: particleFloat 4s ease-in-out infinite;
+  box-shadow: 0 0 10px var(--third-color);
 }
 
-.droplet:nth-child(1) {
-  left: 15%;
+.card.dark .particle {
+  background: var(--second-color);
+  box-shadow: 0 0 10px var(--second-color);
+}
+
+.particle:nth-child(1) {
+  left: 10%;
   animation-delay: 0s;
-  animation-duration: 2.5s;
+  animation-duration: 3.5s;
 }
 
-.droplet:nth-child(2) {
-  left: 35%;
+.particle:nth-child(2) {
+  left: 20%;
   animation-delay: 0.5s;
-  animation-duration: 3s;
+  animation-duration: 4s;
 }
 
-.droplet:nth-child(3) {
-  left: 55%;
+.particle:nth-child(3) {
+  left: 30%;
   animation-delay: 1s;
-  animation-duration: 2.8s;
+  animation-duration: 3.8s;
 }
 
-.droplet:nth-child(4) {
-  left: 75%;
+.particle:nth-child(4) {
+  left: 40%;
   animation-delay: 1.5s;
-  animation-duration: 3.2s;
+  animation-duration: 4.2s;
 }
 
-.droplet:nth-child(5) {
-  left: 25%;
+.particle:nth-child(5) {
+  left: 50%;
   animation-delay: 2s;
-  animation-duration: 2.7s;
+  animation-duration: 3.6s;
 }
 
-.droplet:nth-child(6) {
-  left: 65%;
+.particle:nth-child(6) {
+  left: 60%;
   animation-delay: 2.5s;
-  animation-duration: 3.1s;
+  animation-duration: 4.1s;
 }
 
-@keyframes dropletFall {
+.particle:nth-child(7) {
+  left: 70%;
+  animation-delay: 0.8s;
+  animation-duration: 3.9s;
+}
+
+.particle:nth-child(8) {
+  left: 80%;
+  animation-delay: 1.8s;
+  animation-duration: 3.7s;
+}
+
+.particle:nth-child(9) {
+  left: 15%;
+  animation-delay: 2.2s;
+  animation-duration: 4.3s;
+}
+
+.particle:nth-child(10) {
+  left: 55%;
+  animation-delay: 1.2s;
+  animation-duration: 3.5s;
+}
+
+.particle:nth-child(11) {
+  left: 35%;
+  animation-delay: 2.8s;
+  animation-duration: 4s;
+}
+
+.particle:nth-child(12) {
+  left: 75%;
+  animation-delay: 0.3s;
+  animation-duration: 3.8s;
+}
+
+@keyframes particleFloat {
   0% {
-    top: -10%;
+    top: 110%;
     opacity: 0;
-    transform: rotate(-45deg) scale(0.5);
+    transform: translateX(0) scale(0.5);
   }
 
   10% {
     opacity: 1;
-    transform: rotate(-45deg) scale(1);
+  }
+
+  50% {
+    transform: translateX(20px) scale(1);
   }
 
   90% {
@@ -196,9 +203,9 @@
   }
 
   100% {
-    top: 110%;
+    top: -10%;
     opacity: 0;
-    transform: rotate(-45deg) scale(0.8);
+    transform: translateX(-20px) scale(0.5);
   }
 }
 
@@ -209,23 +216,85 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
 }
 
-/* Animated Loading Text with Wave Effect */
+/* Modern Spinner Ring */
+.spinnerRing {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+
+.ringSegment {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 3px solid transparent;
+  border-radius: 50%;
+  animation: spinRing 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+}
+
+.ringSegment:nth-child(1) {
+  border-top-color: var(--third-color);
+  animation-delay: 0s;
+}
+
+.ringSegment:nth-child(2) {
+  border-right-color: var(--third-color);
+  animation-delay: 0.2s;
+  opacity: 0.7;
+}
+
+.ringSegment:nth-child(3) {
+  border-bottom-color: var(--third-color);
+  animation-delay: 0.4s;
+  opacity: 0.4;
+}
+
+.card.dark .ringSegment:nth-child(1) {
+  border-top-color: var(--second-color);
+}
+
+.card.dark .ringSegment:nth-child(2) {
+  border-right-color: var(--second-color);
+}
+
+.card.dark .ringSegment:nth-child(3) {
+  border-bottom-color: var(--second-color);
+}
+
+@keyframes spinRing {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* Animated Loading Text with Pulse Effect */
 .loadingTextWrapper {
   display: flex;
-  gap: 4px;
-  font-size: 24px;
-  font-weight: 700;
-  color: white;
-  letter-spacing: 3px;
-  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+  gap: 2px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--third-color);
+}
+
+.card.dark .loadingTextWrapper {
+  color: var(--second-color);
 }
 
 .loadingChar {
   display: inline-block;
-  animation: charWave 2s ease-in-out infinite;
+  animation: charPulse 1.4s ease-in-out infinite;
 }
 
 .loadingChar:nth-child(1) {
@@ -256,23 +325,81 @@
   animation-delay: 0.6s;
 }
 
-@keyframes charWave {
+@keyframes charPulse {
 
   0%,
   100% {
-    transform: translateY(0) scale(1);
-  }
-
-  25% {
-    transform: translateY(-12px) scale(1.1);
+    transform: scale(1);
+    opacity: 1;
   }
 
   50% {
-    transform: translateY(0) scale(1);
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+}
+
+/* Corner Decorative Elements */
+.cornerDecor {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--third-color);
+  opacity: 0.6;
+  animation: cornerPulse 2s ease-in-out infinite;
+}
+
+.card.dark .cornerDecor {
+  border-color: var(--second-color);
+}
+
+.cornerDecor[data-corner="top-left"] {
+  top: 15px;
+  left: 15px;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 8px 0 0 0;
+  animation-delay: 0s;
+}
+
+.cornerDecor[data-corner="top-right"] {
+  top: 15px;
+  right: 15px;
+  border-left: none;
+  border-bottom: none;
+  border-radius: 0 8px 0 0;
+  animation-delay: 0.5s;
+}
+
+.cornerDecor[data-corner="bottom-left"] {
+  bottom: 15px;
+  left: 15px;
+  border-right: none;
+  border-top: none;
+  border-radius: 0 0 0 8px;
+  animation-delay: 1s;
+}
+
+.cornerDecor[data-corner="bottom-right"] {
+  bottom: 15px;
+  right: 15px;
+  border-left: none;
+  border-top: none;
+  border-radius: 0 0 8px 0;
+  animation-delay: 1.5s;
+}
+
+@keyframes cornerPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
   }
 
-  75% {
-    transform: translateY(8px) scale(0.95);
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
   }
 }
 
@@ -518,49 +645,42 @@
   }
 
   /* Mobile loader adjustments */
-  .pulsingCircle {
-    width: 60px;
-    height: 60px;
-    border-width: 3px;
+  .spinnerRing {
+    width: 50px;
+    height: 50px;
   }
 
-  .pulsingCircle::before {
-    width: 30px;
-    height: 30px;
-  }
-
-  .pulsingCircle::after {
-    width: 45px;
-    height: 45px;
+  .ringSegment {
+    border-width: 2.5px;
   }
 
   .loadingTextWrapper {
-    font-size: 16px;
+    font-size: 14px;
   }
 
-  .cornerAccent {
+  .cornerDecor {
     width: 30px;
     height: 30px;
     border-width: 2px;
   }
 
-  .cornerAccent[data-corner="top-left"],
-  .cornerAccent[data-corner="top-right"] {
-    top: 8px;
+  .cornerDecor[data-corner="top-left"],
+  .cornerDecor[data-corner="top-right"] {
+    top: 10px;
   }
 
-  .cornerAccent[data-corner="bottom-left"],
-  .cornerAccent[data-corner="bottom-right"] {
-    bottom: 8px;
+  .cornerDecor[data-corner="bottom-left"],
+  .cornerDecor[data-corner="bottom-right"] {
+    bottom: 10px;
   }
 
-  .cornerAccent[data-corner="top-left"],
-  .cornerAccent[data-corner="bottom-left"] {
-    left: 8px;
+  .cornerDecor[data-corner="top-left"],
+  .cornerDecor[data-corner="bottom-left"] {
+    left: 10px;
   }
 
-  .cornerAccent[data-corner="top-right"],
-  .cornerAccent[data-corner="bottom-right"] {
-    right: 8px;
+  .cornerDecor[data-corner="top-right"],
+  .cornerDecor[data-corner="bottom-right"] {
+    right: 10px;
   }
 }

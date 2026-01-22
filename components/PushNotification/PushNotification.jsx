@@ -153,10 +153,11 @@ export default function PushNotification() {
       const pushSubscription = await registration.pushManager.subscribe(
         subscribeOptions
       );
-      console.log(pushSubscription)
+      console.log(pushSubscription);
 
       // Save to server
-      await subscribeUser(pushSubscription);
+      // FIX: Serialize to plain JSON object before passing to Server Action
+      await subscribeUser(pushSubscription.toJSON());
 
       setIsSubscribed(true);
       setSubscription(pushSubscription);
@@ -182,7 +183,8 @@ export default function PushNotification() {
       setError(null);
 
       if (subscription) {
-        await unsubscribeUser(subscription);
+        // FIX: Serialize to plain JSON object before passing to Server Action
+        await unsubscribeUser(subscription.toJSON());
         await subscription.unsubscribe();
       }
 
@@ -235,9 +237,8 @@ export default function PushNotification() {
       )}
 
       <button
-        className={`${styles.button} ${isSubscribed ? styles.subscribed : ""} ${
-          isLoading ? styles.loading : ""
-        }`}
+        className={`${styles.button} ${isSubscribed ? styles.subscribed : ""} ${isLoading ? styles.loading : ""
+          }`}
         onClick={isSubscribed ? handleUnsubscribe : handleSubscribe}
         disabled={isLoading}
       >
@@ -253,8 +254,8 @@ export default function PushNotification() {
           {isLoading
             ? "Processing..."
             : isSubscribed
-            ? "Unsubscribe from notifications"
-            : "Subscribe to notifications"}
+              ? "Unsubscribe from notifications"
+              : "Subscribe to notifications"}
         </span>
 
         {isLoading && <span className={styles.spinner}></span>}

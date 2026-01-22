@@ -18,7 +18,7 @@ function decodeHTMLEntities(text) {
 }
 
 export default function PostCard({ post, views = 0 }) {
-  console.log("Post Card loaded");
+
   const { resolvedTheme } = useTheme();
   const router = useRouter();
   const [decodedTitle, setDecodedTitle] = useState(post.title.rendered);
@@ -70,10 +70,10 @@ export default function PostCard({ post, views = 0 }) {
         <Link href={`/posts/${post.slug}`} onClick={handleClick}>
           <h2 className={styles.card_title}>{displayTitle}</h2>
         </Link>
-        <p
+        <div
           className={styles.card_excerpt}
           dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
-        ></p>
+        ></div>
         <div className={styles.card_taxonomies}>
           <div className={styles.card_categories}>
             {categories.map((category) => (
@@ -98,27 +98,23 @@ export default function PostCard({ post, views = 0 }) {
       </div>
       {isPending && (
         <div className={styles.loadingOverlay}>
-          {/* Animated ocean waves */}
-          <div className={styles.oceanWaves}>
-            <div className={styles.wave} data-wave="1"></div>
-            <div className={styles.wave} data-wave="2"></div>
-            <div className={styles.wave} data-wave="3"></div>
-            <div className={styles.wave} data-wave="4"></div>
-            <div className={styles.wave} data-wave="5"></div>
+          {/* Animated particles */}
+          <div className={styles.particlesContainer}>
+            {[...Array(12)].map((_, i) => (
+              <div key={i} className={styles.particle}></div>
+            ))}
           </div>
 
-          {/* Water droplets */}
-          <div className={styles.dropletsContainer}>
-            <div className={styles.droplet}></div>
-            <div className={styles.droplet}></div>
-            <div className={styles.droplet}></div>
-            <div className={styles.droplet}></div>
-            <div className={styles.droplet}></div>
-            <div className={styles.droplet}></div>
-          </div>
+          {/* Animated grid background */}
+          <div className={styles.gridBackground}></div>
 
-          {/* Center content */}
+          {/* Center spinner and text */}
           <div className={styles.centerContent}>
+            <div className={styles.spinnerRing}>
+              <div className={styles.ringSegment}></div>
+              <div className={styles.ringSegment}></div>
+              <div className={styles.ringSegment}></div>
+            </div>
             <div className={styles.loadingTextWrapper}>
               <span className={styles.loadingChar}>L</span>
               <span className={styles.loadingChar}>o</span>
@@ -129,6 +125,12 @@ export default function PostCard({ post, views = 0 }) {
               <span className={styles.loadingChar}>g</span>
             </div>
           </div>
+
+          {/* Corner accents */}
+          <div className={styles.cornerDecor} data-corner="top-left"></div>
+          <div className={styles.cornerDecor} data-corner="top-right"></div>
+          <div className={styles.cornerDecor} data-corner="bottom-left"></div>
+          <div className={styles.cornerDecor} data-corner="bottom-right"></div>
         </div>
       )}
     </div>

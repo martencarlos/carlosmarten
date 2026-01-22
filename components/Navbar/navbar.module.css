@@ -97,8 +97,27 @@
   transition: all 0.3s ease;
   position: relative;
   display: inline-flex;
+  flex-direction: column;
+  /* Changed to stack text and pseudo element */
   align-items: center;
+  justify-content: center;
   opacity: 0.85;
+}
+
+/* 
+   This pseudo-element reserves space for the bold text.
+   It ensures the link width is always equal to the width 
+   of the text in its bold state (font-weight: 600).
+*/
+.navLink::before {
+  display: block;
+  content: attr(data-text);
+  font-weight: 600;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  user-select: none;
+  pointer-events: none;
 }
 
 .navLink:hover {

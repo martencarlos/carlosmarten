@@ -8,11 +8,7 @@ export default async function WordPress() {
   if (!htmlContent) {
     return <div className={styles.pageContainer}>Page not found</div>;
   } else {
-    // console.log(htmlContent);
-    // const updatedContent = htmlContent.replace(
-    //   /https:\/\/wp\.carlosmarten\.com/g,
-    //   `${process.env.HOST}/wordpress`
-    // );
+
     return (
       <div className={styles.pageContainer}>
         <div className={styles.backbuttonContainer}>
