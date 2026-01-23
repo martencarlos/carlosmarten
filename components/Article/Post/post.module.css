@@ -149,7 +149,8 @@
 }
 
 .pill {
-  background-color: #78a2d6;;
+  background-color: #78a2d6;
+  ;
   color: white;
   padding: 4px 12px;
   border-radius: 15px;
@@ -202,7 +203,7 @@
   font-size: 1.875rem;
   border-bottom: 1px solid var(--border);
   padding-bottom: 0.3em;
- 
+
 }
 
 .content h3 {
@@ -458,14 +459,20 @@
     font-size: 1.75rem;
   }
 
+  /* MODIFIED: Ensure title and audio icon stay in a row on mobile */
   .titleContainer {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    /* Force row layout */
+    align-items: center;
+    /* Center items vertically */
     margin: 20px;
+    gap: 15px;
+    /* Adjust gap for mobile */
   }
 
   .audioPlayerIcon {
-    margin-top: 10px;
+    margin-top: 0;
+    /* Remove top margin used in previous stack layout */
   }
 
   .content {
@@ -487,6 +494,41 @@
 
   .postMeta {
     margin: 0 20px 20px 20px;
+  }
+
+  /* MODIFIED: Categories layout for mobile (2 columns) */
+  .categories {
+    flex-direction: column;
+    /* Stack the label on top */
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .categoryname {
+    margin-bottom: 8px;
+    /* Add space between label and pills */
+  }
+
+  .pillContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Create 2 equal columns */
+    gap: 8px;
+    width: 100%;
+  }
+
+  .categoryLink {
+    width: 100%;
+    /* Ensure link takes full grid cell */
+  }
+
+  .pill {
+    width: 100%;
+    /* Make pill fill the column */
+    text-align: center;
+    /* Center text inside pill */
+    display: block;
+    /* Ensure block behavior */
   }
 
   .authorDateInfo {
