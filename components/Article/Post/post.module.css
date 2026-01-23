@@ -44,7 +44,7 @@
   object-position: center;
 }
 
-/* Back Button (unchanged) */
+/* Back Button */
 .backButtonOverlay {
   position: absolute;
   top: 20px;
@@ -53,6 +53,9 @@
 }
 
 .overlayBackButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 10px 20px;
   border: none;
   border-radius: 8px;

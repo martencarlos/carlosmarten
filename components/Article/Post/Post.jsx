@@ -5,6 +5,7 @@ import styles from './post.module.css';
 
 import Link from 'next/link';
 import { FaClock, FaUser, FaCalendar, FaChevronUp, FaEye } from 'react-icons/fa';
+import { ArrowLeft } from 'lucide-react'; // Import Lucide icon
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import OptimizedImage from '@components/OptimizedImage/OptimizedImage';
@@ -117,7 +118,8 @@ export default function Post({ post, initialViews = 0, slug }) {
                     className={styles.overlayBackButton}
                     aria-label="Go back to blog"
                   >
-                    &larr; Back
+                    <ArrowLeft size={18} strokeWidth={2.5} />
+                    <span>Back</span>
                   </button>
                 </Link>
               </div>
@@ -135,7 +137,6 @@ export default function Post({ post, initialViews = 0, slug }) {
 
           <div className={styles.postMeta}>
             <div className={styles.categories}>
-              {/* <span className={styles.categoryname}>Categories:</span> */}
               <div className={styles.pillContainer}>
                 {post.categories.map((category, index) => (
                   <Link
@@ -176,10 +177,6 @@ export default function Post({ post, initialViews = 0, slug }) {
             </div>
           </div>
 
-          {/* 
-            This div is the target for all the CSS formatting 
-            defined in post.module.css under .content 
-          */}
           <div
             className={styles.content}
             dangerouslySetInnerHTML={{ __html: post.content }}
