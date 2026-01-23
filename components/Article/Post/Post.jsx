@@ -135,7 +135,7 @@ export default function Post({ post, initialViews = 0, slug }) {
 
           <div className={styles.postMeta}>
             <div className={styles.categories}>
-              <span className={styles.categoryname}>Categories:</span>
+              {/* <span className={styles.categoryname}>Categories:</span> */}
               <div className={styles.pillContainer}>
                 {post.categories.map((category, index) => (
                   <Link
