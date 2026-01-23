@@ -12,8 +12,11 @@ import AudioPlayer from '@components/Article/AudioPlayer/AudioPlayer';
 import { incrementView } from '@actions/viewCounter';
 
 function calculateReadingTime(text) {
+  if (!text) return 0;
   const wordsPerMinute = 200;
-  const wordCount = text.split(/\s+/).length;
+  // Strip HTML tags for accurate word count
+  const plainText = text.replace(/<[^>]*>/g, '');
+  const wordCount = plainText.split(/\s+/).length;
   return Math.ceil(wordCount / wordsPerMinute);
 }
 
@@ -36,15 +39,14 @@ export default function Post({ post, initialViews = 0, slug }) {
   const [mounted, setMounted] = useState(false);
   const [decodedTitle, setDecodedTitle] = useState(post.title);
   const [viewCount, setViewCount] = useState(initialViews);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   // Handle view increment
   useEffect(() => {
-    // We put this in a timeout to ensure it's a real client mount and not just a crawler glance
     const timer = setTimeout(async () => {
       try {
         if (slug) {
           await incrementView(slug);
-          // Optimistically update the UI
           setViewCount(prev => parseInt(prev) + 1);
         }
       } catch (err) {
@@ -55,92 +57,72 @@ export default function Post({ post, initialViews = 0, slug }) {
     return () => clearTimeout(timer);
   }, [slug]);
 
-  // Handle mounting and ensure scroll is at top
+  // Handle mounting and scroll effects
   useEffect(() => {
-    // Force scroll to top on mount
     window.scrollTo(0, 0);
     setMounted(true);
-
-    // Decode the title
     setDecodedTitle(decodeHTMLEntities(post.title));
 
-    // Additional scroll reset after a short delay to handle any race conditions
-    const scrollTimeout = setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-
-    return () => clearTimeout(scrollTimeout);
-  }, [post.title]);
-
-  useEffect(() => {
     const handleScroll = () => {
-      const totalHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      const progress = window.scrollY / totalHeight * 100;
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
       setScrollProgress(progress);
+      setShowScrollTop(window.scrollY > 400);
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
-  useEffect(
-    () => {
+    // Calculate reading time
+    if (post.content) {
       const time = calculateReadingTime(post.content);
       setTime(time);
-    },
-    [post.content]
-  );
+    }
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [post.title, post.content]);
 
   // Initial skeleton loading state
   if (!mounted) {
     return (
       <div className={styles.container}>
-        <article className={styles.article} />
+        <article className={styles.article} style={{ height: '100vh' }} />
       </div>
     );
   }
 
   try {
     return (
-      <div
-        className={`${styles.container} ${resolvedTheme === 'dark' ? styles.dark : ''}`}
-      >
+      <div className={`${styles.container} ${resolvedTheme === 'dark' ? styles.dark : ''}`}>
         <div
           className={styles.progressBar}
           style={{ width: `${scrollProgress}%` }}
         />
+
         <article className={styles.article}>
-          {post.featuredImage &&
+          {post.featuredImage && (
             <div className={styles.featuredImageContainer}>
               <OptimizedImage
                 src={post.featuredImage}
                 alt={decodedTitle}
                 fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                quality={75}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 800px"
+                quality={85}
                 priority={true}
                 className={styles.featuredImage}
-                placeholder="blur"
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx0fHRsdHSIeHx8dIigjJCUmJSQkIistLjIyLS4rNTs7OjU+QUJBQkFCQUFBQUFBQUH/2wBDABUXFx4ZHiMeHiNBLSUtQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUH/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                 style={{ objectFit: 'cover' }}
               />
               <div className={styles.backButtonOverlay}>
-                <button
-                  onClick={() => {
-                    if (window.history.length > 1) {
-                      window.history.back();
-                    } else {
-                      window.location.href = '/blog';
-                    }
-                  }}
-                  className={styles.overlayBackButton}
-                  aria-label="Go back"
-                >
-                  &larr; Back
-                </button>
+                <Link href="/blog">
+                  <button
+                    className={styles.overlayBackButton}
+                    aria-label="Go back to blog"
+                  >
+                    &larr; Back
+                  </button>
+                </Link>
               </div>
-            </div>}
+            </div>
+          )}
 
           <div className={styles.titleContainer}>
             <h1 className={styles.title}>{decodedTitle}</h1>
@@ -153,7 +135,7 @@ export default function Post({ post, initialViews = 0, slug }) {
 
           <div className={styles.postMeta}>
             <div className={styles.categories}>
-              <span className={styles.categoryname}>Categories</span>
+              <span className={styles.categoryname}>Categories:</span>
               <div className={styles.pillContainer}>
                 {post.categories.map((category, index) => (
                   <Link
@@ -166,46 +148,48 @@ export default function Post({ post, initialViews = 0, slug }) {
                 ))}
               </div>
             </div>
+
             <div className={styles.authorDateInfo}>
-              <div className={styles.authorInfo}>
-                <span className={styles.metaLabel}>
-                  <FaUser aria-hidden="true" className={styles.icon} />
-                  {post.author}
-                </span>
-              </div>
+              <span className={styles.metaLabel}>
+                <FaUser aria-hidden="true" className={styles.icon} />
+                {post.author}
+              </span>
 
-              <div className={styles.timeInfo} style={{ marginRight: '15px' }}>
-                <span className={styles.metaLabel}>
-                  <FaEye aria-hidden="true" className={styles.icon} />
-                  {viewCount} views
-                </span>
-              </div>
+              <span className={styles.metaLabel}>
+                <FaEye aria-hidden="true" className={styles.icon} />
+                {viewCount} views
+              </span>
 
-              <div className={styles.timeInfo}>
-                <span className={styles.metaLabel}>
-                  <FaClock aria-hidden="true" className={styles.icon} />
-                  {time} min read
-                </span>
-              </div>
-              <div className={styles.dateInfo}>
-                <span className={styles.metaLabel}>
-                  <FaCalendar aria-hidden="true" className={styles.icon} />
-                  {post.create_date.toLocaleDateString('es-ES')}
-                </span>
-              </div>
+              <span className={styles.metaLabel}>
+                <FaClock aria-hidden="true" className={styles.icon} />
+                {time} min read
+              </span>
+
+              <span className={styles.metaLabel}>
+                <FaCalendar aria-hidden="true" className={styles.icon} />
+                {post.create_date.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </span>
             </div>
-
-            {post.pinned && <p className={styles.pinnedPost}>Pinned Post</p>}
           </div>
 
+          {/* 
+            This div is the target for all the CSS formatting 
+            defined in post.module.css under .content 
+          */}
           <div
             className={styles.content}
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
+
           <button
             className={styles.scrollToTopButton}
             onClick={scrollToTop}
             aria-label="Scroll to top"
+            style={{ display: showScrollTop ? 'flex' : 'none' }}
           >
             <FaChevronUp aria-hidden="true" />
           </button>
@@ -213,11 +197,12 @@ export default function Post({ post, initialViews = 0, slug }) {
       </div>
     );
   } catch (error) {
+    console.error("Error rendering post:", error);
     return (
       <div className={styles.container}>
         <div className={styles.error}>
           <h1>Error</h1>
-          <p>Failed to load the blog post. Please try again later.</p>
+          <p>Failed to load the blog post. Please refresh the page.</p>
         </div>
       </div>
     );
