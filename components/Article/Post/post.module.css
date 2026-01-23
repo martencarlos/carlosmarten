@@ -496,39 +496,37 @@
     margin: 0 20px 20px 20px;
   }
 
-  /* Categories layout for mobile (2 columns) */
+  /* 
+     Categories layout for mobile. 
+     Using flex-wrap: wrap ensures "best fit" 
+     (pills flow naturally based on their width). 
+  */
   .categories {
-    flex-direction: column;
-    /* Stack the label on top */
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
     width: 100%;
   }
 
   .categoryname {
-    margin-bottom: 8px;
-    /* Add space between label and pills */
+    margin-bottom: 0;
   }
 
   .pillContainer {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    /* Create 2 equal columns */
+    display: flex;
+    flex-wrap: wrap;
     gap: 8px;
-    width: 100%;
+    width: auto;
   }
 
   .categoryLink {
-    width: 100%;
-    /* Ensure link takes full grid cell */
+    width: auto;
   }
 
   .pill {
-    width: 100%;
-    /* Make pill fill the column */
-    text-align: center;
-    /* Center text inside pill */
-    display: block;
-    /* Ensure block behavior */
+    width: auto;
+    text-align: left;
+    display: inline-block;
   }
 
   /* Author & Date Info layout for mobile (2 columns) */
@@ -541,7 +539,7 @@
   }
 
   .metaLabel {
-    /* Optional: Ensure labels handle longer text gracefully in columns */
+    /* Ensure labels handle longer text gracefully in columns */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
