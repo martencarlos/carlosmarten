@@ -459,7 +459,7 @@
     font-size: 1.75rem;
   }
 
-  /* MODIFIED: Ensure title and audio icon stay in a row on mobile */
+  /* Ensure title and audio icon stay in a row on mobile */
   .titleContainer {
     flex-direction: row;
     /* Force row layout */
@@ -496,7 +496,7 @@
     margin: 0 20px 20px 20px;
   }
 
-  /* MODIFIED: Categories layout for mobile (2 columns) */
+  /* Categories layout for mobile (2 columns) */
   .categories {
     flex-direction: column;
     /* Stack the label on top */
@@ -531,9 +531,20 @@
     /* Ensure block behavior */
   }
 
+  /* Author & Date Info layout for mobile (2 columns) */
   .authorDateInfo {
-    flex-direction: column;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Two equal columns */
+    gap: 15px;
+    margin-top: 15px;
+  }
+
+  .metaLabel {
+    /* Optional: Ensure labels handle longer text gracefully in columns */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .scrollToTopButton {
